@@ -13,7 +13,7 @@ class DBFolder
 	/// <returns></returns>
 	static function Add(&$folder/*FolderInf*/)
 	{		
-		$sb = "insert into up6_folders(";
+		$sb = "insert into up7_folders(";
 		$sb = $sb. "fd_name";
 		$sb = $sb. ",fd_pid";
 		$sb = $sb. ",fd_uid";
@@ -68,7 +68,7 @@ class DBFolder
 	 */
 	function Complete($id_fd,$id_f,$uid)
 	{
-		$sql = "update up6_folders set fd_complete=1 where fd_id=:fd_id and fd_uid=:fd_uid;";		
+		$sql = "update up7_folders set fd_complete=1 where fd_id=:fd_id and fd_uid=:fd_uid;";		
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 		$cmd->bindParam(":fd_id",$id_fd);
@@ -76,7 +76,7 @@ class DBFolder
 		$db->ExecuteNonQuery($cmd);
 		
 		//fix:更新文件表
-		$sql = "update up6_files set f_lenSvr=f_lenLoc,f_complete=1,f_perSvr='100%' where f_id=:f_id and f_uid=:f_uid;";
+		$sql = "update up7_files set f_lenSvr=f_lenLoc,f_complete=1,f_perSvr='100%' where f_id=:f_id and f_uid=:f_uid;";
 		$cmd =& $db->GetCommand($sql);
 		$cmd->bindParam(":f_id",$id_f);
 		$cmd->bindParam(":f_uid",$uid);
@@ -85,7 +85,7 @@ class DBFolder
 
 	function Remove($fid,$uid)
 	{
-		$sql = "update up6_folders set fd_delete=1 where fd_id=:fd_id and fd_uid=:fd_uid;";
+		$sql = "update up7_folders set fd_delete=1 where fd_id=:fd_id and fd_uid=:fd_uid;";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 		$cmd->bindParam(":fd_id",$fid);
@@ -95,7 +95,7 @@ class DBFolder
 
 	static function Clear()
 	{
-		$sql = "delete from up6_folders";
+		$sql = "delete from up7_folders";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 		$db->ExecuteNonQuery($cmd);
@@ -119,7 +119,7 @@ class DBFolder
 		$sb = $sb. ",fd_folders";
 		$sb = $sb. ",fd_files";
 		$sb = $sb. ",fd_filesComplete";
-		$sb = $sb. " from up6_folders where fd_id=:fd_id;";
+		$sb = $sb. " from up7_folders where fd_id=:fd_id;";
 
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sb);
@@ -166,7 +166,7 @@ class DBFolder
 		$sb = $sb. ",fd_folders";
 		$sb = $sb. ",fd_files";
 		$sb = $sb. ",fd_filesComplete";
-		$sb = $sb. " from up6_folders where fd_id=:fd_id;";
+		$sb = $sb. " from up7_folders where fd_id=:fd_id;";
 
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sb);
@@ -225,7 +225,7 @@ class DBFolder
 		$sb = $sb. ",fd_folders";
 		$sb = $sb. ",fd_files";
 		$sb = $sb. ",fd_filesComplete";
-		$sb = $sb. " from up6_folders where fd_id=:fd_id;";
+		$sb = $sb. " from up7_folders where fd_id=:fd_id;";
 
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sb);
@@ -256,7 +256,7 @@ class DBFolder
 	/// <returns></returns>
 	function GetLenPosted($fidRoot)
 	{
-		$sql = "select sum(f_lenSvr) as lenPosted from (select distinct f_md5,f_lenSvr from up6_files where f_pidRoot=:f_pidRoot and LENGTH(f_md5) > 0) a";
+		$sql = "select sum(f_lenSvr) as lenPosted from (select distinct f_md5,f_lenSvr from up7_files where f_pidRoot=:f_pidRoot and LENGTH(f_md5) > 0) a";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 		$cmd->bindParam(":f_pidRoot",$fidRoot);
@@ -271,7 +271,7 @@ class DBFolder
         /// <param name="fd_idSvr"></param>
         function child_complete($fd_idSvr)
         {
-            $sql = "update up6_folders set fd_filesComplete=fd_filesComplete+1 where fd_id=:fd_id";
+            $sql = "update up7_folders set fd_filesComplete=fd_filesComplete+1 where fd_id=:fd_id";
             $db = new DbHelper();
             $cmd =& $db->GetCommand($sql);
             $cmd->bindParam( ":fd_id", $fd_idSvr);

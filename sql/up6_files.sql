@@ -10,17 +10,17 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- 数据库: `httpuploader6`
+-- 数据库: `up7`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `up6_files`
+-- 表的结构 `up7_files`
 --
 
-DROP TABLE IF EXISTS `up6_files`;
-CREATE TABLE IF NOT EXISTS `up6_files` (
+DROP TABLE IF EXISTS `up7_files`;
+CREATE TABLE IF NOT EXISTS `up7_files` (
   `f_id` 				int(11) NOT NULL auto_increment,
   `f_pid` 				int(11) default '0',		/*父级文件夹ID*/
   `f_pidRoot` 			int(11) default '0',		/*根级文件夹ID*/
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `up6_files` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- 导出表中的数据 `up6_files`
+-- 导出表中的数据 `up7_files`
 --
 
 
@@ -56,12 +56,12 @@ CREATE TABLE IF NOT EXISTS `up6_files` (
 
 --更新文件进度
 CREATE DEFINER=`root`@`localhost` PROCEDURE `f_process`(in posSvr bigint(19),in lenSvr bigint(19),in perSvr varchar(6),in uidSvr int,in fidSvr int,in complete tinyint)
-update up6_files set f_pos=posSvr,f_lenSvr=lenSvr,f_perSvr=perSvr,f_complete=complete where f_uid=uidSvr and f_id=fidSvr
+update up7_files set f_pos=posSvr,f_lenSvr=lenSvr,f_perSvr=perSvr,f_complete=complete where f_uid=uidSvr and f_id=fidSvr
 
 --更新文件夹进度
 DROP PROCEDURE `fd_process`//
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fd_process`(in uidSvr int,in fd_idSvr int,in fd_lenSvr bigint(19),in perSvr varchar(6))
-update up6_files set f_lenSvr=fd_lenSvr ,f_perSvr=perSvr  where f_uid=uidSvr and f_id=fd_idSvr
+update up7_files set f_lenSvr=fd_lenSvr ,f_perSvr=perSvr  where f_uid=uidSvr and f_id=fd_idSvr
 
 --查看所有存储过程
 --show procedure status;

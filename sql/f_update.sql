@@ -21,7 +21,7 @@ CREATE PROCEDURE f_update(
 ,in _id			int
 )
 begin
-	update up6_files set
+	update up7_files set
 	 f_pid		= _pid
 	,f_pidRoot	= _pidRoot
 	,f_fdTask	= _fdTask

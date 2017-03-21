@@ -23,7 +23,7 @@ class DBFile
 	/// <param name="tb"></param>
 	function GetFilesByUid($f_uid,&$tb)
 	{
-		$sql = "select * from up6_files where f_uid=:f_uid and f_deleted=0 and f_fdChild=0;";
+		$sql = "select * from up7_files where f_uid=:f_uid and f_deleted=0 and f_fdChild=0;";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 		
@@ -53,7 +53,7 @@ class DBFile
 		$sql = $sql . ",f_lenSvr";
 		$sql = $sql . ",f_perSvr";
 		$sql = $sql . ",f_complete";
-		$sql = $sql . " from up6_files";//联合查询文件夹数据
+		$sql = $sql . " from up7_files";//联合查询文件夹数据
 		$sql = $sql . " where f_uid=:f_uid and f_deleted=0 and f_fdChild=0 and f_complete=1;";//只加载未完成列表
 
 		//取未完成的文件列表
@@ -93,39 +93,39 @@ class DBFile
     {
         $sb = "";
         $sb .= "select ";
-        $sb .=" up6_files.f_id";//1
-        $sb .=",up6_files.f_pid";//2
-        $sb .=",up6_files.f_fdTask";//3
-        $sb .=",up6_files.f_fdID";//4
-        $sb .=",up6_files.f_fdChild";//5
-        $sb .=",up6_files.f_pidRoot";//6
-        $sb .=",up6_files.f_nameLoc";//7
-        $sb .=",up6_files.f_pathLoc";//8
-        $sb .=",up6_files.f_md5";//9
-        $sb .=",up6_files.f_lenLoc";//10
-        $sb .=",up6_files.f_sizeLoc";//11
-        $sb .=",up6_files.f_pos";//12
-        $sb .=",up6_files.f_lenSvr";//13
-        $sb .=",up6_files.f_perSvr";//14
-        $sb .=",up6_files.f_complete";//15
-        $sb .=",up6_files.f_pathSvr";//16 //fix(2015-03-19):修复无法续传文件的问题。
+        $sb .=" up7_files.f_id";//1
+        $sb .=",up7_files.f_pid";//2
+        $sb .=",up7_files.f_fdTask";//3
+        $sb .=",up7_files.f_fdID";//4
+        $sb .=",up7_files.f_fdChild";//5
+        $sb .=",up7_files.f_pidRoot";//6
+        $sb .=",up7_files.f_nameLoc";//7
+        $sb .=",up7_files.f_pathLoc";//8
+        $sb .=",up7_files.f_md5";//9
+        $sb .=",up7_files.f_lenLoc";//10
+        $sb .=",up7_files.f_sizeLoc";//11
+        $sb .=",up7_files.f_pos";//12
+        $sb .=",up7_files.f_lenSvr";//13
+        $sb .=",up7_files.f_perSvr";//14
+        $sb .=",up7_files.f_complete";//15
+        $sb .=",up7_files.f_pathSvr";//16 //fix(2015-03-19):修复无法续传文件的问题。
         //文件夹字段
-        $sb .=",up6_folders.fd_name";//17
-        $sb .=",up6_folders.fd_length";//18
-        $sb .=",up6_folders.fd_size";//19
-        $sb .=",up6_folders.fd_pid";//20
-        $sb .=",up6_folders.fd_pathLoc";//21
-        $sb .=",up6_folders.fd_pathSvr";//22
-        $sb .=",up6_folders.fd_folders";//23
-        $sb .=",up6_folders.fd_files";//24
-        $sb .=",up6_folders.fd_filesComplete";//25
+        $sb .=",up7_folders.fd_name";//17
+        $sb .=",up7_folders.fd_length";//18
+        $sb .=",up7_folders.fd_size";//19
+        $sb .=",up7_folders.fd_pid";//20
+        $sb .=",up7_folders.fd_pathLoc";//21
+        $sb .=",up7_folders.fd_pathSvr";//22
+        $sb .=",up7_folders.fd_folders";//23
+        $sb .=",up7_folders.fd_files";//24
+        $sb .=",up7_folders.fd_filesComplete";//25
         //
-        $sb .=" from up6_files ";
+        $sb .=" from up7_files ";
         //
-        $sb .=" left join up6_folders ";
-        $sb .=" on up6_files.f_fdID = up6_folders.fd_id";
+        $sb .=" left join up7_folders ";
+        $sb .=" on up7_files.f_fdID = up7_folders.fd_id";
         //
-        $sb .=" where up6_files.f_uid=:f_uid and up6_files.f_deleted=0 and up6_files.f_complete=0";
+        $sb .=" where up7_files.f_uid=:f_uid and up7_files.f_deleted=0 and up7_files.f_complete=0";
 
         $db = new DbHelper();
         $cmd =& $db->GetCommand($sb);
@@ -186,7 +186,7 @@ class DBFile
 		//文件夹信息
 		$sql = $sql . ",fd_files";
 		$sql = $sql . ",fd_filesComplete";
-		$sql = $sql . " from up6_files left join up6_folders on up6_files.f_fdID = up6_folders.fd_id";//联合查询文件夹数据
+		$sql = $sql . " from up7_files left join up7_folders on up7_files.f_fdID = up7_folders.fd_id";//联合查询文件夹数据
 		$sql = $sql . " where f_uid=:f_uid and f_deleted=0 and f_fdChild=0 and f_complete=0;";//只加载未完成列表
 
 		//取未完成的文件列表
@@ -275,7 +275,7 @@ class DBFile
 		$sql = $sql . ",f_lenSvr";
 		$sql = $sql . ",f_perSvr";
 		$sql = $sql . ",f_complete";
-		$sql = $sql . " from up6_files where f_uid=:f_uid and f_deleted=0 and f_fdChild=0;";
+		$sql = $sql . " from up7_files where f_uid=:f_uid and f_deleted=0 and f_fdChild=0;";
 
 		//取未完成的文件列表
 		$files = array();
@@ -343,7 +343,7 @@ class DBFile
 	/// </summary>
 	/// <param name="f_id"></param>
 	/// <returns></returns>
-	function GetFileInfByFid($f_id,&$inf/*xdb_files*/)
+	function find($f_id,&$inf/*xdb_files*/)
 	{
 		$ret = false;		
 		$sb = "select ";
@@ -362,7 +362,7 @@ class DBFile
 		$sb = $sb . ",f_complete";
 		$sb = $sb . ",f_time";
 		$sb = $sb . ",f_deleted";
-		$sb = $sb . " from up6_files where f_id=:f_id limit 0,1";
+		$sb = $sb . " from up7_files where f_id=:f_id limit 0,1";
 		
 		$db = new DbHelper();
 		$cmd = $db->prepare_utf8($sb);
@@ -417,7 +417,7 @@ class DBFile
 		$sb = $sb . ",f_complete";
 		$sb = $sb . ",f_time";
 		$sb = $sb . ",f_deleted";
-		$sb = $sb . " from up6_files";
+		$sb = $sb . " from up7_files";
 		$sb = $sb . " where f_md5=:f_md5";
 		$sb = $sb . " order by f_lenSvr desc";
 		$sb = $sb . " ) tmp limit 1";
@@ -460,7 +460,7 @@ class DBFile
 	/// </summary>
 	function Add(&$model/*xdb_files*/)
 	{
-		$sb = "insert into up6_files(";
+		$sb = "insert into up7_files(";
 		$sb = $sb . " f_sizeLoc";
 		$sb = $sb . ",f_pos";
 		$sb = $sb . ",f_lenSvr";
@@ -527,7 +527,7 @@ class DBFile
 	/// <returns></returns>
 	static function AddFD(&$folder/*FolderInf*/)
 	{
-		$sb = "insert into up6_files(";
+		$sb = "insert into up7_files(";
 		$sb = $sb . " f_nameLoc";
 		$sb = $sb . ",f_fdTask";
 		$sb = $sb . ",f_fdID";
@@ -567,7 +567,7 @@ class DBFile
 	/// <returns></returns>
 	function AddXDB(&$inf)
 	{
-		$sb = "insert into up6_files(";
+		$sb = "insert into up7_files(";
 		$sb = $sb . " f_pid";
 		$sb = $sb . ",f_pidRoot";
 		$sb = $sb . ",f_fdChild";
@@ -614,7 +614,7 @@ class DBFile
 		$cmd->bindParam(":f_sizeLoc", $inf->sizeLoc);
 		$db->ExecuteNonQuery($cmd);
 
-		$f_id = $db->m_conCur->lastInsertId("f_id");//$db->ExecuteScalar("select top 1 f_id from up6_files order by f_id desc");
+		$f_id = $db->m_conCur->lastInsertId("f_id");//$db->ExecuteScalar("select top 1 f_id from up7_files order by f_id desc");
 		return $f_id;
 	}
 
@@ -626,7 +626,7 @@ class DBFile
 	/// <returns></returns>
 	static function AddFileInf(&$inf/*FileInf*/)
 	{
-		$sb = "insert into up6_files(";
+		$sb = "insert into up7_files(";
 		$sb = $sb . " f_pid";
 		$sb = $sb . ",f_pidRoot";
 		$sb = $sb . ",f_fdChild";
@@ -681,7 +681,7 @@ class DBFile
 		$cmd->bindValue(":f_complete", $inf->complete,PDO::PARAM_BOOL);
 		$db->ExecuteNonQuery($cmd);
 
-		$f_id = $db->m_conCur->lastInsertId("f_id");//$db->ExecuteScalar("select top 1 f_id from up6_files order by f_id desc");
+		$f_id = $db->m_conCur->lastInsertId("f_id");//$db->ExecuteScalar("select top 1 f_id from up7_files order by f_id desc");
 		return $f_id;
 	}
 
@@ -694,7 +694,7 @@ class DBFile
 	/// <param name="inf"></param>
 	function UpdateChild(&$inf)
 	{		
-		$sb = "update up6_files set ";
+		$sb = "update up7_files set ";
 		$sb = $sb . " f_pathSvr = :f_pathSvr , ";
 		$sb = $sb . " f_md5 = :f_md5 ";
 		$sb = $sb . " where f_id=:f_id ";
@@ -713,7 +713,7 @@ class DBFile
 	/// <param name="inf"></param>
 	function UpdateMD5(&$inf)
 	{
-		$sb = "update up6_files set ";
+		$sb = "update up7_files set ";
 		$sb = $sb . " f_md5 = :f_md5 ";
 		$sb = $sb . " where f_id=:f_id ";
 
@@ -727,7 +727,7 @@ class DBFile
 	//更新文件md5,pathSvr信息
 	function update_md5_pathSvr(&$fileSvr/*xdb_files*/)
 	{
-		$sql = "update up6_files set f_md5=:f_md5,f_pathSvr=:f_pathSvr where f_id=:f_id";
+		$sql = "update up7_files set f_md5=:f_md5,f_pathSvr=:f_pathSvr where f_id=:f_id";
 
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
@@ -740,8 +740,8 @@ class DBFile
 	static function Clear()
 	{
 		$db = new DbHelper();
-		$db->ExecuteNonQueryTxt("TRUNCATE TABLE up6_files;");
-		$db->ExecuteNonQueryTxt("TRUNCATE TABLE up6_folders;");
+		$db->ExecuteNonQueryTxt("TRUNCATE TABLE up7_files;");
+		$db->ExecuteNonQueryTxt("TRUNCATE TABLE up7_folders;");
 	}
 
 	/// <summary>
@@ -752,7 +752,7 @@ class DBFile
 	function Complete($md5)
 	{
 		$db = new DbHelper();
-		$cmd =& $db->GetCommand("update up6_files set f_perSvr='100%',f_complete=1 where f_md5=:f_md5;");
+		$cmd =& $db->GetCommand("update up7_files set f_perSvr='100%',f_complete=1 where f_md5=:f_md5;");
 		$cmd->bindParam(":f_md5",$md5);
 		$db->ExecuteNonQuery($cmd);
 	}
@@ -765,7 +765,7 @@ class DBFile
 	function fd_complete($idSvr)
 	{
 		$db = new DbHelper();
-		$cmd =& $db->GetCommand("update up6_files set f_perSvr='100%',f_complete=1 where f_id=:f_id;");
+		$cmd =& $db->GetCommand("update up7_files set f_perSvr='100%',f_complete=1 where f_id=:f_id;");
 		$cmd->bindParam(":f_id",$idSvr);
 		$db->ExecuteNonQuery($cmd);
 	}
@@ -801,7 +801,7 @@ class DBFile
 	///<param name="f_perSvr">已上传百分比</param>
 	function f_process($f_uid,$f_id,$f_pos,$f_lenSvr,$f_perSvr,$complete)
 	{
-		//$sql = "update up6_files set f_pos=?,f_lenSvr=?,f_perSvr=? where f_uid=? and f_id=?";
+		//$sql = "update up7_files set f_pos=?,f_lenSvr=?,f_perSvr=? where f_uid=? and f_id=?";
 		$sql = "call f_process(:pos,:len,:per,:uid,:id,:cmp)";//使用存储过程
 		$db = &$this->db;
 		$cmd =& $db->GetCommand($sql);
@@ -822,7 +822,7 @@ class DBFile
 	/// </summary>
 	function UploadComplete($md5)
 	{
-		$sql = "update up6_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1 where f_md5=:f_md5";
+		$sql = "update up7_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1 where f_md5=:f_md5";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 		
@@ -839,7 +839,7 @@ class DBFile
 		//为空
 		if (empty($md5)) return false;
 
-		$sql = "select f_id from up6_files where f_complete=1 and f_md5=:f_md5";
+		$sql = "select f_id from up7_files where f_complete=1 and f_md5=:f_md5";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 
@@ -856,7 +856,7 @@ class DBFile
 	/// <param name="f_id"></param>
 	function Delete($f_uid,$f_id)
 	{
-		$sql = "update up6_files set f_deleted=1 where f_uid=:f_uid and f_id=:f_id";
+		$sql = "update up7_files set f_deleted=1 where f_uid=:f_uid and f_id=:f_id";
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
 
@@ -882,7 +882,7 @@ class DBFile
 		$sql = $sql . ",f_md5";
 		$sql = $sql . ",f_pidRoot";
 		$sql = $sql . ",f_pid";
-		$sql = $sql . " from up6_files where f_pidRoot=:f_pidRoot;";		
+		$sql = $sql . " from up7_files where f_pidRoot=:f_pidRoot;";		
 
 		$db = new DbHelper();
 		$cmd =& $db->GetCommand($sql);
@@ -925,7 +925,7 @@ class DBFile
 		$sql = $sql . ",f_pidRoot";
 		$sql = $sql . ",f_pid";
 		$sql = $sql . ",f_lenSvr";
-		$sql = $sql . " from up6_files where f_pidRoot=:f_pidRoot and f_complete=0;";
+		$sql = $sql . " from up7_files where f_pidRoot=:f_pidRoot and f_complete=0;";
 
 		$db = new DbHelper();	
 		$cmd =& $db->GetCommand($sql);

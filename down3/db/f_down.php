@@ -11,7 +11,7 @@ $inf = new xdb_files();
 $db = new DBFile();
 
 //数据库无记录
-if(!$db->GetFileInfByFid($fid,&$inf) ) die("data not found");
+if(!$db->find($fid,&$inf) ) die("data not found");
 
 //文件不存在
 if( !is_file($inf->pathSvr)){ die("File not found");}

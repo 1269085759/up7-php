@@ -10,16 +10,16 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- 数据库: 'httpuploader6'
+-- 数据库: 'up7'
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 'up6_files'
+-- 表的结构 'up7_files'
 --
 
-CREATE TABLE IF NOT EXISTS up6_files (
+CREATE TABLE IF NOT EXISTS up7_files (
   f_id int(11) NOT NULL AUTO_INCREMENT,
   f_pid int(11) DEFAULT '0',
   f_pidRoot int(11) DEFAULT '0',
@@ -47,10 +47,10 @@ CREATE TABLE IF NOT EXISTS up6_files (
 -- --------------------------------------------------------
 
 --
--- 表的结构 'up6_folders'
+-- 表的结构 'up7_folders'
 --
 
-CREATE TABLE IF NOT EXISTS up6_folders (
+CREATE TABLE IF NOT EXISTS up7_folders (
   fd_id int(11) NOT NULL AUTO_INCREMENT,
   fd_name varchar(50) DEFAULT '',
   fd_pid int(11) DEFAULT '0',
@@ -87,7 +87,7 @@ begin
 	
 	
 	while(i<fdCount) do	
-		insert into up6_folders(fd_pid) values(0);	
+		insert into up7_folders(fd_pid) values(0);	
 		set ids_fd = concat( ids_fd,",",last_insert_id() );
 		set i = i + 1;
 	end while;
@@ -96,7 +96,7 @@ begin
 	
 	set i = 0;
 	while(i<fCount) do	
-		insert into up6_files(f_pid) values(0);	
+		insert into up7_files(f_pid) values(0);	
 		set ids_f = concat( ids_f,",",last_insert_id() );
 		set i = i + 1;
 	end while;	
@@ -106,7 +106,7 @@ begin
 end$$
 
 CREATE DEFINER=root@localhost PROCEDURE fd_process(in uidSvr int,in fd_idSvr int,in fd_lenSvr bigint(19),in perSvr varchar(6))
-update up6_files set f_lenSvr=fd_lenSvr ,f_perSvr=perSvr  where f_uid=uidSvr and f_id=fd_idSvr$$
+update up7_files set f_lenSvr=fd_lenSvr ,f_perSvr=perSvr  where f_uid=uidSvr and f_id=fd_idSvr$$
 
 CREATE DEFINER=root@localhost PROCEDURE fd_update(		
  in _name			varchar(50)
@@ -126,7 +126,7 @@ CREATE DEFINER=root@localhost PROCEDURE fd_update(
 ,in _id				int
 )
 begin
-	update up6_folders set
+	update up7_folders set
 	 fd_name			= _name
 	,fd_pid				= _pid
 	,fd_uid				= _uid
@@ -164,7 +164,7 @@ select
 	,f_complete
 	,f_time
 	,f_deleted
-	 from up6_files
+	 from up7_files
 	 where f_md5 = _md5
 	 order by f_lenSvr desc limit 1$$
 
@@ -187,12 +187,12 @@ select
 	,f_complete
 	,f_time
 	,f_deleted
-,f_md5
-	 from up6_files
+	,f_md5
+	 from up7_files
 	 where find_in_set (f_md5,_md5s )$$
 
 CREATE DEFINER=root@localhost PROCEDURE f_process(in posSvr bigint(19),in lenSvr bigint(19),in perSvr varchar(6),in uidSvr int,in fidSvr int,in complete tinyint)
-update up6_files set f_pos=posSvr,f_lenSvr=lenSvr,f_perSvr=perSvr,f_complete=complete where f_uid=uidSvr and f_id=fidSvr$$
+update up7_files set f_pos=posSvr,f_lenSvr=lenSvr,f_perSvr=perSvr,f_complete=complete where f_uid=uidSvr and f_id=fidSvr$$
 
 CREATE DEFINER=root@localhost PROCEDURE f_update(		
  in _pid		int
@@ -214,7 +214,7 @@ CREATE DEFINER=root@localhost PROCEDURE f_update(
 ,in _id			int
 )
 begin
-	update up6_files set
+	update up7_files set
 	 f_pid		=_pid
 	,f_pidRoot	= _pidRoot
 	,f_fdTask 	= _fdTask

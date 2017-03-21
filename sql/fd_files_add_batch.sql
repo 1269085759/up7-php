@@ -11,7 +11,7 @@ begin
 	
 	/*批量添加文件夹*/
 	while(i<fdCount) do	
-		insert into up6_folders(fd_pid) values(0);	
+		insert into up7_folders(fd_pid) values(0);	
 		set ids_fd = concat( ids_fd,",",last_insert_id() );
 		set i = i + 1;
 	end while;
@@ -20,7 +20,7 @@ begin
 	/*批量添加文件*/
 	set i = 0;
 	while(i<fCount) do	
-		insert into up6_files(f_pid) values(0);	
+		insert into up7_files(f_pid) values(0);	
 		set ids_f = concat( ids_f,",",last_insert_id() );
 		set i = i + 1;
 	end while;	

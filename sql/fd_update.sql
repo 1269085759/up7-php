@@ -18,7 +18,7 @@ CREATE PROCEDURE fd_update(
 ,in _id				int
 )
 begin
-	update up6_folders set
+	update up7_folders set
 	 fd_name			= _name
 	,fd_pid				= _pid
 	,fd_uid				= _uid

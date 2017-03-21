@@ -20,6 +20,6 @@ select
 	,f_complete
 	,f_time
 	,f_deleted
-	 from up6_files
+	 from up7_files
 	 where find_in_set (f_md5 ,_md5s)
 	 group by f_md5
