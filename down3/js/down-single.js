@@ -125,7 +125,7 @@ function DownloaderMgr()
 	    //acx += '</div>';
 	    //上传列表项模板
 	    html += '<div class="file-item file-item-single" name="fileItem">\
-                    <div class="img-box"><img src="js/file.png"/></div>\
+                    <div class="img-box"><img src="../../down2/js/js/file.png"/></div>\
 					<div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\
@@ -372,7 +372,7 @@ function DownloaderMgr()
 	};
 	this.setup_tip = function ()
 	{
-	    this.pnlHead.append('<a href="' + _this.Config.exePath + '" target="_blank">请先安装控件</a>');
+	    this.pnlHead.append('<a href="../../down2/js/' + _this.Config.exePath + '" target="_blank">请先安装控件</a>');
 	};
 	this.setup_check = function ()
 	{

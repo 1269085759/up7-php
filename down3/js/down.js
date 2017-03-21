@@ -142,7 +142,7 @@ function DownloaderMgr()
 		//acx += '</div>';
 	    //上传列表项模板
 	    html += '<div class="file-item file-item-single" name="fileItem">\
-                    <div class="img-box"><img name="fileImg" src="js/file.png"/><img class="hide" name="fdImg" src="js/folder.png"/></div>\
+                    <div class="img-box"><img name="fileImg" src="../../down2/js/js/file.png"/><img class="hide" name="fdImg" src="../../down2/js/js/folder.png"/></div>\
 					<div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\

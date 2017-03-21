@@ -3,13 +3,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>up6.2-mysql示例</title>
-    <link href="js/up6.css" type="text/css" rel="Stylesheet"/>
+    <link href="js/up7.css" type="text/css" rel="Stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.config.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.file.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.folder.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/up7.config.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/up7.file.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/up7.folder.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/up7.js" charset="utf-8"></script>
     <script language="javascript" type="text/javascript">
     	var cbMgr = new HttpUploaderMgr();
 		cbMgr.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
