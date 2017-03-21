@@ -57,6 +57,17 @@ class DBFolder
 		$folder->idSvr = $db->m_conCur->lastInsertId();//$db->ExecuteScalar("select @@IDENTITY");
 		return $folder->idSvr;
 	}
+	
+	static function update($fid,$perSvr,$lenSvr,$uid)
+	{
+		$sql = "update up7_files set f_perSvr=:f_perSvr,f_lenSvr=:f_lenSvr where f_id=:f_id;";
+		$db = new DbHelper();
+		$cmd = & $db->GetCommand($sql);
+		$cmd->bindParam(":f_perSvr",$perSvr);
+		$cmd->bindValue(":f_lenSvr",$lenSvr,PDO::PARAM_INT);
+		$cmd->bindValue(":f_id",$fid,PDO::PARAM_INT);
+		$db->ExecuteNonQuery($cmd);
+	}
 
 	/**
 	 * 将文件夹上传状态设为已完成
@@ -80,6 +91,11 @@ class DBFolder
 		$cmd =& $db->GetCommand($sql);
 		$cmd->bindParam(":f_id",$id_f);
 		$cmd->bindParam(":f_uid",$uid);
+		$db->ExecuteNonQuery($cmd);
+		
+		$sql = "update up7_files set f_lenSvr=f_lenLoc,f_complete=1,f_perSvr='100%' where f_pidRoot=:f_pidRoot;";
+		$cmd =& $db->GetCommand($sql);
+		$cmd->bindParam(":f_pidRoot",$id_fd);
 		$db->ExecuteNonQuery($cmd);		
 	}
 

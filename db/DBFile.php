@@ -753,11 +753,12 @@ class DBFile
 	/// </summary>
 	/// <param name="f_uid"></param>
 	/// <param name="f_id">文件ID</param>
-	function Complete($md5)
+	function Complete($uid,$fid)
 	{
 		$db = new DbHelper();
-		$cmd =& $db->GetCommand("update up7_files set f_perSvr='100%',f_complete=1 where f_md5=:f_md5;");
-		$cmd->bindParam(":f_md5",$md5);
+		$cmd =& $db->GetCommand("update up7_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1 where f_id=:f_id and f_uid=:f_uid;");
+		$cmd->bindParam(":f_id",$fid);
+		$cmd->bindParam(":f_uid",$uid);
 		$db->ExecuteNonQuery($cmd);
 	}
 
@@ -769,7 +770,7 @@ class DBFile
 	function fd_complete($idSvr)
 	{
 		$db = new DbHelper();
-		$cmd =& $db->GetCommand("update up7_files set f_perSvr='100%',f_complete=1 where f_id=:f_id;");
+		$cmd =& $db->GetCommand("update up7_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_id=:f_id;");
 		$cmd->bindParam(":f_id",$idSvr);
 		$db->ExecuteNonQuery($cmd);
 	}

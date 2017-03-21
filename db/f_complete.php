@@ -11,7 +11,6 @@ require('DbHelper.php');
 require('DBFile.php');
 require('DBFolder.php');
 
-$md5 		= $_GET["md5"];
 $uid 		= $_GET["uid"];
 $fid 		= $_GET["idSvr"];
 $fd_idSvr	= "";
@@ -20,10 +19,10 @@ $cbk 		= $_GET["callback"];
 $ret 		= $cbk . "(0)";
 
 //md5和uid不能为空
-if ( strlen($md5) > 0 )
+if ( strlen($uid) > 0 )
 {
 	$db = new DBFile();
-	$db->Complete($md5);
+	$db->Complete($uid,$fid);
 	$ret = $cbk . "(1)";
 }
 

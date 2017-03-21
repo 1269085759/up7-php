@@ -15,7 +15,6 @@ require('FileResumer.php');
 
 $uid	 		= $_POST["uid"];
 $fid	 		= $_POST["idSvr"];
-$md5			= $_POST["md5"];
 $perSvr			= $_POST["perSvr"];
 $lenSvr			= $_POST["lenSvr"];
 $lenLoc			= $_POST["lenLoc"];
@@ -40,7 +39,7 @@ if (   (strlen($lenLoc)>0)
 	&& !empty($pathSvr))
 {		
 	//保存文件块数据
-	$resu = new FileResumer($fpath,$lenLoc,$md5,$f_pos,$pathSvr);
+	$resu = new FileResumer($fpath,$lenLoc,$f_pos,$pathSvr);
 	$resu->Resumer();
 	$cmp = strcmp($complete,"true") == 0;
 
@@ -69,7 +68,6 @@ else
 	echo "param is null";
 	echo "uid:$uid<br/>";
 	echo "fid:$fid<br/>";
-	echo "md5:$md5<br/>";
 	echo "perSvr:$perSvr<br/>";
 	echo "lenSvr:$lenSvr<br/>";
 	echo "lenLoc:$lenLoc<br/>";

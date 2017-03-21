@@ -23,7 +23,6 @@ require('PathTool.php');
 require('biz/PathBuilder.php');
 require('biz/PathMd5Builder.php');
 
-$md5 			= $_GET["md5"];
 $uid 			= $_GET["uid"];
 $lenLoc			= $_GET["lenLoc"];//10240
 $sizeLoc		= $_GET["sizeLoc"];//10mb
@@ -33,11 +32,10 @@ $pathLoc		= $_GET["pathLoc"];
 $pathLoc		= str_replace("+","%20",$pathLoc);
 $pathLoc		= urldecode($pathLoc);
 
-if(    empty($md5)
-	|| strlen($uid)<1
+if(    strlen($uid)<1
 	|| empty($sizeLoc))
 {
-	echo $callback . "({\"value\":null})";
+	echo $callback . "({\"value\":null,\"inf\":\"参数为空，请检查uid,sizeLoc参数。\"})";
 	die();
 }
 
@@ -60,23 +58,12 @@ $fileSvr->pathSvr = $pb->genFile($uid,$fileSvr->nameLoc);
 $db = new DBFile();
 $fileExist = new xdb_files();
 
-//数据库存在相同文件
-if ($db->exist_file($md5, $fileExist))
-{
-	$fileSvr->pathSvr = $fileExist->pathSvr;
-	$fileSvr->perSvr = $fileExist->perSvr;
-	$fileSvr->lenSvr = intval($fileExist->lenSvr);
-	$fileSvr->complete = (bool)$fileExist->complete;
-	$fileSvr->idSvr = (int)$db->Add($fileSvr);
-}//数据库不存在相同文件
-else
-{
-	$fileSvr->idSvr = (int)$db->Add($fileSvr);
+$fileSvr->idSvr = (int)$db->Add($fileSvr);
 	
-	//创建文件
-	$fr = new FileResumer();
-	$fr->CreateFile($fileSvr->pathSvr,$fileSvr->lenLoc);
-}
+//创建文件
+$fr = new FileResumer();
+$fr->CreateFile($fileSvr->pathSvr,$fileSvr->lenLoc);
+
 //fix:防止json_encode将汉字转换成unicode
 $fileSvr->nameLoc = PathTool::urlencode_safe($fileSvr->nameLoc);
 $fileSvr->pathLoc = PathTool::urlencode_safe($fileSvr->pathLoc);

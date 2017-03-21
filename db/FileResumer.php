@@ -21,18 +21,16 @@ class FileResumer
 	var $m_FileTemp;	//临时文件名称
 	var $m_NameRemote;	//远程文件名称
 	var $m_FileSize;	//文件大小
-	var $m_FileMD5;		//文件MD5
 	var $m_RangePos;	//文件起始位置
 	var $m_RangeSize;	//文件块大小
 	var $m_rangMD5;		//文件块的MD5值，用来做校验。
 	var $m_pathSvr;
 	
-	function __construct($fpath="",$fsize="0",$md5="",$rangPos="0",$pathSvr="") 
+	function __construct($fpath="",$fsize="0",$rangPos="0",$pathSvr="") 
 	{
 		//如果取值为空，请检查php.ini文件中upload_tmp_dir 配置是否为空。设置临时文件夹后必须要设置Everyone读写权限
 		$this->m_FileTemp	= $fpath;//临时文件完整路径
 		$this->m_FileSize	= intval($fsize);
-		$this->m_FileMD5	= $md5;
 		$this->m_RangePos	= intval($rangPos);
 		$this->m_RangeSize	= filesize($this->m_FileTemp);//获取临时文件大小
 		//$this->m_pathSvr	= $pathSvr;
