@@ -22,7 +22,7 @@ class un_builder
 		$sql.= ",f_sizeSvr";//7
 		$sql.= ",f_pidRoot";//8
 		$sql.= ",f_fdTask";//9
-		$sql.= " from down_files";
+		$sql.= " from down3_files";
 		//
 		$sql.= " where f_uid=:f_uid and f_complete=0";
 		

@@ -10,18 +10,18 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- 数据库: `httpuploader6`
+-- 数据库: `up7`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `down_files`
+-- 表的结构 `down3_files`
 --
 
-DROP TABLE IF EXISTS `down_files`;
-/*--drop table down_files*/
-CREATE TABLE down_files
+DROP TABLE IF EXISTS `down3_files`;
+/*--drop table down3_files*/
+CREATE TABLE down3_files
 (
  f_id      		int(11) NOT NULL auto_increment    
 ,f_uid        	int(11) 	DEFAULT '0' 
@@ -41,6 +41,6 @@ CREATE TABLE down_files
 
 
 --
--- 导出表中的数据 `down_files`
+-- 导出表中的数据 `down3_files`
 --
 

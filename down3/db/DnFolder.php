@@ -17,7 +17,7 @@ class DnFolder
 
 	function Clear()
 	{
-		$this->db->ExecuteNonQueryTxt("truncate table down_files");
+		$this->db->ExecuteNonQueryTxt("truncate table down3_files");
 	}
 }
 ?>

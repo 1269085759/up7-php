@@ -11,7 +11,7 @@ begin
 	
 	/*批量添加文件*/
 	while(i<fCount) do	
-		insert into down_files(f_uid) values(uid);	
+		insert into down3_files(f_uid) values(uid);	
 		set f_ids = concat( f_ids,",",last_insert_id() );
 		set i = i + 1;
 	end while;

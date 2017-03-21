@@ -16,7 +16,7 @@ class DnFile
 	function Add($inf/*DnFileInf*/)
 	{
 		$idSvr = 0;		
-		$sql  = "insert into down_files(";
+		$sql  = "insert into down3_files(";
 		$sql .=" f_uid";
 		$sql .=",f_nameLoc";
 		$sql .=",f_pathLoc";
@@ -51,7 +51,7 @@ class DnFile
 	/// <param name="fid"></param>
 	function Delete($fid,$uid)
 	{
-		$sql = "delete from down_files where f_id=:f_id and f_uid=:f_uid";
+		$sql = "delete from down3_files where f_id=:f_id and f_uid=:f_uid";
 		
 		$cmd = $this->db->prepare_utf8($sql);
 
@@ -63,7 +63,7 @@ class DnFile
 	//删除文件夹的所有子文件
 	function delFiles($pidRoot,$uid)
 	{
-		$sql = "delete from down_files where f_pidRoot=:f_pidRoot and f_uid=:f_uid";
+		$sql = "delete from down3_files where f_pidRoot=:f_pidRoot and f_uid=:f_uid";
 		$cmd = $this->db->prepare($sql);
 
 		$cmd->bindParam(":f_pidRoot", $pidRoot);
@@ -80,7 +80,7 @@ class DnFile
 	 */
 	function updateProcess($fid,$uid,$lenLoc,$perLoc)
 	{
-		$sql = "update down_files set f_lenLoc=:f_lenLoc,f_perLoc=:f_perLoc where f_id=:f_id and f_uid=:f_uid";
+		$sql = "update down3_files set f_lenLoc=:f_lenLoc,f_perLoc=:f_perLoc where f_id=:f_id and f_uid=:f_uid";
 		$cmd = $this->db->prepare_utf8($sql);		
 
 		$cmd->bindParam(":f_lenLoc", $lenLoc);
@@ -93,7 +93,7 @@ class DnFile
 	
 	function clear()
 	{
-		$this->db->ExecuteNonQueryTxt("truncate table down_files");
+		$this->db->ExecuteNonQueryTxt("truncate table down3_files");
 	}
 }
 ?>

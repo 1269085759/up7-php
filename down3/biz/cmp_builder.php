@@ -12,19 +12,19 @@ class cmp_builder
 	{
 		$sql = "";
 		$sql.= "select ";
-		$sql.= " up6_files.f_id";//0
-		$sql.= ",up6_files.f_pid";//1
-		$sql.= ",up6_files.f_fdTask";//2
-		$sql.= ",up6_files.f_fdID";//3
-		$sql.= ",up6_files.f_fdChild";//4
-		$sql.= ",up6_files.f_pidRoot";//5
-		$sql.= ",up6_files.f_nameLoc";//6
-		$sql.= ",up6_files.f_sizeLoc";//6
-		$sql.= ",up6_files.f_pathLoc";//7
-		$sql.= ",up6_files.f_lenSvr";//12
-		$sql.= " from up6_files ";
+		$sql.= " up7_files.f_id";//0
+		$sql.= ",up7_files.f_pid";//1
+		$sql.= ",up7_files.f_fdTask";//2
+		$sql.= ",up7_files.f_fdID";//3
+		$sql.= ",up7_files.f_fdChild";//4
+		$sql.= ",up7_files.f_pidRoot";//5
+		$sql.= ",up7_files.f_nameLoc";//6
+		$sql.= ",up7_files.f_sizeLoc";//6
+		$sql.= ",up7_files.f_pathLoc";//7
+		$sql.= ",up7_files.f_lenSvr";//12
+		$sql.= " from up7_files ";
 		//
-		$sql.= " where up6_files.f_uid=:f_uid and up6_files.f_deleted=0 and up6_files.f_complete=1";
+		$sql.= " where up7_files.f_uid=:f_uid and up7_files.f_deleted=0 and up7_files.f_complete=1";
 		
 		$db = new DbHelper();
 		$cmd = $db->prepare_utf8($sql);

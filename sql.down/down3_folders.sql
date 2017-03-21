@@ -10,17 +10,17 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- 数据库: `httpuploader6`
+-- 数据库: `up7`
 --
 
 -- --------------------------------------------------------
 
 --
--- 表的结构 `down_folders`
+-- 表的结构 `down3_folders`
 --
 
-DROP TABLE IF EXISTS `down_folders`;
-CREATE TABLE IF NOT EXISTS `down_folders` (
+DROP TABLE IF EXISTS `down3_folders`;
+CREATE TABLE IF NOT EXISTS `down3_folders` (
   `fd_id` 		int(11) NOT NULL auto_increment,
   `fd_name` 	varchar(50) default '',
   `fd_uid` 		int(11) default '0',
@@ -33,6 +33,6 @@ CREATE TABLE IF NOT EXISTS `down_folders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- 导出表中的数据 `down_folders`
+-- 导出表中的数据 `down3_folders`
 --
 

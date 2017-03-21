@@ -25,7 +25,7 @@ class folder_appender
 		}
 		
 		//批量更新文件
-		$sql  = "update down_files set ";
+		$sql  = "update down3_files set ";
 		$sql .= " f_nameLoc=:f_nameLoc";
 		$sql .= ",f_pathLoc=:f_pathLoc";
 		$sql .= ",f_fileUrl=:f_fileUrl";
