@@ -17,12 +17,13 @@ function FileUploader(fileLoc, mgr)
     this.uid = this.fields.uid;
     this.fileSvr = {
           idSvr: 0
+        , idLoc:0
         , pid: 0
         , pidRoot: 0
         , f_fdTask: false
         , f_fdID: 0
         , f_fdChild: false
-        , uid: 0
+        , uid: this.fields.uid
         , nameLoc: ""
         , nameSvr: ""
         , pathLoc: ""
@@ -36,36 +37,31 @@ function FileUploader(fileLoc, mgr)
         , perSvr: "0%"
         , complete: false
         , deleted: false
+        , sign:""
     };//json obj，服务器文件信息
     this.fileSvr = jQuery.extend(this.fileSvr, fileLoc);
 
     //准备
     this.Ready = function ()
     {
-        //this.pButton.style.display = "none";
         this.ui.msg.text("正在上传队列中等待...");
         this.State = HttpUploaderState.Ready;
     };
 
-    this.svr_error = function ()
+    this.svr_error = function (sv)
     {
-        alert("服务器返回信息为空，请检查服务器配置");
-        this.ui.msg.text("向服务器发送MD5信息错误");
-        //文件夹项
-        if (this.root)
-        {
-            this.root.item_md5_error(obj);
-        } //文件项
-        else
-        {
-            this.ui.btn.cancel.text("续传");
-        }
+        this.ui.msg.text(sv.inf);
+        //this.ui.btn.cancel.text("续传");
+        this.ui.btn.stop.hide();
+        this.ui.btn.cancel.hide();
+        this.ui.btn.post.show();
+        this.ui.btn.del.show();
     };
     this.svr_create = function (sv)
     {
         if (sv.value == null)
         {
-            this.svr_error(); return;
+            this.svr_error(sv); return;
         }
 
         var str = decodeURIComponent(sv.value);//
@@ -81,6 +77,60 @@ function FileUploader(fileLoc, mgr)
             if (null == this.root) this.ui.percent.text(this.fileSvr.perSvr);
             this.post_file();
         }
+    };
+    this.svr_init = function ()
+    {
+        var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
+        var loc_len = this.fileSvr.lenLoc;
+        var loc_size = this.fileSvr.sizeLoc;
+        var param = jQuery.extend({}, this.fields, { lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlCreate"]
+            , data: param
+            , success: function (sv)
+            {
+                _this.svr_init_end(sv);
+            }
+            , error: function (req, txt, err)
+            {
+                alert("初始化数据失败！" + req.responseText);
+                _this.ui.msg.text("服务器初始化失败");
+                _this.ui.btn.del.text("续传");
+            }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
+    this.svr_init_end = function (sv)
+    {
+        if (sv.value == null)
+        {
+            this.svr_error(sv); return;
+        }
+
+        var str = decodeURIComponent(sv.value);//
+        this.fileSvr = JSON.parse(str);//
+        if (null == this.root) this.ui.process.css("width", this.fileSvr.perSvr);
+        if (null == this.root) this.ui.percent.text(this.fileSvr.perSvr);
+        this.post_file();
+    };
+    //在停止和出错时调用
+    this.svr_update = function ()
+    {
+        var param = jQuery.extend({}, this.fields, {uid:this.fileSvr.uid,sign:this.fileSvr.sign,idSvr:this.fileSvr.idSvr,lenSvr:this.fileSvr.lenSvr, lenLoc: this.fileSvr.lenLoc,perSvr:this.fileSvr.perSvr, time: new Date().getTime() });
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlUpdate"]
+            , data: param
+            , success: function (sv){}
+            , error: function (req, txt, err){}
+            , complete: function (req, sta) { req = null; }
+        });
     };
     this.post_process = function (json)
     {
@@ -110,7 +160,7 @@ function FileUploader(fileLoc, mgr)
         //从未上传列表中删除
         this.Manager.RemoveQueueWait(this.idLoc);
 
-        var param = { md5: this.fileSvr.md5, uid: this.uid, idSvr: this.fileSvr.idSvr, time: new Date().getTime() };
+        var param = { sign: this.fileSvr.sign, uid: this.uid, idSvr: this.fileSvr.idSvr, time: new Date().getTime() };
 
         $.ajax({
             type: "GET"
@@ -149,6 +199,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.post_error = function (json)
     {
+        this.svr_update();//
         this.ui.msg.text(HttpUploaderErrorCode[json.value]);
         var btnTxt = "续传";
         //文件大小超过限制,文件大小为0
@@ -166,6 +217,19 @@ function FileUploader(fileLoc, mgr)
         //添加到未上传列表
         this.Manager.AppendQueueWait(this.idLoc);
         this.post_next();
+    };
+    this.post_stoped = function (json)
+    {
+        this.ui.msg.text("传输已停止....");
+        this.ui.btn.stop.hide();
+        this.ui.btn.post.show();
+        this.ui.btn.del.show();
+
+        this.State = HttpUploaderState.Stop;
+        //从上传列表中删除
+        this.Manager.RemoveQueuePost(this.idLoc);
+        //添加到未上传列表
+        this.Manager.AppendQueueWait(this.idLoc);
     };
     this.md5_process = function (json)
     {
@@ -238,15 +302,14 @@ function FileUploader(fileLoc, mgr)
     };
     this.post = function ()
     {
-        debugMsg("post ");
         this.Manager.AppendQueuePost(this.idLoc);
-        if (this.fileSvr.md5.length > 0)
+        if (this.fileSvr.sign.length > 0)
         {
             this.post_file();
         }
         else
         {
-            this.check_file();
+            this.svr_init();
         }
     };
     this.post_file = function ()
@@ -258,7 +321,8 @@ function FileUploader(fileLoc, mgr)
         this.fields["lenLoc"] = this.fileSvr.lenLoc;
         this.fields["idSvr"] = this.fileSvr.idSvr;
         this.fields["md5"] = this.fileSvr.md5;
-        this.browser.postFile({ id: this.idLoc,pathLoc:this.fileSvr.pathLoc, lenSvr: this.fileSvr.lenSvr, fields: this.fields });
+        this.fields["sign"] = this.fileSvr.sign;
+        this.browser.postFile( jQuery.extend({},this.fileSvr,{id:this.idLoc,fields: this.fields }) );
     };
     this.check_file = function ()
     {
@@ -270,9 +334,12 @@ function FileUploader(fileLoc, mgr)
     };
     this.stop = function ()
     {
-        //this.ui.btn.cancel.text("续传").show();
-        this.ui.msg.text("传输已停止....");
-        this.Manager.AppendQueueWait(this.idLoc);//添加到未上传列表
+        this.svr_update();
+        this.ui.btn.post.hide();
+        this.ui.btn.stop.hide();
+        this.ui.btn.cancel.hide();
+        //this.ui.msg.text("传输已停止....");
+        //this.Manager.AppendQueueWait(this.idLoc);//添加到未上传列表
 
         if (HttpUploaderState.Ready == this.State)
         {
@@ -287,19 +354,17 @@ function FileUploader(fileLoc, mgr)
         //从上传列表中删除
         if (null == this.root) this.Manager.RemoveQueuePost(this.idLoc);
         //传输下一个
-        this.post_next();
+        //this.post_next();
     };
     //手动停止，一般在StopAll中调用
     this.stop_manual = function ()
     {
         if (HttpUploaderState.Posting == this.State)
         {
-        	this.ui.btn.post.show();
+            this.ui.btn.post.hide();
         	this.ui.btn.stop.hide();
         	this.ui.btn.cancel.hide();
-            this.ui.msg.text("传输已停止....");
             this.browser.stopFile({ id: this.idLoc });
-            this.State = HttpUploaderState.Stop;
         }
     };
 

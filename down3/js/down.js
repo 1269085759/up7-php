@@ -47,7 +47,8 @@ function DownloaderMgr()
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
-		, "FilePart"	: 1048576//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
+		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
+		, "FilePartTdr"	: 3//文件块线程数
         //file
         , "UrlCreate"   : "http://localhost:81/up6/v1.3-fd/down2/db/f_create.php"
         , "UrlDel"      : "http://localhost:81/up6/v1.3-fd/down2/db/f_del.php"
@@ -58,32 +59,28 @@ function DownloaderMgr()
 	    //folder
         , "UrlFdCreate" : "http://localhost:81/up6/v1.3-fd/down2/db/fd_create.php"
         //x86
-		, "ClsidDown"	: "E94D2BA0-37F4-4978-B9B9-A4F548300E48"
-		, "ClsidPart"	: "6528602B-7DF7-445A-8BA0-F6F996472569"
-		, "CabPath"		: "http://www.ncmem.com/download/down2/down2.cab"
+		, "ClsidPart"	: "57FA11EE-5E98-415C-933D-BCA188B86B5E"
+		, "CabPath"		: "http://www.ncmem.com/download/down3/down3.cab"
 		//x64
-		, "ClsidDown64"	: "0DADC2F7-225A-4cdb-80E2-03E9E7981AF8"
-		, "ClsidPart64"	: "19799DD1-7357-49de-AE5D-E7A010A3172C"
-		, "CabPath64"	: "http://www.ncmem.com/download/down2/down64.cab"
+		, "ClsidPart64"	: "21B0B682-5C37-470D-8DFF-950EF93FFC08"
+		, "CabPath64"	: "http://www.ncmem.com/download/down3/down64.cab"
 		//Firefox
-		, "XpiType"		: "application/npHttpDown"
-		, "XpiPath"	    : "http://www.ncmem.com/download/down2/down2.xpi"
+		, "XpiType"		: "application/npHttpDown3"
+		, "XpiPath"	    : "http://www.ncmem.com/download/down3/down3.xpi"
 		//Chrome
-		, "CrxName"		: "npHttpDown"
-		, "CrxType"		: "application/npHttpDown"
-		, "CrxPath"	    : "http://www.ncmem.com/download/down2/down2.crx"
+		, "CrxName"		: "npHttpDown3"
+		, "CrxType"		: "application/npHttpDown3"
+		, "CrxPath"	    : "http://www.ncmem.com/download/down3/down3.crx"
 	    //Chrome 45
-        , "NatHostName" : "com.xproer.down2"//
-	    , "NatPath"		: "http://www.ncmem.com/download/down2/down2.nat.crx"
-	    , "ExePath"		: "http://www.ncmem.com/download/down2/down2.exe"
+        , "NatHostName" : "com.xproer.down3"//
+	    , "NatPath"		: "http://www.ncmem.com/download/down3/down3.nat.crx"
+	    , "ExePath"		: "http://www.ncmem.com/download/down3/down3.exe"
 	};
 	
 	this.ActiveX = {
-		  "Down"	: "Xproer.HttpDownloader"
-		, "Part"	: "Xproer.DownloaderPartition"
+		  "Part"	: "Xproer.DownloaderPartition3"
 		//64bit
-		, "Down64"	: "Xproer.HttpDownloader64"
-		, "Part64"	: "Xproer.DownloaderPartition64"
+		, "Part64"	: "Xproer.DownloaderPartition3x64"
 	};
 
 	this.Fields = {
@@ -142,7 +139,7 @@ function DownloaderMgr()
 		//acx += '</div>';
 	    //上传列表项模板
 	    html += '<div class="file-item file-item-single" name="fileItem">\
-                    <div class="img-box"><img name="fileImg" src="../../down2/js/js/file.png"/><img class="hide" name="fdImg" src="../../down2/js/js/folder.png"/></div>\
+                    <div class="img-box"><img name="fileImg" src="js/file.png"/><img class="hide" name="fdImg" src="js/folder.png"/></div>\
 					<div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\
@@ -383,8 +380,8 @@ function DownloaderMgr()
 
     //浏览器对象
 	this.browser = {
-	      entID: "Downloader2Event"
-	    , cbkID: "Downloader2EventCallBack"
+	      entID: "Downloader3Event"
+	    , cbkID: "Downloader3EventCallBack"
 		, check: function ()//检查插件是否已安装
 		{
 		    return null != this.GetVersion();
