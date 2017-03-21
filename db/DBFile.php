@@ -109,6 +109,7 @@ class DBFile
         $sb .=",up7_files.f_perSvr";//14
         $sb .=",up7_files.f_complete";//15
         $sb .=",up7_files.f_pathSvr";//16 //fix(2015-03-19):修复无法续传文件的问题。
+		$sb .=",up7_files.f_sign";//17
         //文件夹字段
         $sb .=",up7_folders.fd_name";//17
         $sb .=",up7_folders.fd_length";//18
@@ -477,6 +478,7 @@ class DBFile
 		$sb = $sb . ",f_pathRel";
 		$sb = $sb . ",f_md5";
 		$sb = $sb . ",f_lenLoc";
+		$sb = $sb . ",f_sign";
 		
 		$sb = $sb . ") values (";
 		
@@ -496,6 +498,7 @@ class DBFile
 		$sb = $sb . ",:f_pathRel";//",@f_pathRel";
 		$sb = $sb . ",:f_md5";//",@f_md5";
 		$sb = $sb . ",:f_lenLoc";//",@f_lenLoc";
+		$sb = $sb . ",:f_sign";//"@f_sign";
 		$sb = $sb . ") ";
 
 		$db = &$this->db;
@@ -514,6 +517,7 @@ class DBFile
 		$cmd->bindParam(":f_pathRel",$model->pathRel);
 		$cmd->bindParam(":f_md5",$model->md5);
 		$cmd->bindValue(":f_lenLoc",$model->lenLoc,PDO::PARAM_INT);
+		$cmd->bindParam(":f_sign",$model->sign);
 
 		$f_id = $db->ExecuteGenKey($cmd,"f_id");
 		

@@ -18,6 +18,7 @@ CREATE PROCEDURE f_update(
 ,in _perSvr		varchar(7)
 ,in _sizeLoc	varchar(10)
 ,in _complete	tinyint
+,in _sign		varchar(32)
 ,in _id			int
 )
 begin
@@ -38,6 +39,7 @@ begin
 	,f_perSvr	= _perSvr
 	,f_sizeLoc	= _sizeLoc
 	,f_complete	= _complete
+	,f_sign		= _sign
 	where f_id = _id;		
 end$$
 DELIMITER;/*--5.7.9版本MySQL必须加这一句，否则包含多条SQL语句的存储过程无法创建成功*/

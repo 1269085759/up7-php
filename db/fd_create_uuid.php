@@ -55,7 +55,7 @@ require('FileResumer.php');
 require('biz/PathBuilder.php');
 require('biz/PathMd5Builder.php');
 require('FolderInf.php');
-require('biz/PathUuidBuilder.php');
+require('biz/PathGuidBuilder.php');
 require('FdDataWriter.php');
 
 $jsonTxt = $_POST["folder"];
@@ -109,7 +109,7 @@ $fdroot->filesCount = (int)$jsonArr["filesCount"];//
 $fdroot->foldersCount = (int)$jsonArr["foldersCount"];//
 
 //创建文件夹
-$pb = new PathUuidBuilder();
+$pb = new PathGuidBuilder();
 $fdroot->pathSvr = $pb->genFolder($uid, $fdroot);
 
 $fd_writer = new FdDataWriter();
@@ -183,7 +183,8 @@ foreach($files as $file)
 	$f->pidRoot		= $fdroot->idSvr;
 	$f->pidSvr		= $pidFD->idSvr;
 	$f->pidLoc		= $pidFD->idLoc;
-	$f->pathSvr		= PathTool::combin( $pidFD->pathSvr , $f->nameLoc);	
+	$f->pathSvr		= PathTool::combin( $pidFD->pathSvr , $f->nameLoc);
+	$f->sign		= $pb->guid();	
 	
 	$f->idSvr 		= intval( array_shift($f_ids) );//取一个文件ID
 	$fd_writer->f_update($f);//更新文件数据

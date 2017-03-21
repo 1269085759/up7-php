@@ -18,6 +18,7 @@ class uc_file_child extends FileInf
 		$this->md5 		= $row["f_md5"];
 		$this->pidRoot 	= $pidRoot;
 		$this->pidSvr 	= (int)$row["f_pid"];
+		$this->sign		= $row["f_sign"];
 	}
 }
 ?>

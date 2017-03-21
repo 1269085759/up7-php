@@ -77,6 +77,7 @@ class xdb_files
 	var $complete=false;
 	var $PostedTime;
 	var $deleted=false;
+	var $sign;
 	/**
 	 * 文件夹JSON信息
 	 */
@@ -88,10 +89,39 @@ class xdb_files
 	//已经完成的文件数
 	var $filesComplete=0;
 	
+	function guid()
+	{
+		$ret = "";
+		if (function_exists('com_create_guid'))
+		{
+			$ret = com_create_guid();
+		}
+		else
+		{
+			mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+			$charid = strtoupper(md5(uniqid(rand(), true)));
+			$hyphen = chr(45);// "-"
+			$uuid = chr(123)// "{"
+					.substr($charid, 0, 8).$hyphen
+					.substr($charid, 8, 4).$hyphen
+					.substr($charid,12, 4).$hyphen
+					.substr($charid,16, 4).$hyphen
+					.substr($charid,20,12)
+					.chr(125);// "}"
+			$ret = $uuid;
+		}
+		$ret = str_replace("{","",$ret);
+		$ret = str_replace("}","",$ret);
+		$ret = str_replace("-","",$ret);
+		$ret = strtolower($ret);
+		return $ret;
+	}
+	
 	function __construct()
 	{
 		date_default_timezone_set("PRC");//fix(2016-12-06):在部分server中提示警告
 		$this->PostedTime = getdate();
+		$this->sign = $this->guid();
 	}
 }
 ?>

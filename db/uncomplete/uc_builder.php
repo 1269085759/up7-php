@@ -25,6 +25,7 @@ class uc_builder
         $f->perSvr    = $row["f_perSvr"];//r.getString(14);
         $f->complete  = (bool)$row["f_complete"];//r.getBoolean(15);
         $f->pathSvr   = $row["f_pathSvr"];//r.getString(16);//fix(2015-03-19):修复无法续传文件的问题。
+		$f->sign	  = $row["f_sign"];
         $this->files[] = $f;
 	}
 	

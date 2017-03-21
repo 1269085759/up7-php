@@ -211,6 +211,7 @@ CREATE DEFINER=root@localhost PROCEDURE f_update(
 ,in _perSvr		varchar(7)
 ,in _sizeLoc	varchar(10)
 ,in _complete	tinyint
+,in _sign		varchar(32)
 ,in _id			int
 )
 begin
@@ -231,6 +232,7 @@ begin
 	,f_perSvr	= _perSvr
 	,f_sizeLoc	= _sizeLoc
 	,f_complete	= _complete
+	,f_sign		= _sign
 	where f_id = _id;		
 end$$
 

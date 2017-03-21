@@ -47,16 +47,15 @@ $fileSvr->f_fdChild = false;
 $fileSvr->f_fdTask = false;
 $fileSvr->nameLoc = PathTool::getName($pathLoc);
 $fileSvr->pathLoc = $pathLoc;
-$fileSvr->nameSvr = "$md5.$ext";
+$fileSvr->nameSvr = $fileSvr->nameLoc;
 $fileSvr->lenLoc = intval($lenLoc);
 $fileSvr->sizeLoc = $sizeLoc;
 $fileSvr->deleted = false;
-$fileSvr->md5 = $md5;
 $fileSvr->uid = intval($uid);
 
 //生成路径
-$pb = new PathMd5Builder();
-$fileSvr->pathSvr = $pb->genFile($uid,$fileSvr->md5,$fileSvr->nameLoc);
+$pb = new PathGuidBuilder();
+$fileSvr->pathSvr = $pb->genFile($uid,$fileSvr->nameLoc);
 
 $db = new DBFile();
 $fileExist = new xdb_files();

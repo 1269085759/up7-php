@@ -27,7 +27,7 @@ class FdDataWriter
 			//bug:prepare中如果有返回值，则再次执行会报错。无论是否取完都无法再次执行。
 			//$this->cmd_fd_add =& $this->db->prepare_utf8("call fd_insert(:name,:pid,:uid,:length,:size,:pathLoc,:pathSvr,:folders,:files)");	
 			$con = $this->con_utf8;
-			$cmd = $con->prepare("call f_update(:pid,:pidRoot,:fdTask,:fdID,:fdChild,:uid,:nameLoc,:nameSvr,:pathLoc,:pathSvr,:md5,:lenLoc,:lenSvr,:perSvr,:sizeLoc,:complete,:id)");
+			$cmd = $con->prepare("call f_update(:pid,:pidRoot,:fdTask,:fdID,:fdChild,:uid,:nameLoc,:nameSvr,:pathLoc,:pathSvr,:md5,:lenLoc,:lenSvr,:perSvr,:sizeLoc,:complete,:sign,:id)");
 			$this->cmd_f_update = $cmd;
 		}	
 		$cmd = $this->cmd_f_update;
@@ -61,6 +61,7 @@ class FdDataWriter
 		{
 			$cmd->bindValue(":complete", true);
 		}
+		$cmd->bindParam(":sign", $inf->sign);
 		$cmd->bindValue(":id", $inf->idSvr,PDO::PARAM_INT);
 		if(!$cmd->execute())
 		{
@@ -79,7 +80,7 @@ class FdDataWriter
 			//bug:prepare中如果有返回值，则再次执行会报错。无论是否取完都无法再次执行。
 			//$this->cmd_fd_add =& $this->db->prepare_utf8("call fd_insert(:name,:pid,:uid,:length,:size,:pathLoc,:pathSvr,:folders,:files)");	
 			$con = $this->con_utf8;
-			$cmd = $con->prepare("call f_update(:pid,:pidRoot,:fdTask,:fdID,:fdChild,:uid,:nameLoc,:nameSvr,:pathLoc,:pathSvr,:md5,:lenLoc,:lenSvr,:perSvr,:sizeLoc,:complete,:id)");
+			$cmd = $con->prepare("call f_update(:pid,:pidRoot,:fdTask,:fdID,:fdChild,:uid,:nameLoc,:nameSvr,:pathLoc,:pathSvr,:md5,:lenLoc,:lenSvr,:perSvr,:sizeLoc,:complete,:sign,:id)");
 			$this->cmd_f_update = $cmd;
 		}	
 		$cmd = $this->cmd_f_update;
@@ -99,6 +100,7 @@ class FdDataWriter
 		$cmd->bindValue(":perSvr", "0%");
 		$cmd->bindParam(":sizeLoc", $fd->size);
 		$cmd->bindValue(":complete", false,PDO::PARAM_BOOL);
+		$cmd->bindParam(":sign", $fd->sign);
 		$cmd->bindValue(":id", $fd->idFile,PDO::PARAM_INT);
 		if(!$cmd->execute())
 		{
