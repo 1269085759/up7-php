@@ -11,7 +11,7 @@ ob_start();
 require('DbHelper.php');
 require('DBFile.php');
 require('xdb_files.php');
-require('FileResumer.php');
+require('FileBlockWriter.php');
 
 $uid	 		= $_POST["uid"];
 $fid	 		= $_POST["idSvr"];
@@ -39,8 +39,8 @@ if (   (strlen($lenLoc)>0)
 	&& !empty($pathSvr))
 {		
 	//保存文件块数据
-	$resu = new FileResumer($fpath,$lenLoc,$f_pos,$pathSvr);
-	$resu->Resumer();
+	$resu = new FileBlockWriter();
+	$resu->write($pathSvr,$f_pos,$fpath);
 	$cmp = strcmp($complete,"true") == 0;
 
 	//更新数据表进度信息
@@ -49,15 +49,19 @@ if (   (strlen($lenLoc)>0)
 	if($fd) $fd = !empty($fd_lenSvr);
 	if($fd) $fd = intval($fd_idSvr) > 0;
 	if($fd) $fd = intval($fd_lenSvr)> 0;
-	if($fd)
-	{		
-		$db->fd_fileProcess($uid,$fid,$f_pos,$lenSvr,$perSvr,$fd_idSvr,$fd_lenSvr,$fd_perSvr,$cmp);
-	}
-	else
+	
+	//第一块数据
+	if(intval(f_pos) == 0)
 	{
-		$db->f_process($uid,$fid,$f_pos,$lenSvr,$perSvr,$cmp);
+		if($fd)
+		{		
+			$db->fd_fileProcess($uid,$fid,$f_pos,$lenSvr,$perSvr,$fd_idSvr,$fd_lenSvr,$fd_perSvr,$cmp);
+		}
+		else
+		{
+			$db->f_process($uid,$fid,$f_pos,$lenSvr,$perSvr,$cmp);
+		}
 	}
-
 	
 	echo "ok";
 	//调试时，打开下面的代码，显示文件块MD5。

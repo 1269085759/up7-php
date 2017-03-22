@@ -2,7 +2,7 @@
 /*
 	文件续传对象。负责将文件块写到服务器指定目录中
 	使用方法：
-		$resumer = new FileResumer();
+		$resumer = new FileBlockWriter();
 		$resumer->Resumer();
 		
 	更新记录：
@@ -15,7 +15,7 @@
 		2015-03-16
 			修改创建文件的逻辑。将按实际文件大小创建一个大文件改为只创建一个字节的小文件，减少用户等待时间。
 */
-class FileResumer
+class FileBlockWriter
 {
 	var $m_FilePath;	//文件路径
 	var $m_FileTemp;	//临时文件名称
@@ -44,12 +44,12 @@ class FileResumer
 	}
 
 	//创建文件,f_create.php调用
-	function CreateFile($path)
+	function make($path,$len)
 	{
 		$path = iconv( "UTF-8","GB2312",$path);
 		$hfile = fopen($path,"wb");
 		//不再按实际文件大小创建文件，而是创建一个小文件，减少用户上传等待的时间。
-		ftruncate($hfile,0);
+		ftruncate($hfile,len);
 		fclose($hfile);
 	}
 	
@@ -61,34 +61,26 @@ class FileResumer
 		参数：
 			$md5 文件MD5。
 	*/
-	function Resumer()
+	function write($path,$offset,$rangeFile)
 	{	
-		//远程文件不存在，创建
-		if(!file_exists($this->m_pathSvr))
-		{
-			$hfile = fopen($this->m_pathSvr,"wb");
-			//不再按实际文件大小创建文件，而是创建一个小文件，减少用户上传等待的时间。
-			ftruncate($hfile,1);
-			fclose($hfile);
-		}
-		
-		//调试时打开下面的代码，计算文件块MD5，做文件校验用。
-		//$this->m_rangMD5 = md5_file($this->m_FileTemp);
+		$path = iconv( "UTF-8","GB2312",$path);
+		$offset = intval($offset);
+	
 		//读取文件块数据
-		$fHandle = fopen($this->m_FileTemp,"rb");
-		$tempData = fread($fHandle,filesize($this->m_FileTemp));
+		$fHandle = fopen($rangeFile,"rb");
+		$tempData = fread($fHandle,filesize($rangeFile));
 		fclose($fHandle);
 		
-		$writeRange = filesize($this->m_pathSvr) == 0;
-		if(!$writeRange) $writeRange = $this->m_RangePos == 0;
-		if(!$writeRange) $writeRange = filesize($this->m_pathSvr) <= $this->m_RangePos;
+		$writeRange = filesize($path) == 0;
+		if(!$writeRange) $writeRange = $offset == 0;
+		if(!$writeRange) $writeRange = filesize($path) <= $offset;
 		
 		if($writeRange)
 		{
 			//写入数据
-			$hfile = fopen($this->m_pathSvr,"r+b");
+			$hfile = fopen($path,"r+b");
 			//定位到续传位置
-			fseek($hfile, $this->m_RangePos,SEEK_SET);
+			fseek($hfile, $offset,SEEK_SET);
 			fwrite($hfile,$tempData);
 			fclose($hfile);
 		}

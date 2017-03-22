@@ -17,7 +17,7 @@ require('DbHelper.php');
 require('DBFile.php');
 require('DBFolder.php');
 require('xdb_files.php');
-require('FileResumer.php');
+require('FileBlockWriter.php');
 require('FolderInf.php');
 require('PathTool.php');
 require('biz/PathBuilder.php');
@@ -56,13 +56,11 @@ $pb = new PathGuidBuilder();
 $fileSvr->pathSvr = $pb->genFile($uid,$fileSvr->nameLoc);
 
 $db = new DBFile();
-$fileExist = new xdb_files();
-
 $fileSvr->idSvr = (int)$db->Add($fileSvr);
 	
 //创建文件
-$fr = new FileResumer();
-$fr->CreateFile($fileSvr->pathSvr,$fileSvr->lenLoc);
+$fr = new FileBlockWriter();
+$fr->make($fileSvr->pathSvr,$fileSvr->lenLoc);
 
 //fix:防止json_encode将汉字转换成unicode
 $fileSvr->nameLoc = PathTool::urlencode_safe($fileSvr->nameLoc);
