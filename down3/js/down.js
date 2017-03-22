@@ -50,14 +50,14 @@ function DownloaderMgr()
 		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilePartTdr"	: 3//文件块线程数
         //file
-        , "UrlCreate"   : "http://localhost:81/up6/v1.3-fd/down2/db/f_create.php"
-        , "UrlDel"      : "http://localhost:81/up6/v1.3-fd/down2/db/f_del.php"
-        , "UrlList"     : "http://localhost:81/up6/v1.3-fd/down2/db/f_list.php"
-        , "UrlListCmp"  : "http://localhost:81/up6/v1.3-fd/down2/db/f_list_cmp.php"
-        , "UrlUpdate"   : "http://localhost:81/up6/v1.3-fd/down2/db/f_update.php"
-        , "UrlDown"     : "http://localhost:81/up6/v1.3-fd/down2/db/f_down.php"
+        , "UrlCreate"   : "http://localhost:81/up7/code/down3/db/f_create.php"
+        , "UrlDel"      : "http://localhost:81/up7/code/down3/db/f_del.php"
+        , "UrlList"     : "http://localhost:81/up7/code/down3/db/f_list.php"
+        , "UrlListCmp"  : "http://localhost:81/up7/code/down3/db/f_list_cmp.php"
+        , "UrlUpdate"   : "http://localhost:81/up7/code/down3/db/f_update.php"
+        , "UrlDown"     : "http://localhost:81/up7/code/down3/db/f_down.php"
 	    //folder
-        , "UrlFdCreate" : "http://localhost:81/up6/v1.3-fd/down2/db/fd_create.php"
+        , "UrlFdCreate" : "http://localhost:81/up7/code/down3/db/fd_create.php"
         //x86
 		, "ClsidPart"	: "57FA11EE-5E98-415C-933D-BCA188B86B5E"
 		, "CabPath"		: "http://www.ncmem.com/download/down3/down3.cab"

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>up6.2-mysql示例</title>
+    <title>up7-mysql示例</title>
     <link href="js/up7.css" type="text/css" rel="Stylesheet"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>

@@ -21,7 +21,7 @@ require('FileBlockWriter.php');
 require('FolderInf.php');
 require('PathTool.php');
 require('biz/PathBuilder.php');
-require('biz/PathMd5Builder.php');
+require('biz/PathGuidBuilder.php');
 
 $uid 			= $_GET["uid"];
 $lenLoc			= $_GET["lenLoc"];//10240

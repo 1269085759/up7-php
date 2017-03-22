@@ -19,7 +19,7 @@ class DbHelper
 	function __construct() 
 	{
         $this->m_host 	= "localhost";  //
-		$this->m_dbName = "HttpUploader6";
+		$this->m_dbName = "up7";
 		$this->m_uname	= "root";
 		$this->m_upass	= "";
 		$this->m_dbStr = "mysql:host=" . $this->m_host . ";dbname=" . $this->m_dbName;		

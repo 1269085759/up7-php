@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS up7_files (
   f_complete tinyint(1) DEFAULT '0',
   f_time timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   f_deleted tinyint(1) DEFAULT '0',
+  f_sign varchar(32) DEFAULT '',
   PRIMARY KEY (f_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

@@ -89,17 +89,17 @@ function HttpUploaderMgr()
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 1//同时上传的任务数
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:81/up6/v1.3-fd/db/fd_create.php"
-		, "UrlFdUpdate"		: "http://localhost:8080/Uploader7MySQL/db/fd_update.jsp"
-		, "UrlFdComplete"	: "http://localhost:81/up6/v1.3-fd/db/fd_complete.php"
-		, "UrlFdDel"	    : "http://localhost:81/up6/v1.3-fd/db/fd_del.php"
+		, "UrlFdCreate"		: "http://localhost:81/up7/code/db/fd_create.php"
+		, "UrlFdUpdate"		: "http://localhost:81/up7/code/db/fd_update.jsp"
+		, "UrlFdComplete"	: "http://localhost:81/up7/code/db/fd_complete.php"
+		, "UrlFdDel"	    : "http://localhost:81/up7/code/db/fd_del.php"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:81/up6/v1.3-fd/db/f_create.php"
-		, "UrlUpdate"		: "http://localhost:8080/Uploader7MySQL/db/f_update.jsp"
-		, "UrlPost"			: "http://localhost:81/up6/v1.3-fd/db/f_post.php"
-		, "UrlComplete"		: "http://localhost:81/up6/v1.3-fd/db/f_complete.php"
-		, "UrlList"			: "http://localhost:81/up6/v1.3-fd/db/f_list.php"
-		, "UrlDel"			: "http://localhost:81/up6/v1.3-fd/db/f_del.php"
+		, "UrlCreate"		: "http://localhost:81/up7/code/db/f_create.php"
+		, "UrlUpdate"		: "http://localhost:81/up7/code/db/f_update.jsp"
+		, "UrlPost"			: "http://localhost:81/up7/code/db/f_post.php"
+		, "UrlComplete"		: "http://localhost:81/up7/code/db/f_complete.php"
+		, "UrlList"			: "http://localhost:81/up7/code/db/f_list.php"
+		, "UrlDel"			: "http://localhost:81/up7/code/db/f_del.php"
 	    //x86
         , ie: {
               drop: { clsid: "D75AD7E8-CC9C-48BD-984C-6FBBAC1CD122", name: "Xproer.HttpDroper7" }
