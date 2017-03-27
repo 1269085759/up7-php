@@ -89,7 +89,7 @@ function HttpUploaderMgr()
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 1//同时上传的任务数
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:81/up7/code/db/fd_create.php"
+		, "UrlFdCreate"		: "http://localhost:81/up7/code/db/fd_create_uuid.php"
 		, "UrlFdUpdate"		: "http://localhost:81/up7/code/db/fd_update.jsp"
 		, "UrlFdComplete"	: "http://localhost:81/up7/code/db/fd_complete.php"
 		, "UrlFdDel"	    : "http://localhost:81/up7/code/db/fd_del.php"
@@ -1097,9 +1097,9 @@ function HttpUploaderMgr()
 	    var fdLoc = json;
 		//本地文件夹存在
 	    if (this.Exist(fdLoc.pathLoc)) return;
-	    //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc, { files:{}});
-        //if (json.lenLoc == 0) return;
+        //针对空文件夹的处理
+	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
+	    //if (json.lenLoc == 0) return;
 
 	    var idLoc = this.idCount++;
 		this.AppendQueue(idLoc);//添加到队列
