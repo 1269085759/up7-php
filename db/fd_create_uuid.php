@@ -126,7 +126,7 @@ $fd_writer->f_update_fd($fdroot);//更新文件数据
 
 
 $tbFolders = array();
-$tbFolders[strval($fdroot->idLoc)] = $fdroot;
+$tbFolders["0"] = $fdroot;//控件提供的层级结构中，顶级文件夹为0
 
 $arrFolders = array();
 //解析文件夹
