@@ -11,8 +11,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
     this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", pidLoc: 0, pidSvr: 0, idLoc: 0, idSvr: 0, idFile:0,uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
-    jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
-    this.folderSvr.idLoc = idLoc;
+    jQuery.extend(true,this.folderSvr, fdLoc);//续传信息    
     this.manager = mgr;
     this.event = mgr.event;
     this.arrFiles = new Array(); //子文件列表(未上传文件列表)，存HttpUploader对象
@@ -141,7 +140,7 @@ function FolderUploader(idLoc, fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        var fd = jQuery.extend(this.folderSvr, { id: this.idLoc });
+        var fd = jQuery.extend(this.folderSvr, { idLoc: this.idLoc });//控件取idLoc
         this.browser.postFolder({ folder: fd, fields: this.fields });
     };
     this.post_error = function (json)
