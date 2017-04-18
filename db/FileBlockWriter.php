@@ -47,8 +47,13 @@ class FileBlockWriter
 	function make($path,$len)
 	{
 		$path = iconv( "UTF-8","GB2312",$path);
+		
+		//创建层级目录
+		$fd = dirname($path);
+		if( !is_dir($fd)) mkdir($fd,0777,true);
+		
 		$hfile = fopen($path,"wb");
-		//不再按实际文件大小创建文件，而是创建一个小文件，减少用户上传等待的时间。
+		//以实际大小创建文件，注意win32,win64中不支持2G+文件，因为php系统中的intval不支持int64
 		ftruncate($hfile,len);
 		fclose($hfile);
 	}

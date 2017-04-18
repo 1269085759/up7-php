@@ -187,6 +187,10 @@ foreach($files as $file)
 	$f->idSvr 		= intval( array_shift($f_ids) );//取一个文件ID
 	$fd_writer->f_update($f);//更新文件数据
 	
+	//创建文件
+	$fr = new FileBlockWriter();
+	$fr->make($f->pathSvr,$f->lenLoc);
+	
 	//fix:防止json_encode将汉字转换成unicode
 	$f->nameLoc		= PathTool::urlencode_safe($f->nameLoc);
 	$f->nameSvr		= PathTool::urlencode_safe($f->nameSvr);
