@@ -13,25 +13,14 @@ require('DBFolder.php');
 
 $uid 		= $_GET["uid"];
 $fid 		= $_GET["idSvr"];
-$fd_idSvr	= "";
-if(!empty($fd_idSvr)) $fd_idSvr = $_GET["fd_idSvr"];
 $cbk 		= $_GET["callback"];
 $ret 		= $cbk . "(0)";
 
-//md5和uid不能为空
 if ( strlen($uid) > 0 )
 {
 	$db = new DBFile();
 	$db->Complete($uid,$fid);
 	$ret = $cbk . "(1)";
-}
-
-//更新文件夹已上传文件数
-if(strlen($fd_idSvr)>0)
-{
-	$db = new DBFolder();
-	$db->Complete($fd_idSvr, $fid, $uid);
-	$db->child_complete(intval($fd_idSvr));
 }
 
 //返回查询结果
