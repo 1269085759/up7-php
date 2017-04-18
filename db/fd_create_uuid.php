@@ -216,6 +216,10 @@ $fdroot->folders = $arrFolders;
 $fdroot->files = $arrFiles;
 $fdroot->complete = false;
 
+//fix(2017-04-18):增加对空文件夹的处理
+if ($fdroot->lenLoc == 0) $fdroot->complete = true;
+if ($fdroot->filesCount == 0) $fdroot->complete = true;
+
 $json = json_encode($fdroot);//bug:汉字被编码成了unicode
 $json = urldecode( $json );
 
