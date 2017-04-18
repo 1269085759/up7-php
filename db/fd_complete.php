@@ -27,7 +27,7 @@ if (	strlen($uid) > 0
 {
 	$fd = new DBFolder();
 	$fd->Complete($id_fd,$id_f, $uid);
-	$fd->child_complete(intval($fd_idSvr));
+	$fd->child_complete(intval($id_fd));
 	$ret = 1;
 }
 echo "$cbk( $ret )";
