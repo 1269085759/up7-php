@@ -92,7 +92,7 @@ if( !empty($jsonArr["files"]) )
 
 //将$jsonArr赋值给$fdroot
 $fdroot 			= new FolderInf();
-$fdroot->nameLoc	= $jsonArr["nameLoc"];
+$fdroot->nameLoc	=  PathTool::to_utf8( $jsonArr["nameLoc"] );
 $fdroot->lenLoc 	= $jsonArr["lenLoc"];//fix:php32不支持int64
 $fdroot->size 		= $jsonArr["size"];
 $fdroot->lenSvr		= $jsonArr["lenSvr"];//fix:php32不支持int64
@@ -102,7 +102,7 @@ $fdroot->idLoc 		= 0;//文件夹idLoc永远为0，所有子项的父节点都为
 $fdroot->idSvr 		= 0;
 $fdroot->uid 		= intval($uid);
 $fdroot->pathSvr 	= $jsonArr["pathSvr"];
-$fdroot->pathLoc 	= $jsonArr["pathLoc"];
+$fdroot->pathLoc 	=  PathTool::to_utf8( $jsonArr["pathLoc"] );
 $fdroot->filesCount = (int)$jsonArr["filesCount"];//
 $fdroot->foldersCount = (int)$jsonArr["foldersCount"];//
 
@@ -131,7 +131,7 @@ $arrFolders = array();
 foreach($folders as $folder)
 {
 	$fd 			= new FolderInf();
-	$fd->nameLoc	= $folder["nameLoc"];
+	$fd->nameLoc	= PathTool::to_utf8( $folder["nameLoc"] );
 	$fd->idLoc 		= (int)$folder["idLoc"];
 	$fd->idSvr 		= (int)$folder["idSvr"];
 	$fd->pidRoot 	= 0;//
@@ -140,7 +140,7 @@ foreach($folders as $folder)
 	$fd->uid 		= (int)$uid;
 	$fd->lenLoc		= 0;
 	//$fd->size		= $folder["size"];
-	$fd->pathLoc	= $folder["pathLoc"];
+	$fd->pathLoc	= PathTool::to_utf8( $folder["pathLoc"] );
 			
 	//创建层级结构
 	$fdParent = $tbFolders[strval($fd->pidLoc)];		
@@ -168,9 +168,9 @@ foreach($files as $file)
 	$pidFD			= $tbFolders[ strval($file["pidLoc"]) ];
 			
 	$f				= new FileInf();
-	$f->nameLoc		= $file["nameLoc"];
+	$f->nameLoc		= PathTool::to_utf8( $file["nameLoc"] );
 	$f->nameSvr		= $file["nameLoc"];
-	$f->pathLoc		= $file["pathLoc"];
+	$f->pathLoc		= PathTool::to_utf8( $file["pathLoc"] );
 	$f->idLoc		= (int)$file["idLoc"];	
 	$f->lenLoc		= (int)$file["lenLoc"];
 	$f->sizeLoc		= $file["sizeLoc"];
@@ -194,8 +194,8 @@ foreach($files as $file)
 	//fix:防止json_encode将汉字转换成unicode
 	$f->nameLoc		= PathTool::urlencode_safe($f->nameLoc);
 	$f->nameSvr		= PathTool::urlencode_safe($f->nameSvr);
-	$f->pathLoc		= PathTool::urlencode_safe($f->pathLoc);
-	$f->pathSvr		= PathTool::urlencode_safe($f->pathSvr);
+	$f->pathLoc		= PathTool::urlencode_safe( PathTool::to_utf8($f->pathLoc) );
+	$f->pathSvr		= PathTool::urlencode_safe( PathTool::to_utf8( $f->pathSvr ) );
 		
 	array_push($arrFiles,$f);
 }

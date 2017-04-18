@@ -46,7 +46,8 @@ class FileBlockWriter
 	//创建文件,f_create.php调用
 	function make($path,$len)
 	{
-		$path = iconv( "UTF-8","GB2312",$path);
+		$encode = mb_detect_encoding($path, array('ASCII','GB2312','GBK','UTF-8'));
+		if( $encode == "UTF-8" ) $path = iconv( "UTF-8","GB2312",$path);		
 		
 		//创建层级目录
 		$fd = dirname($path);
@@ -54,7 +55,7 @@ class FileBlockWriter
 		
 		$hfile = fopen($path,"wb");
 		//以实际大小创建文件，注意win32,win64中不支持2G+文件，因为php系统中的intval不支持int64
-		ftruncate($hfile,len);
+		ftruncate($hfile,$len);
 		fclose($hfile);
 	}
 	

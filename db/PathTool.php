@@ -42,5 +42,13 @@ class PathTool
 		}
 		return $p1 . "/" . $p2;
 	}
+	
+	static function to_utf8($str)
+	{
+		$encode = mb_detect_encoding($str, array('ASCII','GB2312','GBK','UTF-8'));
+		if( $encode == "UTF-8" ) return $str;
+		
+		return iconv($encode, "UTF-8", $str);
+	}
 }
 ?>
