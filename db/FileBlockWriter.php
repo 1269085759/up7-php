@@ -76,19 +76,12 @@ class FileBlockWriter
 		$tempData = fread($fHandle,filesize($rangeFile));
 		fclose($fHandle);
 		
-		$writeRange = filesize($path) == 0;
-		if(!$writeRange) $writeRange = $offset == 0;
-		if(!$writeRange) $writeRange = filesize($path) <= $offset;
-		
-		if($writeRange)
-		{
-			//写入数据
-			$hfile = fopen($path,"r+b");
-			//定位到续传位置
-			fseek($hfile, $offset,SEEK_SET);
-			fwrite($hfile,$tempData);
-			fclose($hfile);
-		}
+		//写入数据
+		$hfile = fopen($path,"r+b");
+		//定位到续传位置
+		fseek($hfile, $offset,SEEK_SET);
+		fwrite($hfile,$tempData);
+		fclose($hfile);
 		
 		//删除临时文件
 		//unlink($tmpPath);
