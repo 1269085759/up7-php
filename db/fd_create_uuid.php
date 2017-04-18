@@ -153,12 +153,6 @@ foreach($folders as $folder)
 	//更新文件夹数据
 	$fd_writer->fd_update($fd);
 	
-	//fix:防止json_encode将汉字转换成unicode
-	$fd->nameLoc = PathTool::urlencode_safe($fd->nameLoc);
-	$fd->pathSvr = PathTool::urlencode_safe($fd->pathSvr);
-	$fd->pathLoc = PathTool::urlencode_safe($fd->pathLoc);
-	$fd->pathRel = PathTool::urlencode_safe($fd->pathRel);
-	
 	$tbFolders[strval($fd->idLoc)] = $fd;
 	array_push($arrFolders,$fd);
 }
@@ -210,9 +204,18 @@ foreach($files as $file)
 $fdroot->nameLoc = PathTool::urlencode_path($fdroot->nameLoc);
 $fdroot->pathLoc = PathTool::urlencode_path($fdroot->pathLoc);
 $fdroot->pathSvr = PathTool::urlencode_path($fdroot->pathSvr);
+//fix:防止子目录被转换成unicode
+foreach($arrFolders as $fd)
+{
+	$fd->nameLoc = PathTool::urlencode_safe($fd->nameLoc);
+	$fd->pathSvr = PathTool::urlencode_safe($fd->pathSvr);
+	$fd->pathLoc = PathTool::urlencode_safe($fd->pathLoc);
+	$fd->pathRel = PathTool::urlencode_safe($fd->pathRel);
+}
 $fdroot->folders = $arrFolders;
 $fdroot->files = $arrFiles;
 $fdroot->complete = false;
+
 $json = json_encode($fdroot);//bug:汉字被编码成了unicode
 $json = urldecode( $json );
 
