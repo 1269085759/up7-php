@@ -116,7 +116,7 @@ $ids = $fd_writer->make_ids_batch($fdroot->filesCount+1,$fdroot->foldersCount+1)
 $fd_ids = explode(",",$ids["ids_fd"]);
 $f_ids  = explode(",",$ids["ids_f"]);
 
-$fdroot->idSvr 	= (int)array_shift($fd_ids);//取一个文件夹ID
+$fdroot->idSvr 	= (int)array_shift($fd_ids);//取一个文件夹ID,与up7_folders.idSvr对应
 $fdroot->idFile = (int)array_shift($f_ids);//取一个文件ID
 
 $fd_writer->fd_update($fdroot);//更新文件夹数据
