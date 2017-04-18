@@ -65,7 +65,6 @@ $jsonTxt = str_replace("+","%20",$jsonTxt);
 //客户端使用的是encodeURIComponent编码，
 $jsonTxt = urldecode($jsonTxt);//utf-8解码
 
-
 //参数为空
 if (	empty($jsonTxt)
 	||	strlen($uid)<1 )
@@ -76,7 +75,6 @@ if (	empty($jsonTxt)
 
 //解析成数组
 $jsonArr = json_decode($jsonTxt,true);
-
 
 $folders = array();
 if( !empty($jsonArr["folders"]) )
@@ -101,7 +99,7 @@ $fdroot->lenSvr		= $jsonArr["lenSvr"];//fix:php32不支持int64
 $fdroot->pidLoc 	= 0;
 $fdroot->pidSvr 	= 0;
 $fdroot->idLoc 		= 0;//文件夹idLoc永远为0，所有子项的父节点都为0
-$fdroot->idSvr 		= (int)$jsonArr["idSvr"];
+$fdroot->idSvr 		= 0;
 $fdroot->uid 		= intval($uid);
 $fdroot->pathSvr 	= $jsonArr["pathSvr"];
 $fdroot->pathLoc 	= $jsonArr["pathLoc"];
@@ -118,8 +116,8 @@ $ids = $fd_writer->make_ids_batch($fdroot->filesCount+1,$fdroot->foldersCount+1)
 $fd_ids = explode(",",$ids["ids_fd"]);
 $f_ids  = explode(",",$ids["ids_f"]);
 
-$fdroot->idSvr 	= array_shift($fd_ids);//取一个文件夹ID
-$fdroot->idFile = array_shift($f_ids);//取一个文件ID
+$fdroot->idSvr 	= (int)array_shift($fd_ids);//取一个文件夹ID
+$fdroot->idFile = (int)array_shift($f_ids);//取一个文件ID
 
 $fd_writer->fd_update($fdroot);//更新文件夹数据
 $fd_writer->f_update_fd($fdroot);//更新文件数据
@@ -194,7 +192,7 @@ foreach($files as $file)
 	$f->nameSvr		= PathTool::urlencode_safe($f->nameSvr);
 	$f->pathLoc		= PathTool::urlencode_safe($f->pathLoc);
 	$f->pathSvr		= PathTool::urlencode_safe($f->pathSvr);
-	
+		
 	array_push($arrFiles,$f);
 }
 
