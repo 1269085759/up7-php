@@ -29,7 +29,9 @@ if ( strlen($uid) > 0 )
 //更新文件夹已上传文件数
 if(strlen($fd_idSvr)>0)
 {
-	DBFolder::child_complete(intval($fd_idSvr));
+	$db = new DBFolder();
+	$db->Complete($fd_idSvr, $fid, $uid);
+	$db->child_complete(intval($fd_idSvr));
 }
 
 //返回查询结果
