@@ -67,9 +67,9 @@ class PathGuidBuilder extends PathBuilder
 	
 	function createFolder($v)
 	{
-		$path = iconv("utf-8","gb2312",$v);
+		$path = PathTool::to_gbk($v);//在windows环境中需要转换成gbk
 		if( !is_dir($path)) mkdir($path,0777,true);
-		return realpath($path);//规范化路径
+		return PathTool::to_utf8( realpath($path) );//规范化路径
 	}
 }
 ?>

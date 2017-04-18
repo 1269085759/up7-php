@@ -92,7 +92,7 @@ if( !empty($jsonArr["files"]) )
 
 //将$jsonArr赋值给$fdroot
 $fdroot 			= new FolderInf();
-$fdroot->nameLoc	=  PathTool::to_utf8( $jsonArr["nameLoc"] );
+$fdroot->nameLoc	=  PathTool::unicode_decode( $jsonArr["nameLoc"] );
 $fdroot->lenLoc 	= $jsonArr["lenLoc"];//fix:php32不支持int64
 $fdroot->size 		= $jsonArr["size"];
 $fdroot->lenSvr		= $jsonArr["lenSvr"];//fix:php32不支持int64
@@ -102,7 +102,7 @@ $fdroot->idLoc 		= 0;//文件夹idLoc永远为0，所有子项的父节点都为
 $fdroot->idSvr 		= 0;
 $fdroot->uid 		= intval($uid);
 $fdroot->pathSvr 	= $jsonArr["pathSvr"];
-$fdroot->pathLoc 	=  PathTool::to_utf8( $jsonArr["pathLoc"] );
+$fdroot->pathLoc 	=  PathTool::unicode_decode( $jsonArr["pathLoc"] );
 $fdroot->filesCount = (int)$jsonArr["filesCount"];//
 $fdroot->foldersCount = (int)$jsonArr["foldersCount"];//
 
@@ -131,7 +131,7 @@ $arrFolders = array();
 foreach($folders as $folder)
 {
 	$fd 			= new FolderInf();
-	$fd->nameLoc	= PathTool::to_utf8( $folder["nameLoc"] );
+	$fd->nameLoc	= PathTool::unicode_decode( $folder["nameLoc"] );
 	$fd->idLoc 		= (int)$folder["idLoc"];
 	$fd->idSvr 		= (int)$folder["idSvr"];
 	$fd->pidRoot 	= 0;//
@@ -140,7 +140,7 @@ foreach($folders as $folder)
 	$fd->uid 		= (int)$uid;
 	$fd->lenLoc		= 0;
 	//$fd->size		= $folder["size"];
-	$fd->pathLoc	= PathTool::to_utf8( $folder["pathLoc"] );
+	$fd->pathLoc	= PathTool::unicode_decode( $folder["pathLoc"] );
 			
 	//创建层级结构
 	$fdParent = $tbFolders[strval($fd->pidLoc)];		
@@ -152,6 +152,12 @@ foreach($folders as $folder)
 	$fd->idSvr = intval( array_shift($fd_ids) );//取一个文件夹ID
 	//更新文件夹数据
 	$fd_writer->fd_update($fd);
+	
+	//fix:防止json_encode将汉字转换成unicode
+	$fd->nameLoc = PathTool::urlencode_safe($fd->nameLoc);
+	$fd->pathSvr = PathTool::urlencode_safe($fd->pathSvr);
+	$fd->pathLoc = PathTool::urlencode_safe($fd->pathLoc);
+	$fd->pathRel = PathTool::urlencode_safe($fd->pathRel);
 	
 	$tbFolders[strval($fd->idLoc)] = $fd;
 	array_push($arrFolders,$fd);
@@ -168,9 +174,9 @@ foreach($files as $file)
 	$pidFD			= $tbFolders[ strval($file["pidLoc"]) ];
 			
 	$f				= new FileInf();
-	$f->nameLoc		= PathTool::to_utf8( $file["nameLoc"] );
+	$f->nameLoc		= PathTool::unicode_decode( $file["nameLoc"] );
 	$f->nameSvr		= $file["nameLoc"];
-	$f->pathLoc		= PathTool::to_utf8( $file["pathLoc"] );
+	$f->pathLoc		= PathTool::unicode_decode( $file["pathLoc"] );
 	$f->idLoc		= (int)$file["idLoc"];	
 	$f->lenLoc		= (int)$file["lenLoc"];
 	$f->sizeLoc		= $file["sizeLoc"];
