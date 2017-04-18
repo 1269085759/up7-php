@@ -46,8 +46,7 @@ class FileBlockWriter
 	//创建文件,f_create.php调用
 	function make($path,$len)
 	{
-		$encode = mb_detect_encoding($path, array('ASCII','GB2312','GBK','UTF-8'));
-		if( $encode == "UTF-8" ) $path = iconv( "UTF-8","GB2312",$path);		
+		$path = PathTool::to_gbk($path);		
 		
 		//创建层级目录
 		$fd = dirname($path);

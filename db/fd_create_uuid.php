@@ -108,7 +108,7 @@ $fdroot->foldersCount = (int)$jsonArr["foldersCount"];//
 
 //创建文件夹
 $pb = new PathGuidBuilder();
-$fdroot->pathSvr = $pb->genFolder($uid, $fdroot);
+$fdroot->pathSvr = PathTool::to_utf8( $pb->genFolder($uid, $fdroot) );
 
 $fd_writer = new FdDataWriter();
 //分配文件，文件夹ID
@@ -194,13 +194,16 @@ foreach($files as $file)
 	//fix:防止json_encode将汉字转换成unicode
 	$f->nameLoc		= PathTool::urlencode_safe($f->nameLoc);
 	$f->nameSvr		= PathTool::urlencode_safe($f->nameSvr);
-	$f->pathLoc		= PathTool::urlencode_safe( PathTool::to_utf8($f->pathLoc) );
-	$f->pathSvr		= PathTool::urlencode_safe( PathTool::to_utf8( $f->pathSvr ) );
+	$f->pathLoc		= PathTool::urlencode_safe( $f->pathLoc );
+	$f->pathSvr		= PathTool::urlencode_safe( $f->pathSvr );
 		
 	array_push($arrFiles,$f);
 }
 
-//转换为JSON
+//fix::防止汉字被转换为unicode
+$fdroot->nameLoc = PathTool::urlencode_path($fdroot->nameLoc);
+$fdroot->pathLoc = PathTool::urlencode_path($fdroot->pathLoc);
+$fdroot->pathSvr = PathTool::urlencode_path($fdroot->pathSvr);
 $fdroot->folders = $arrFolders;
 $fdroot->files = $arrFiles;
 $fdroot->complete = false;
