@@ -90,12 +90,12 @@ function HttpUploaderMgr()
         , "QueueCount"      : 1//同时上传的任务数
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:81/up7/code/db/fd_create_uuid.php"
-		, "UrlFdUpdate"		: "http://localhost:81/up7/code/db/fd_update.jsp"
+		, "UrlFdUpdate"		: "http://localhost:81/up7/code/db/fd_update.php"
 		, "UrlFdComplete"	: "http://localhost:81/up7/code/db/fd_complete.php"
 		, "UrlFdDel"	    : "http://localhost:81/up7/code/db/fd_del.php"
 		//文件操作相关
 		, "UrlCreate"		: "http://localhost:81/up7/code/db/f_create.php"
-		, "UrlUpdate"		: "http://localhost:81/up7/code/db/f_update.jsp"
+		, "UrlUpdate"		: "http://localhost:81/up7/code/db/f_update.php"
 		, "UrlPost"			: "http://localhost:81/up7/code/db/f_post.php"
 		, "UrlComplete"		: "http://localhost:81/up7/code/db/f_complete.php"
 		, "UrlList"			: "http://localhost:81/up7/code/db/f_list.php"
