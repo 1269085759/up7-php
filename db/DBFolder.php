@@ -58,7 +58,7 @@ class DBFolder
 		return $folder->idSvr;
 	}
 	
-	static function update($fid,$perSvr,$lenSvr,$uid)
+	function update($fid,$perSvr,$lenSvr,$uid)
 	{
 		$sql = "update up7_files set f_perSvr=:f_perSvr,f_lenSvr=:f_lenSvr where f_id=:f_id;";
 		$db = new DbHelper();
