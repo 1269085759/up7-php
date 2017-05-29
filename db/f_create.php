@@ -22,7 +22,7 @@ require('FileBlockWriter.php');
 require('FolderInf.php');
 require('PathTool.php');
 //require('RedisTool.php');
-require('tasks.php');
+require('biz.redis/tasks.php');
 require('biz/PathBuilder.php');
 require('biz/PathGuidBuilder.php');
 require('biz/BlockPathBuilder.php');
