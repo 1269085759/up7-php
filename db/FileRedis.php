@@ -32,7 +32,7 @@ class FileRedis
 		$r = $this->getCon();
 		if($r->exists($f->idSign)) return;
 	
-		$r->hSet($f->idSign, "fdTask", $f->f_fdTask==true?"true":"false");
+		$r->hSet($f->idSign, "fdTask", $f->folder==true?"true":"false");
 		$r->hSet($f->idSign, "rootSign", $f->rootSign);
 		$r->hSet($f->idSign, "pidSign", $f->pidSign);
 		$r->hSet($f->idSign, "pathLoc", $f->pathLoc);
@@ -71,7 +71,7 @@ class FileRedis
 		if(null == blockSize) $blockSize="0byte";
 		$f->blockSize 	= intval($blockSize);
 		$f->filesCount 	= intval($r->hGet($idSign, "filesCount"));
-		$f->fdTask		= strcasecmp($r->hGet($idSign,"fdTask"),"true")==0;
+		$f->folder		= strcasecmp($r->hGet($idSign,"fdTask"),"true")==0;
 		return $f;
 	}
 	

@@ -10,6 +10,8 @@ require('FolderInf.php');
 require('DbHelper.php');
 require('DbFile.php');
 require('DBFolder.php');
+require('biz.redis/RedisTool.php');
+require('biz.redis/tasks.php');
 require('uncomplete/uc_folder.php');
 require('uncomplete/uc_file_child.php');
 require('uncomplete/uc_builder.php');

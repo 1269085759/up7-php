@@ -22,7 +22,7 @@ class xdb_files
 	/**
 	 * 表示当前项是否是一个文件夹项。
 	 */
-	var $fdTask;
+	var $folder;
 	/**
 	 * 与xdb_folders.fd_id对应
 	 */
