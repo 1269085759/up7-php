@@ -7,9 +7,10 @@
     this.Config = mgr.Config;
     this.fields = jQuery.extend({},mgr.Fields);//每一个对象自带一个fields幅本
     this.State = HttpDownloaderState.None;
+    this.inited = false;
     this.event = mgr.event;
     this.fileSvr = {
-          id:0//累加，唯一标识
+          signSvr:0//累加，唯一标识
         , idSvr: 0
         , uid: 0
         , nameLoc: ""//自定义文件名称
@@ -27,6 +28,7 @@
         ,files:null
     };
     jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
+    jQuery.extend(this.fileSvr, { fields: this.fields });
 
     this.hideBtns = function ()
     {
@@ -46,32 +48,29 @@
         this.State = HttpDownloaderState.Ready;
     };
 
-    //初始化文件,url
-    this.initFiles = function ()
-    {
-        var l = this.fileSvr.files.length;
-        for(var i = 0 ;i<l;++i)
-        {
-            this.fileSvr.files[i].fileUrl = this.Config["UrlDown"] + "?fid=" + this.fileSvr.files[i].idSvr;
-            jQuery.extend(this.fileSvr.files[i], { id: i });
-            this.fileSvr.files[i].idSvr = 0;//
-            this.fileSvr.idSvr = 0;
-        }
-    };
-
     this.addQueue = function ()
     {
         this.browser.addFolder(this.fileSvr);
+    };
+    
+    this.add_end = function(json)
+    {
+    	//已经初始化
+    	if(this.inited) return;
+    	this.fileSvr.pathLoc = json.pathLoc;
+    	this.svr_create();
     };
 
     //方法-开始下载
     this.down = function ()
     {
+        //续传
+        if (this.State == HttpDownloaderState.Stop) this.browser.addFolder(this.fileSvr);
         this.hideBtns();
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
         this.State = HttpDownloaderState.Posting;        
-        this.browser.addFolder(this.fileSvr);
+        //this.browser.addFolder(this.fileSvr);
         this.Manager.start_queue();//下载队列
     };
 
@@ -108,18 +107,9 @@
 
     //在出错，停止中调用
     this.svr_update = function (json)
-    {
-        if (this.fileSvr.idSvr == 0) return;
-
+    {       
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, { idSvr: this.fileSvr.idSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
-
-        if (json != null)
-        {
-            //子文件
-            var f = this.fileSvr.files[json.file.id];
-            jQuery.extend(param, { file_id: f.idSvr, file_lenLoc: f.lenLoc, file_per: f.perLoc });
-        }
+        jQuery.extend(param, { signSvr: this.fileSvr.signSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc, sizeLoc: encodeURIComponent(this.fileSvr.sizeLoc) });
 
         $.ajax({
             type: "GET"
@@ -136,24 +126,25 @@
     //添加记录
     this.svr_create = function ()
     {
-        //已记录将不再记录
-        if (this.fileSvr.idSvr) return;
         this.ui.btn.down.hide();
         this.ui.msg.text("正在初始化...");
-        var param = jQuery.extend({}, this.fields, {time: new Date().getTime() });
-        jQuery.extend(param, {folder: encodeURIComponent(JSON.stringify(this.fileSvr) ) });
+        var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
+        jQuery.extend(param, { nameLoc: encodeURIComponent(this.fileSvr.nameLoc) });
+        jQuery.extend(param, { pathLoc: encodeURIComponent(this.fileSvr.pathLoc) });
+        jQuery.extend(param, { sizeSvr: encodeURIComponent(this.fileSvr.sizeSvr) });
+        jQuery.extend(param, { signSvr: this.fileSvr.signSvr});
         var ptr = this;
         $.ajax({
-            type: "POST"
+            type: "get"
+            , dataType: 'jsonp'
             , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
             , url: _this.Config["UrlFdCreate"]
             , data: param
             , success: function (msg)
             {
-                var json = JSON.parse(decodeURIComponent(msg));
-                jQuery.extend(true, _this.fileSvr, json);
                 ptr.ui.btn.down.show();
                 ptr.ui.msg.text("初始化完毕...");
+                ptr.inited = true;
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
@@ -163,8 +154,7 @@
     this.isComplete = function () { return this.State == HttpDownloaderState.Complete; };
     this.svr_delete = function ()
     {
-        if (this.fileSvr.idSvr == 0) return;
-        var param = jQuery.extend({}, this.fields,{idSvr:this.fileSvr.idSvr,time:new Date().getTime()});
+        var param = jQuery.extend({}, this.fields,{signSvr:this.fileSvr.signSvr,time:new Date().getTime()});
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -203,23 +193,20 @@
             //this.ui.btn.del.text("打开");
             this.ui.process.css("width", "100%");
             this.ui.percent.text("(100%)");
-            this.ui.msg.text("文件数："+this.fileSvr.files.length+" 成功："+this.fileSvr.success);
+            this.ui.msg.text("文件数：" + json.fileCount + " 成功：" + json.fileComplete);
             this.State = HttpDownloaderState.Complete;
             //this.SvrDelete();
             this.Manager.filesCmp.push(this);
-
-            if (this.fileSvr.idSvr > 0)
-            {
-                this.svr_delete();
-            }
+            this.svr_delete();
         }
         else
         {
-            var f = this.fileSvr.files[json.file.id];
-            f.complete = true;
-            f.lenLoc = f.lenSvr;
-            this.fileSvr.success = json.success;
-            this.svr_delete_file(f.idSvr);
+            //var f = this.fileSvr.files[json.file.id];
+            //f.complete = true;
+            //f.lenLoc = f.lenSvr;
+            //this.fileSvr.success = json.success;
+            //this.svr_delete_file(f.idSvr);
+            //this.svr_update(null);//更新文件夹进度
         }
     };
 
@@ -242,22 +229,22 @@
     this.down_process = function (json)
     {
         this.fileSvr.lenLoc = json.lenLoc;//保存进度
+        this.fileSvr.sizeLoc = json.sizeLoc;
         this.fileSvr.perLoc = json.percent;
         //更新文件进度
-        this.fileSvr.files[json.file.id];
-        this.fileSvr.files[json.file.id].lenLoc = json.file.lenLoc;
-        this.fileSvr.files[json.file.id].percent = json.file.percent;
+        //this.fileSvr.files[json.file.id];
+        //this.fileSvr.files[json.file.id].lenLoc = json.file.lenLoc;
+        //this.fileSvr.files[json.file.id].percent = json.file.percent;
 
         this.ui.percent.text("("+json.percent+")");
         this.ui.process.css("width", json.percent);
-        var msg = [json.file.id + 1, "/", this.fileSvr.files.length, " ", json.sizeLoc, " ", json.speed, " ", json.time];
+        var msg = [json.fileIndex + 1, "/", json.filesCount, " ", json.sizeLoc, " ", json.speed, " ", json.time];
         this.ui.msg.text(msg.join(""));
     };
 
     //更新服务器进度
     this.down_part = function (json)
     {
-        //this.svr_update(json);//更新频繁，对服务器会造成较大压力。考虑做优化。
     };
 
     this.init_end = function (json)
@@ -276,8 +263,9 @@
         this.ui.btn.down.show();
         this.ui.btn.del.show();
         this.event.downError(this, json.code);//biz event
-        this.ui.msg.text(DownloadErrorCode[json.code+""]);
-        this.State = HttpDownloaderState.Error;
+        if (json.msg.length > 1) { this.ui.msg.text(json.msg); }
+        else { this.ui.msg.text(DownloadErrorCode[json.code + ""]); }
+        this.State = HttpDownloaderState.Stop;
         //this.SvrUpdate();
     };
 

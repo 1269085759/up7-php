@@ -43,21 +43,22 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: "1,2,56,31650"
+		, "Version"		: "1,2,99,50964"
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
-		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
+		, "FilePart"	: 10485760//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilePartTdr"	: 3//文件块线程数
         //file
         , "UrlCreate"   : "http://localhost:81/up7/code/down3/db/f_create.php"
-        , "UrlDel"      : "http://localhost:81/up7/code/down3/db/f_del.php"
-        , "UrlList"     : "http://localhost:81/up7/code/down3/db/f_list.php"
-        , "UrlListCmp"  : "http://localhost:81/up7/code/down3/db/f_list_cmp.php"
-        , "UrlUpdate"   : "http://localhost:81/up7/code/down3/db/f_update.php"
-        , "UrlDown"     : "http://localhost:81/up7/code/down3/db/f_down.php"
+        , "UrlDel"      : "http://localhost:8080/Uploader7MySQL/down3/db/f_del.jsp"
+        , "UrlList"     : "http://localhost:8080/Uploader7MySQL/down3/db/f_list.jsp"
+        , "UrlListCmp"  : "http://localhost:8080/Uploader7MySQL/down3/db/f_list_cmp.jsp"
+        , "UrlUpdate"   : "http://localhost:8080/Uploader7MySQL/down3/db/f_update.jsp"
+        , "UrlDown"     : "http://localhost:8080/Uploader7MySQL/down3/db/f_down_part.jsp"
 	    //folder
-        , "UrlFdCreate" : "http://localhost:81/up7/code/down3/db/fd_create.php"
+        , "UrlFdCreate" : "http://localhost:8080/Uploader7MySQL/down3/db/fd_create.jsp"
+        , "UrlFdPage"   : "http://localhost:8080/Uploader7MySQL/down3/db/fd_page.jsp"
         //x86
 		, "ClsidPart"	: "57FA11EE-5E98-415C-933D-BCA188B86B5E"
 		, "CabPath"		: "http://www.ncmem.com/download/down3/down3.cab"
@@ -104,7 +105,7 @@ function DownloaderMgr()
 	
 	this.idCount = 1; 	//上传项总数，只累加
 	this.queueCount = 0;//队列总数
-	this.filesMap = new Object(); //本地文件列表映射表
+	this.filesMap = new Object(); //本地文件列表映射表,signSvr,obj-json
 	this.filesCmp = new Array();//已完成列表
 	this.filesUrl = new Array();
 	this.spliter = null;
@@ -184,23 +185,20 @@ function DownloaderMgr()
 	    });
 	    this.filesCmp.length = 0;
 	};
-	this.add_ui = function (fd/*是否是文件夹*/,url, f_name)
+	this.add_ui = function (fd/*是否是文件夹*/,fileSvr)
 	{
 	    //存在相同项
-	    if (this.exist_url(url)) return null;
-	    this.filesUrl.push(url);
+	    if (this.exist_url(fileSvr.fileUrl)) return null;
+        this.filesUrl.push(fileSvr.fileUrl);
 
 	    var _this = this;
-	    var fileNameArray = url.split("/");
-	    var fileName = fileNameArray[fileNameArray.length - 1];
-	    var fid = this.idCount++;
+        var fileNameArray = fileSvr.fileUrl.split("/");
 	    //自定义文件名称
-	    var fileLoc = { fileUrl: url, id: fid };
+        var fileLoc = { fileUrl: fileSvr.fileUrl};
 	    //自定义名称
 	    if (typeof (f_name) == "string")
 	    {
 	        jQuery.extend(fileLoc, { nameCustom: f_name });
-	        fileName = f_name;
 	    }
 
 	    var ui = this.tmpFile.clone();
@@ -224,14 +222,14 @@ function DownloaderMgr()
 	    var ui_eles = { ico:{file:uiIcoF,fd:uiIcoFD},msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel }, div: ui, split: sp };
 
 	    var downer;
-	    if (fd) { downer = new FdDownloader(fileLoc, this); }
-	    else { downer = new FileDownloader(fileLoc,this);}
+        if (fd) { downer = new FdDownloader(fileSvr, this); }
+        else { downer = new FileDownloader(fileSvr,this);}
 	    //var downer = new FileDownloader(fileLoc, this);
-	    this.filesMap[fid] = downer;//
+	    this.filesMap[fileSvr.signSvr] = downer;//
 	    jQuery.extend(downer.ui, ui_eles);
 
-	    uiName.text(fileName);
-	    uiName.attr("title", url);
+        uiName.text(fileSvr.nameLoc);
+        uiName.attr("title", fileSvr.fileUrl);
 	    uiMsg.text("");
 	    uiSize.text("0字节");
 	    uiPercent.text("(0%)");
@@ -245,16 +243,18 @@ function DownloaderMgr()
 	};
 	this.resume_file = function (fileSvr)
 	{
-	    var f = this.add_ui(false,fileSvr.fileUrl, fileSvr.nameLoc);
-	    f.ui.size.text(fileSvr.sizeSvr);
+        var f = this.add_ui(false, fileSvr);
+        f.ui.size.text(fileSvr.sizeSvr);
+        f.ui.name.text(fileSvr.nameLoc);
 	    f.ui.process.css("width", fileSvr.perLoc);
 	    f.ui.percent.text("(" + fileSvr.perLoc + ")");
-	    jQuery.extend(f.fileSvr, fileSvr);
+	    f.inited = true;
+	    //jQuery.extend(f.fileSvr, fileSvr);
 	    f.addQueue();//添加到队列
 	};
 	this.resume_folder = function (fdSvr)
 	{	    
-	    var obj = this.add_ui(true, fdSvr.fileUrl, fdSvr.nameLoc);
+        var obj = this.add_ui(true, fdSvr);
 	    if (null == obj) return;
 
 	    obj.ui.ico.file.hide();
@@ -263,30 +263,30 @@ function DownloaderMgr()
 	    obj.ui.size.text(fdSvr.sizeSvr);
 	    obj.ui.process.css("width", fdSvr.perLoc);
 	    obj.ui.percent.text("(" + fdSvr.perLoc + ")");
+	    obj.inited = true;//
 	    jQuery.extend(true, obj.fileSvr, fdSvr);//
 	    
 	    obj.addQueue();
 	    return obj;
 	};
-	this.add_file = function (url,f_name)
+	this.add_file = function (fileSvr)
 	{
-	    var obj = this.add_ui(false,url, f_name);
-	    if (obj != null) obj.addQueue();
+        var obj = this.add_ui(false, fileSvr);        
+	    if (obj != null) obj.addQueue();        
 	    return obj;
 	};
-	this.add_folder = function (url,fdLoc,f_name)
+    this.add_folder = function (fileSvr)
 	{
-	    var obj = this.add_ui(true, url, f_name);
+        var obj = this.add_ui(true, fileSvr);
 	    if (null == obj) return;
 
-	    obj.ui.name.text(fdLoc.nameLoc);
-	    obj.ui.size.text(fdLoc.sizeSvr);
+	    obj.ui.name.text(fileSvr.nameLoc);
+	    obj.ui.size.text(fileSvr.sizeSvr);
 	    obj.ui.ico.file.hide();
 	    obj.ui.ico.fd.show();
-	    jQuery.extend(obj.fileSvr, fdLoc);//
-	    jQuery.extend(obj.fileSvr, { fileUrl: url });
-	    obj.initFiles();//
-	    obj.addQueue();
+        jQuery.extend(obj.fileSvr, fileSvr);//
+        jQuery.extend(obj.fileSvr, { fileUrl: this.Config["UrlDown"] });
+	    obj.addQueue();        
 	    return obj;
 	};
 	this.exist_url = function (url)
@@ -307,47 +307,52 @@ function DownloaderMgr()
 	this.down_file = function (json) { };
 	this.init_end = function (json)
 	{
-	    var p = this.filesMap[json.id];
+	    var p = this.filesMap[json.signSvr];
 	    p.init_end(json);
+	};
+	this.add_end = function (json)
+	{
+	    var p = this.filesMap[json.signSvr];
+	    p.add_end(json);
 	};
 	this.down_begin = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_begin(json);
 	};
 	this.down_process = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_process(json);
 	};
 	this.down_part = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_part(json);
 	};
 	this.down_error = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_error(json);
 	};
 	this.down_recv_size = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_recv_size(json);
 	};
 	this.down_recv_name = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_recv_name(json);
 	};
 	this.down_complete = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_complete(json);
 	};
 	this.down_stoped = function (json)
 	{
-	    var p = this.filesMap[json.id];
+        var p = this.filesMap[json.signSvr];
 	    p.down_stoped(json);
 	};
 	this.start_queue = function () { this.browser.startQueue();};
@@ -357,7 +362,18 @@ function DownloaderMgr()
 	};
 	this.queue_begin = function (json) { this.working = true;};
 	this.queue_end = function (json) { this.working = false;};
-	this.load_complete = function (json) { this.nat_load = true; this.btnSetup.hide(); };
+    this.load_complete = function (json)
+    {
+        this.btnSetup.hide();
+        var needUpdate = true;
+        if (typeof (json.version) != "undefined") {
+            if (json.version == this.Config.Version) {
+                needUpdate = false;
+            }
+        }
+        if (needUpdate) this.update_notice();
+        else { this.btnSetup.hide(); }
+    };
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -366,6 +382,7 @@ function DownloaderMgr()
 	    else if (json.name == "down_recv_size") { _this.down_recv_size(json); }
 	    else if (json.name == "down_recv_name") { _this.down_recv_name(json); }
 	    else if (json.name == "init_end") { _this.init_end(json); }
+	    else if (json.name == "add_end") { _this.add_end(json); }
 	    else if (json.name == "down_begin") { _this.down_begin(json); }
 	    else if (json.name == "down_process") { _this.down_process(json); }
 	    else if (json.name == "down_part") { _this.down_part(json); }
@@ -375,7 +392,13 @@ function DownloaderMgr()
 	    else if (json.name == "queue_complete") { _this.event.queueComplete(); }
 	    else if (json.name == "queue_begin") { _this.queue_begin(json); }
 	    else if (json.name == "queue_end") { _this.queue_end(json); }
-	    else if (json.name == "load_complete") { _this.load_complete(); }
+        else if (json.name == "load_complete") { _this.load_complete(json); }
+        else if (json.name == "extension_complete") {
+            setTimeout(function () {
+                var param = { name: "init", config: _this.Config };
+                _this.browser.postMessage(param);
+            }, 1000);
+        }
 	};
 
     //浏览器对象
@@ -407,12 +430,6 @@ function DownloaderMgr()
                 return mimetype.enabledPlugin;
             }
             return false;
-        }
-        , checkChr: function () { return false;}
-        , checkNat: function () { return false; }
-        , NeedUpdate: function ()
-        {
-            return this.GetVersion() != _this.Config.Version;
         }
 		, GetVersion: function ()
 		{
@@ -467,18 +484,18 @@ function DownloaderMgr()
         }
 		, openPath:function(f)
 		{
-            var param = { name: "open_path", config: _this.Config };            
+            var param = { name: "open_path"};            
             this.postMessage(param);
 		}
 		, openFile:function(f)
 		{
-            var param = { name: "open_file", config: _this.Config };            
+            var param = { name: "open_file"};            
             this.postMessage(param);
 		}
         , addFile: function (f)
         {
             _this.queueCount++;
-            var param = { name: "add_file", config: _this.Config };
+            var param = { name: "add_file"};
             jQuery.extend(param, f);
             this.postMessage(param);
         }
@@ -492,7 +509,7 @@ function DownloaderMgr()
         , stopFile: function (f)
         {
             _this.queueCount--;
-            var param = { name: "stop_file", id: f.id, config: _this.Config };
+            var param = { name: "stop_file", signSvr: f.signSvr, config: _this.Config };
             this.postMessage(param);
         }
         , startQueue: function ()
@@ -507,7 +524,10 @@ function DownloaderMgr()
         }
         , postMessage: function (json)
         {
-            _this.parter.postMessage(JSON.stringify(json));
+            try {
+                _this.parter.postMessage(JSON.stringify(json));
+            }
+            catch (e) { console.log("调用postMessage失败，请检查控件是否安装成功"); }
         }
         , postMessageNat: function (par)
         {
@@ -555,16 +575,13 @@ function DownloaderMgr()
 	    }
 	};
 	this.checkVersion();
-	this.setup_tip = function ()
-	{
-	    this.btnSetup.attr("href", this.Config.ExePath);
-	    this.btnSetup.show();
-	};
-	this.setup_check = function ()
-	{
-	    if (!_this.browser.check()) { this.setup_tip(); /*_this.browser.Setup();*/ }
-	    else { this.btnSetup.hide();}
-	};
+
+    //升级通知
+    this.update_notice = function () {
+        this.btnSetup.text("升级控件");
+        this.btnSetup.css("color", "red");
+        this.btnSetup.show();
+    };
 
 	//安全检查，在用户关闭网页时自动停止所有上传任务。
 	this.safeCheck = function()
@@ -631,7 +648,6 @@ function DownloaderMgr()
 
 	    //this.LoadData();
 		this.safeCheck();//
-		this.setup_check();
 	};
 
     //加载未未完成列表
@@ -651,7 +667,7 @@ function DownloaderMgr()
 
                 for (var i = 0, l = files.length; i < l; ++i)
                 {
-                    if (files[i].fdTask)
+                    if (files[i].folder)
                     { _this.resume_folder(files[i]); }
                     else { _this.resume_file(files[i]); }
                 }
