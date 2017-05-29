@@ -12,6 +12,7 @@ header('Content-type: text/html;charset=utf-8');
 	控件每次计算完文件MD5时都将向信息上传到此文件中
 	@更新记录：
 		2014-08-12 完成逻辑。
+		2017-05-29 增加块路径生成逻辑
 */
 require('DbHelper.php');
 require('DBFile.php');
