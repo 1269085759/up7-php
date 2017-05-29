@@ -71,6 +71,7 @@ class FileRedis
 		if(null == blockSize) $blockSize="0";
 		$f->blockSize 	= intval($blockSize);
 		$f->filesCount 	= intval($r->hGet($idSign, "filesCount"));
+		$f->fdTask		= strcasecmp($r->hGet($idSign,"fdTask"),"true")==0;
 		return $f;
 	}
 	
