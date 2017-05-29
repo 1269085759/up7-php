@@ -9,16 +9,16 @@ function FolderUploader(fdLoc, mgr)
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null, split: null };
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
+    this.folderScan = false;//已经扫描
     this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", idSign: "", uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
     jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
     this.manager = mgr;
     this.event = mgr.event;
     this.arrFiles = new Array(); //子文件列表(未上传文件列表)，存HttpUploader对象
-    this.arrFilesComplete = new Array();//已上传完的文件列表，存储HttpUploader对象
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
-    this.browser = mgr.browser;
+    this.app = mgr.app;
     this.LocalFile = ""; //判断是否存在相同项
     this.FileName = "";
 
@@ -65,13 +65,22 @@ function FolderUploader(fdLoc, mgr)
             , complete: function (req, sta) { req = null; }
         });
     };
+    this.scan = function ()
+    {
+        this.ui.btn.stop.hide();
+        this.ui.btn.del.hide();
+        this.ui.btn.cancel.show();
+        this.app.scanFolder(this.folderSvr);
+    };
     //上传，创建文件夹结构信息
     this.post = function ()
     {
+        if (!this.folderScan) { this.scan(); return; }
+
         this.ui.btn.stop.show();
         this.ui.btn.del.hide();
-        this.ui.btn.post.hide();
         this.ui.btn.cancel.hide();
+        this.ui.btn.post.hide();
         this.manager.AppendQueuePost(this.folderSvr.idSign);//添加到队列中
         this.State = HttpUploaderState.Posting;
         //如果文件夹已初始化，表示续传。
@@ -139,14 +148,14 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.MD5Working;
-        this.browser.checkFolder(this.folderSvr);
+        this.app.checkFolder(this.folderSvr);
     };
     this.post_fd = function ()
     {
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        this.browser.postFolder(jQuery.extend({}, this.folderSvr, { fields: this.fields }));
+        this.app.postFolder(jQuery.extend({}, this.folderSvr, { fields: this.fields }));
     };
     this.post_error = function (json)
     {
@@ -213,7 +222,6 @@ function FolderUploader(fdLoc, mgr)
         this.State = HttpUploaderState.Complete;
         this.folderSvr.complete = true;
         this.folderSvr.perSvr = "100%";
-        this.manager.arrFilesComplete.push(this);
         //从上传列表中删除
         this.manager.RemoveQueuePost(this.folderSvr.idSign);
         //从未上传列表中删除
@@ -227,7 +235,7 @@ function FolderUploader(fdLoc, mgr)
 			, dataType: 'jsonp'
 			, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 			, url: this.Config["UrlFdComplete"]
-			, data: { uid: this.fields["uid"], idSign: this.folderSvr.idSign,time: new Date().getTime() }
+			, data: { uid: this.fields["uid"], idSign: this.folderSvr.idSign,merge:this.Config.AutoMege,time: new Date().getTime() }
 			, success: function (msg)
 			{
 			    //添加到文件列表
@@ -288,6 +296,22 @@ function FolderUploader(fdLoc, mgr)
 
         });
     };
+
+    this.scan_process = function (json)
+    {
+        this.ui.size.text(json.sizeLoc);
+        this.ui.msg.text("已扫描:"+json.fileCount);
+    };
+
+    this.scan_complete = function (json)
+    {
+        this.ui.msg.text("扫描完毕，开始上传...");
+        jQuery.extend(this.folderSvr, json);
+        this.folderScan = true;
+        setTimeout(function () {
+            _this.post();
+        }, 1000);
+    };
     
     //所有文件全部上传完成
     this.all_complete = function ()
@@ -328,7 +352,7 @@ function FolderUploader(fdLoc, mgr)
     //一般在StopAll()中调用
     this.stop_manual = function ()
     {
-        this.browser.stopFile({ idSign: this.folderSvr.idSign });
+        this.app.stopFile({ idSign: this.folderSvr.idSign });
         this.State = HttpUploaderState.Stop;
     };
     //手动点击“停止”按钮时
@@ -350,7 +374,7 @@ function FolderUploader(fdLoc, mgr)
             return;
         }
         //
-        this.browser.stopFile({ idSign: this.folderSvr.idSign });
+        this.app.stopFile({ idSign: this.folderSvr.idSign });
         this.manager.RemoveQueuePost(this.folderSvr.idSign);
         this.manager.AppendQueueWait(this.folderSvr.idSign);
     };
@@ -359,7 +383,7 @@ function FolderUploader(fdLoc, mgr)
     this.remove = function ()
     {
         //清除缓存
-        this.browser.delFolder({ idSign: this.folderSvr.idSign });
+        this.app.delFolder({ idSign: this.folderSvr.idSign });
         this.manager.Delete(this.folderSvr.idSign);
         this.ui.div.remove();
         this.ui.split.remove();
