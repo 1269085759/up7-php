@@ -24,6 +24,7 @@ require('PathTool.php');
 require('tasks.php');
 require('biz/PathBuilder.php');
 require('biz/PathGuidBuilder.php');
+require('biz/BlockPathBuilder.php');
 
 $uid 			= $_GET["uid"];
 $lenLoc			= $_GET["lenLoc"];//10240
@@ -32,8 +33,7 @@ $sizeLoc		= str_replace("+", " ", $sizeLoc);
 $callback 		= $_GET["callback"];//jsonp
 $pathLoc		= $_GET["pathLoc"];
 $idSign			= $_GET["idSign"];
-$pathLoc		= str_replace("+","%20",$pathLoc);
-$pathLoc		= urldecode($pathLoc);
+$pathLoc		= PathTool::url_decode($pathLoc);
 
 if(    strlen($uid)<1
 	|| empty($sizeLoc))
@@ -50,7 +50,7 @@ $fileSvr->f_fdTask = false;
 $fileSvr->nameLoc = PathTool::getName($pathLoc);
 $fileSvr->pathLoc = $pathLoc;
 $fileSvr->nameSvr = $fileSvr->nameLoc;
-$fileSvr->lenLoc = intval($lenLoc);
+$fileSvr->lenLoc = $lenLoc;
 $fileSvr->sizeLoc = $sizeLoc;
 $fileSvr->deleted = false;
 $fileSvr->uid = intval($uid);
@@ -58,7 +58,9 @@ $fileSvr->uid = intval($uid);
 //生成路径
 $pb = new PathGuidBuilder();
 $fileSvr->pathSvr = $pb->genFile($uid,$fileSvr->nameLoc);
-
+//生成文件块路径
+$bpb = new BlockPathBuilder();
+$fileSvr->blockPath = $bpb->root($idSign, $fileSvr->pathSvr);
 
 //添加到redis
 $r = RedisTool::con();
