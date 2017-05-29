@@ -41,13 +41,24 @@ class PathTool
 	
 	static function combin($p1,$p2)
 	{
-		$str_len = strlen($p1);//总长度
+		$split = PathTool::endsWith($p1,"/");
+		if(!$split) $split = PathTool::endsWith($p1,"\\");
+		
 		//以/结尾
-		if($str_len-1 == strrpos($p1, "/") )
+		if($split)
 		{
-			return $p1 . $p2;			
+			return str_replace("\\","/","$p1$p2");
 		}
-		return $p1 . "/" . $p2;
+		return str_replace("\\","/","$p1/$p2");
+	}
+	
+	static function endsWith($str,$key)
+	{
+		$len = strlen($str);
+		$last = $str;
+		if($len > 1) $last = substr($str, $len-1);
+		
+		return strcmp($last, $key) == 0;
 	}
 	
 	static function to_utf8($str)

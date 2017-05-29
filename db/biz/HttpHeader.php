@@ -4,12 +4,14 @@
  * $head = new HttpHeader();
  * $name = $head->param("f-name");
  * $size = $head->param("f-size");
+ * 调试
+ * var_dump($head->headers);
  * @author zysoft
  *
  */
 class HttpHeader
 {
-	private $headers;
+	public $headers;
 
 	//构造函数
 	function __construct()
@@ -28,7 +30,7 @@ class HttpHeader
 		{
 			if( strcmp($hn, $name) == 0) return $hv;
 		}
-		return "";
+		return null;
 	}
 	
 	function all()
@@ -39,7 +41,7 @@ class HttpHeader
 		}
 		else
 		{
-			return getallheader();
+			return getallheaders();
 		}
 		
 	}	

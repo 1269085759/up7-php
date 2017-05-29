@@ -11,6 +11,7 @@ class xdb_files
 	var $rootSign="";
 	//文件块
 	var $blockCount=1;
+	var $blockSize = 0;
 	/**
 	 * 文件夹ID
 	 */

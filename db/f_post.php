@@ -7,33 +7,35 @@ ob_start();
 		2.将文件块数据保存到服务器中。
 	更新记录：
 		2014-04-09 增加文件块验证功能。
+		2017-05-29 完善逻辑
 */
 require('DbHelper.php');
 require('DBFile.php');
 require('xdb_files.php');
 require('FileBlockWriter.php');
+require('HttpHeader.php');
+require('biz/PathTool.php');
+require('biz/FilePart.php');
 
-
-$uid 			= $_SERVER["f-uid"];
-$idSign 		= $_SERVER["f-idSign"];
-$perSvr 		= $_SERVER["f-perSvr"];
-$lenSvr			= $_SERVER["f-lenSvr"];
-$lenLoc			= $_SERVER["f-lenLoc"];
-$nameLoc		= $_SERVER["f-nameLoc"];
-$pathLoc		= $_SERVER["f-pathLoc"];
-$sizeLoc		= $_SERVER["f-sizeLoc"];
-$f_pos 			= $_SERVER["f-RangePos"];
-$rangeIndex		= $_SERVER["f-rangeIndex"];
-$rangeCount		= $_SERVER["f-rangeCount"];
-$rangeSize		= $_SERVER["f-rangeSize"];
+$head = new HttpHeader();
+$uid 			= $head->param("f-uid");
+$idSign 		= $head->param("f-idSign");
+$perSvr 		= $head->param("f-perSvr");
+$lenSvr			= $head->param("f-lenSvr");
+$lenLoc			= $head->param("f-lenLoc");
+$nameLoc		= $head->param("f-nameLoc");
+$pathLoc		= $head->param("f-pathLoc");
+$sizeLoc		= $head->param("f-sizeLoc");
+$f_pos 			= $head->param("f-RangePos");
+$rangeIndex		= $head->param("f-rangeIndex");
+$rangeCount		= $head->param("f-rangeCount");
+$rangeSize		= $head->param("f-rangeSize");
 $complete		= "false";
-$fd_idSign		= $_SERVER["fd-idSign"];
-$fd_lenSvr		= $_SERVER["fd-lenSvr"];
-$fd_perSvr		= $_SERVER["fd-perSvr"];
-$pathLoc		= str_replace("+","%20",$pathLoc);
-$pathLoc		= urldecode($pathLoc);
-$nameLoc		= str_replace("+","%20",$nameLoc);
-$nameLoc		= urldecode($nameLoc);
+$fd_idSign		= $head->param("fd-idSign");
+$fd_lenSvr		= $head->param("fd-lenSvr");
+$fd_perSvr		= $head->param("fd-perSvr");
+$pathLoc		= PathTool::url_decode($pathLoc);
+$nameLoc		= PathTool::url_decode($nameLoc);
 $fpath			= $_FILES['file']['tmp_name'];//
 
 //相关参数不能为空
@@ -42,49 +44,63 @@ if (   (strlen($lenSvr)>0)
 	&& (strlen($idSign)>0) 
 	&& (strlen($f_pos)>0))
 {		
-	//保存文件块数据
-	$resu = new FileBlockWriter();
-	$resu->write($pathSvr,$f_pos,$fpath);
-	$cmp = strcmp($complete,"true") == 0;
-
-	//更新数据表进度信息
-	$db = new DBFile();		
-	$fd = strlen($fd_idSvr) > 0;
-	if($fd) $fd = !empty($fd_lenSvr);
-	if($fd) $fd = intval($fd_idSvr) > 0;
-	if($fd) $fd = intval($fd_lenSvr)> 0;
+	$svr = RedisTool::con();
+	$cache = new FileRedis($svr);
+	$bpb = new BlockPathBuilder();
 	
-	//第一块数据
-	if(intval(f_pos) == 0)
+	//文件块
+	if( is_null($fd_idSign))
 	{
-		if($fd)
-		{		
-			$db->fd_fileProcess($uid,$fid,$f_pos,$lenSvr,$perSvr,$fd_idSvr,$fd_lenSvr,$fd_perSvr,$cmp);
-		}
-		else
+		$fileSvr = $cache->read($idSign);
+		//生成块路径
+		$partPath = $bpb->part($idSign, $rangeIndex, $fileSvr->pathSvr);
+		
+		//保存文件块
+		$part = new FilePart();
+		$part->save($partPath, $fpath);
+		
+		//更新进度
+		if(strcmp($f_pos, "0") == 0) $cache->process($idSign, $perSvr, $lenSvr, $rangeCount, $rangeSize);
+	}//子文件块
+	else
+	{
+		$fd = $cache->read($fd_idSign);//文件夹信息
+		
+		$childSvr = new xdb_files();
+		$childSvr->idSign = $idSign;
+		$childSvr->nameLoc = $nameLoc;
+		$childSvr->nameSvr = $nameLoc;
+		$childSvr->lenLoc = $lenLoc;
+		$childSvr->sizeLoc = $sizeLoc;
+		$childSvr->pathLoc = str_replace("\\", "/", $pathLoc);
+		$childSvr->pathSvr = str_replace($fd->pathLoc, $fd->pathSvr, $pathLoc);
+		$childSvr->pathSvr = str_replace("\\", "/", $childSvr->pathSvr);
+		$childSvr->pathRel = str_replace("$fd->pathLoc.\\", "", $pathLoc);
+		$childSvr->rootSign = $fd_idSign;
+		$childSvr->blockCount = $rangeCount;
+		$childSvr->blockSize = $rangeSize;
+		//子文件块路径
+		$childSvr->blockPath = $bpb->rootFD($childSvr, $rangeIndex, $fd);
+		$partPath = PathTool::combin($childSvr->blockPath, "$rangeIndex.part");
+		//保存块
+		$part = new FilePart();
+		$part->save($partPath, $fpath);
+		//添加到缓存
+		if(!$svr->exists($idSign))
 		{
-			$db->f_process($uid,$fid,$f_pos,$lenSvr,$perSvr,$cmp);
+			$cache->create($childSvr);
+		}//更新文件夹进度
+		else if(strcmp($f_pos,"0")==0 )
+		{
+			$cache->process($fd_idSign, $fd_perSvr, $fd_lenSvr, "0", "0");			
 		}
-	}
-	
+		
+	}	
 	echo "ok";
-	//调试时，打开下面的代码，显示文件块MD5。
-	//echo "ok".",range_md5:".$resu->m_rangMD5;
 }
 else
 {
 	echo "param is null";
-	echo "uid:$uid<br/>";
-	echo "fid:$fid<br/>";
-	echo "perSvr:$perSvr<br/>";
-	echo "lenSvr:$lenSvr<br/>";
-	echo "lenLoc:$lenLoc<br/>";
-	echo "f_pos:$f_pos<br/>";
-	echo "complete:$complete<br/>";
-	echo "fd_idSvr:$fd_idSvr<br/>";
-	echo "fd_lenSvr:$fd_lenSvr<br/>";
-	echo "fd_perSvr:$fd_perSvr<br/>";
-	echo "pathSvr:$pathSvr<br/>";
 }
 header('Content-Length: ' . ob_get_length());
 ?>

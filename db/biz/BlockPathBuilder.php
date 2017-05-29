@@ -35,5 +35,30 @@ class BlockPathBuilder
 		$pathSvr = str_replace("\\", "/", $pathSvr);
 		return $pathSvr;
 	}
+	
+	/**
+	 * 子文件块路径
+	 *   d:/webapps/files/年/月/日/folder/file-guid/
+	 * @param unknown $child
+	 * @param unknown $blockIndex
+	 * @param unknown $fd
+	 */
+	function rootFD($child,$blockIndex,$fd)
+	{
+		$pos = strrpos($child->pathRel, "\\");
+		//在根目录中
+		if(is_bool($pos) || !$pos)
+		{
+			return PathTool::combin($fd->pathSvr, $child->idSign);			
+		}//在子目录中
+		else 
+		{
+			//取相对路径，soft/dev/php
+			$rel = substr($child->pathRel,0,$pos);
+			$path = PathTool::combin($fd->pathSvr, $rel);
+			$path = PathTool::combin($path, $child->idSign);
+			return $path;
+		}
+	}
 }
 ?>
