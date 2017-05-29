@@ -12,18 +12,32 @@ require('DBFile.php');
 require('DBFolder.php');
 
 $uid 		= $_GET["uid"];
-$fid 		= $_GET["idSvr"];
+$idSign 	= $_GET["idSign"];
 $cbk 		= $_GET["callback"];
-$ret 		= $cbk . "(0)";
+$ret 		= 0;
 
-if ( strlen($uid) > 0 )
+if ( strlen($uid) > 0
+	&& strlen($idSign) > 0 )
 {
+	$r = RedisTool::con();
+	$cache = new FileRedis($r);
+	$f = $cache->read($idSign);
+	//BlockMeger bm = new BlockMeger();
+	//bm.merge(f);
+	$r->del($idSign);//删除文件缓存
+	
+	//从任务列表（未完成）中删除
+	$t = new tasks($r);
+	$t->uid = $uid;
+	$t->del($idSign);
+	$r->close();
+	
 	$db = new DBFile();
-	$db->Complete($uid,$fid);
-	$ret = $cbk . "(1)";
+	$db->addComplete($f);
+	$ret = 1;
 }
 
 //返回查询结果
-echo $ret;
+echo "$cbk( $ret )";
 header('Content-Length: ' . ob_get_length());
 ?>

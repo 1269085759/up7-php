@@ -15,19 +15,26 @@ require('DbHelper.php');
 require('DBFile.php');
 require('DBFolder.php');
 
-$id_f   = $_GET["id_file"];
-$id_fd	= $_GET["id_folder"];
+$sign   = $_GET["idSign"];
 $uid	= $_GET["uid"];
 $cbk 	= $_GET["callback"];//jsonp
 $ret 	= 0;
 
 //参数为空
-if (	strlen($uid) > 0
-	||	strlen($id_fd) >0  )
+if ( strlen($sign) > 0 )
 {
-	$fd = new DBFolder();
-	$fd->Complete($id_fd,$id_f, $uid);
-	$fd->child_complete(intval($id_fd));
+	$r = RedisTool::con();
+	$fd = new fd_redis($r);
+	$fd->read($sign);
+	
+	//清除缓存
+	$svr = new tasks($r);
+	$svr->uid = $uid;
+	$svr->delFd($sign);
+	$r->close();
+	
+	$fd->mergeAll();//合并文件块
+	$fd->saveToDb();//保存到数据库
 	$ret = 1;
 }
 echo "$cbk( $ret )";

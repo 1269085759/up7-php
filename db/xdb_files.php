@@ -6,6 +6,11 @@
 class xdb_files
 {
 	var $idSvr=0;
+	var $idSign="";
+	var $pidSign="";
+	var $rootSign="";
+	//文件块
+	var $blockCount=1;
 	/**
 	 * 文件夹ID
 	 */
@@ -50,6 +55,10 @@ class xdb_files
 	 * 文件在服务器中的相对路径。示例：/www/web/upload/md5.exe
 	 */
 	var $pathRel="";
+	/**
+	 * 文件块目录 f:/webapps/files/年/月/日/guid/file-guid/
+	 */
+	var $blockPath="";
 	/**
 	 * 文件MD5
 	 */

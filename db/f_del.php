@@ -13,17 +13,22 @@ header('Content-Type: text/html;charset=utf-8');
 require('DbHelper.php');
 require('DBFile.php');
 
+$idSign = $_GET["idSign"];
 $uid = $_GET["uid"];
-$fid = $_GET["fid"];
 $cbk = $_GET["callback"];
 $ret = $cbk . "(0)";
 
-//md5和uid不能为空
-if (	strlen($fid) > 0 
+if (	strlen($idSign) > 0 
 	&&	strlen($uid) > 0)
 {
+	$r = RedisTool::con();
+	$cache = new tasks($r);
+	$cache->uid = $uid;
+	$cache->del($idSign);
+	$r->close();
+	
 	$db = new DBFile();
-	$db->Delete($uid,$fid);
+	$db->remove($idSign);
 	$ret = $cbk . "(1)";
 }
 

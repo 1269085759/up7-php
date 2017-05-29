@@ -26,6 +26,6 @@ class PathBuilder
 	}
 	
 	function genFolder($uid,&$fd){}
-	function genFile($uid,$md5,$nameLoc){}
+	function genFile($uid,$nameLoc){}
 }
 ?>

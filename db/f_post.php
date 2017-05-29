@@ -13,30 +13,34 @@ require('DBFile.php');
 require('xdb_files.php');
 require('FileBlockWriter.php');
 
-$uid	 		= $_POST["uid"];
-$fid	 		= $_POST["idSvr"];
-$perSvr			= $_POST["perSvr"];
-$lenSvr			= $_POST["lenSvr"];
-$lenLoc			= $_POST["lenLoc"];
-$f_pos			= $_POST["RangePos"];
-$complete		= $_POST["complete"];
-$fd_idSvr = "";
-if(!empty($_POST["fd-idSvr"]) )	$fd_idSvr = $_POST["fd-idSvr"];
-$fd_lenSvr = "";
-if(!empty($_POST["fd-lenSvr"]) ) $fd_lenSvr = $_POST["fd-lenSvr"];
-$fd_perSvr = "";
-if(!empty($_POST["fd-perSvr"]) ) $fd_perSvr = $_POST["fd-perSvr"];
-$pathSvr		= $_POST["pathSvr"];
-$pathSvr		= str_replace("+","%20",$pathSvr);
-$pathSvr		= urldecode($pathSvr);//服务器路径，URL编码
+
+$uid 			= $_SERVER["f-uid"];
+$idSign 		= $_SERVER["f-idSign"];
+$perSvr 		= $_SERVER["f-perSvr"];
+$lenSvr			= $_SERVER["f-lenSvr"];
+$lenLoc			= $_SERVER["f-lenLoc"];
+$nameLoc		= $_SERVER["f-nameLoc"];
+$pathLoc		= $_SERVER["f-pathLoc"];
+$sizeLoc		= $_SERVER["f-sizeLoc"];
+$f_pos 			= $_SERVER["f-RangePos"];
+$rangeIndex		= $_SERVER["f-rangeIndex"];
+$rangeCount		= $_SERVER["f-rangeCount"];
+$rangeSize		= $_SERVER["f-rangeSize"];
+$complete		= "false";
+$fd_idSign		= $_SERVER["fd-idSign"];
+$fd_lenSvr		= $_SERVER["fd-lenSvr"];
+$fd_perSvr		= $_SERVER["fd-perSvr"];
+$pathLoc		= str_replace("+","%20",$pathLoc);
+$pathLoc		= urldecode($pathLoc);
+$nameLoc		= str_replace("+","%20",$nameLoc);
+$nameLoc		= urldecode($nameLoc);
 $fpath			= $_FILES['file']['tmp_name'];//
 
 //相关参数不能为空
-if (   (strlen($lenLoc)>0) 
+if (   (strlen($lenSvr)>0) 
 	&& (strlen($uid)>0) 
-	&& (strlen($fid)>0) 
-	&& (strlen($f_pos)>0) 
-	&& !empty($pathSvr))
+	&& (strlen($idSign)>0) 
+	&& (strlen($f_pos)>0))
 {		
 	//保存文件块数据
 	$resu = new FileBlockWriter();

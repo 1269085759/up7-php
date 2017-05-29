@@ -8,21 +8,23 @@ require('DBFolder.php');
 
 $uid 		= $_GET["uid"];
 $sign 		= $_GET["sign"];
-$fid 		= $_GET["idSvr"];
+$idSign 	= $_GET["idSign"];
 $perSvr 	= $_GET["perSvr"];
 $lenSvr 	= $_GET["lenSvr"];
 $lenLoc 	= $_GET["lenLoc"];
 
-if(    strlen(uid) < 1 
-	|| strlen(lenLoc) < 1
-	|| strlen(fid) <1 )
+if(    strlen($uid) < 1 
+	|| strlen($lenLoc) < 1
+	|| strlen($idSign) <1 )
 {
 	echo "param is null";		
 	die();
 }
 
-$db = new DBFile();
-$db->f_process($uid,$fid,0,$lenSvr,$perSvr,false);
+//更新redis进度
+$r = RedisTool::con();
+$fr = new FileRedis($r);
+$fr->process($idSign,$perSvr,$lenSvr,"0","0");
 
 header('Content-Length: ' . ob_get_length());
 ?>

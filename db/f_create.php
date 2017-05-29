@@ -20,6 +20,8 @@ require('xdb_files.php');
 require('FileBlockWriter.php');
 require('FolderInf.php');
 require('PathTool.php');
+//require('RedisTool.php');
+require('tasks.php');
 require('biz/PathBuilder.php');
 require('biz/PathGuidBuilder.php');
 
@@ -29,6 +31,7 @@ $sizeLoc		= $_GET["sizeLoc"];//10mb
 $sizeLoc		= str_replace("+", " ", $sizeLoc);
 $callback 		= $_GET["callback"];//jsonp
 $pathLoc		= $_GET["pathLoc"];
+$idSign			= $_GET["idSign"];
 $pathLoc		= str_replace("+","%20",$pathLoc);
 $pathLoc		= urldecode($pathLoc);
 
@@ -41,6 +44,7 @@ if(    strlen($uid)<1
 
 $ext = PathTool::getExtention($pathLoc);
 $fileSvr = new xdb_files();
+$fileSvr->idSign = $idSign;
 $fileSvr->f_fdChild = false;
 $fileSvr->f_fdTask = false;
 $fileSvr->nameLoc = PathTool::getName($pathLoc);
@@ -55,12 +59,13 @@ $fileSvr->uid = intval($uid);
 $pb = new PathGuidBuilder();
 $fileSvr->pathSvr = $pb->genFile($uid,$fileSvr->nameLoc);
 
-$db = new DBFile();
-$fileSvr->idSvr = (int)$db->Add($fileSvr);
-	
-//创建文件
-$fr = new FileBlockWriter();
-$fr->make($fileSvr->pathSvr,$fileSvr->lenLoc);
+
+//添加到redis
+$r = RedisTool::con();
+$taskSvr = new tasks($r);
+$taskSvr->uid = $uid;
+$taskSvr->add($fileSvr);
+$r->close();
 
 //fix:防止json_encode将汉字转换成unicode
 $fileSvr->nameLoc = PathTool::urlencode_safe($fileSvr->nameLoc);

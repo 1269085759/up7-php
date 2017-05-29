@@ -19,7 +19,11 @@ $cbk = $_GET["callback"];
 
 if( strlen($uid) > 0)
 {
-	$json = DBFile::GetAllUnComplete2($uid );
+	$r = RedisTool::con();
+	$t = new tasks($r);
+	$t->uid = $uid;
+	$json = $t->toJson();
+	$r->close();
 	if( !empty($json) )
 	{
 		//echo $json;
