@@ -62,13 +62,13 @@ class FileRedis
 		$f->blockPath  	= $r->hGet($idSign, "blockPath");
 		$f->nameLoc 	= $r->hGet($idSign, "nameLoc");
 		$f->nameSvr 	= $r->hGet($idSign, "nameSvr");
-		$f->lenLoc 	 	= intval($r->hGet($idSign, "lenLoc"));
+		$f->lenLoc 	 	= $r->hGet($idSign, "lenLoc");
 		$f->sizeLoc 	= $r->hGet($idSign, "sizeLoc");
-		$f->lenSvr 	 	= intval($r->hGet($idSign, "lenSvr"));
+		$f->lenSvr 	 	= $r->hGet($idSign, "lenSvr");
 		$f->perSvr 	 	= $r->hGet($idSign, "perSvr");
 		$f->blockCount 	= intval($r->hGet($idSign, "blockCount"));
 		$blockSize 		= $r->hGet($idSign, "blockSize");
-		if(null == blockSize) $blockSize="0";
+		if(null == blockSize) $blockSize="0byte";
 		$f->blockSize 	= intval($blockSize);
 		$f->filesCount 	= intval($r->hGet($idSign, "filesCount"));
 		$f->fdTask		= strcasecmp($r->hGet($idSign,"fdTask"),"true")==0;
