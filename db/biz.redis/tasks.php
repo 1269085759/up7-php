@@ -50,14 +50,25 @@ class tasks
 	}
 	
 	function all()
-	{		
+	{
+		$keys = $this->con->sMembers($this->getKey());
+		if(is_null($keys)) return null;
+		
+		$cache = new FileRedis($this->con);
+		$files = array();
+		foreach($keys as $key)
+		{
+			$f = $cache->read($key);
+			$files[] = $f;
+		}
 	}
 	
 	function toJson()
 	{
-		$con = $this->con;
-		$con= new Redis();
-		$con->sMembers($this->getKey());				
+		$fs = $this->all();
+		if(is_null($fs)) return "";
+		
+		return json_encode($fs);				
 	}	
 }
 ?>
