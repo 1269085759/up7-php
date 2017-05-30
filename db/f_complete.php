@@ -10,20 +10,23 @@ header('Content-Type: text/html;charset=utf-8');
 require('DbHelper.php');
 require('DBFile.php');
 require('DBFolder.php');
+require('biz.redis/RedisTool.php');
+require('biz.redis/FileRedis.php');
 
 $uid 		= $_GET["uid"];
 $idSign 	= $_GET["idSign"];
+$merge 		= $_GET["merge"];
 $cbk 		= $_GET["callback"];
 $ret 		= 0;
 
-if ( strlen($uid) > 0
-	&& strlen($idSign) > 0 )
+if ( 	strlen($uid) > 0
+	&& 	strlen($idSign) > 0 )
 {
 	$r = RedisTool::con();
 	$cache = new FileRedis($r);
 	$f = $cache->read($idSign);
-	//BlockMeger bm = new BlockMeger();
-	//bm.merge(f);
+	
+	//合并文件	
 	$r->del($idSign);//删除文件缓存
 	
 	//从任务列表（未完成）中删除
