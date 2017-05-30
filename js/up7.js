@@ -91,17 +91,17 @@ function HttpUploaderMgr()
         , "QueueCount"      : 1//同时上传的任务数
         , "AutoMege"        : 0//自动合并文件？1:合并,0:不合并
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:81/up7/code/db/fd_create.php"
-		, "UrlFdUpdate"		: "http://localhost:81/up7/code/db/fd_update.php"
-		, "UrlFdComplete"	: "http://localhost:81/up7/code/db/fd_complete.php"
-		, "UrlFdDel"	    : "http://localhost:81/up7/code/db/fd_del.php"
+		, "UrlFdCreate"		: "http://localhost:811/up7/code/db/fd_create.php"
+		, "UrlFdUpdate"		: "http://localhost:811/up7/code/db/fd_update.php"
+		, "UrlFdComplete"	: "http://localhost:811/up7/code/db/fd_complete.php"
+		, "UrlFdDel"	    : "http://localhost:811/up7/code/db/fd_del.php"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:81/up7/code/db/f_create.php"
-		, "UrlUpdate"		: "http://localhost:81/up7/code/db/f_update.php"
-		, "UrlPost"			: "http://localhost:81/up7/code/db/f_post.php"
-		, "UrlComplete"		: "http://localhost:81/up7/code/db/f_complete.php"
-		, "UrlList"			: "http://localhost:81/up7/code/db/f_list.php"
-		, "UrlDel"			: "http://localhost:81/up7/code/db/f_del.php"
+		, "UrlCreate"		: "http://localhost:811/up7/code/db/f_create.php"
+		, "UrlUpdate"		: "http://localhost:811/up7/code/db/f_update.php"
+		, "UrlPost"			: "http://localhost:811/up7/code/db/f_post.php"
+		, "UrlComplete"		: "http://localhost:811/up7/code/db/f_complete.php"
+		, "UrlList"			: "http://localhost:811/up7/code/db/f_list.php"
+		, "UrlDel"			: "http://localhost:811/up7/code/db/f_del.php"
 	    //x86
         , ie: {
               drop: { clsid: "D75AD7E8-CC9C-48BD-984C-6FBBAC1CD122", name: "Xproer.HttpDroper7" }

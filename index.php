@@ -7,6 +7,8 @@
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/up7.config.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/up7.app.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/up7.edge.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/up7.file.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/up7.folder.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/up7.js" charset="utf-8"></script>
