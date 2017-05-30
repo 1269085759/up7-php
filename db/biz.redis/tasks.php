@@ -49,5 +49,15 @@ class tasks
 		$this->con->flushDB();
 	}
 	
+	function all()
+	{		
+	}
+	
+	function toJson()
+	{
+		$con = $this->con;
+		$con= new Redis();
+		$con->sMembers($this->getKey());				
+	}	
 }
 ?>

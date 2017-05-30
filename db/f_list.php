@@ -4,17 +4,8 @@ header('Content-Type: text/html;charset=utf-8');
 /*
 	列表出所文件列表，包括未上传完成的，以JSON方式返回给客户端JS。
 */
-require('xdb_files.php');
-require('FileInf.php');
-require('FolderInf.php');
-require('DbHelper.php');
-require('DbFile.php');
-require('DBFolder.php');
 require('biz.redis/RedisTool.php');
 require('biz.redis/tasks.php');
-require('uncomplete/uc_folder.php');
-require('uncomplete/uc_file_child.php');
-require('uncomplete/uc_builder.php');
 
 $uid = $_GET["uid"];
 $cbk = $_GET["callback"];
