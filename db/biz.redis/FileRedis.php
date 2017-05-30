@@ -73,8 +73,7 @@ class FileRedis
 		$f->filesCount 	= intval($r->hGet($idSign, "filesCount"));
 		$f->folder		= strcasecmp($r->hGet($idSign,"fdTask"),"true")==0;
 		return $f;
-	}
-	
+	}	
 	
 }
 ?>

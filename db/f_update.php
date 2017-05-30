@@ -5,6 +5,7 @@ header('Content-Type: text/html;charset=utf-8');
 require('DbHelper.php');
 require('DBFile.php');
 require('DBFolder.php');
+require('biz.redis/RedisTool.php');
 
 $uid 		= $_GET["uid"];
 $sign 		= $_GET["sign"];
@@ -12,6 +13,7 @@ $idSign 	= $_GET["idSign"];
 $perSvr 	= $_GET["perSvr"];
 $lenSvr 	= $_GET["lenSvr"];
 $lenLoc 	= $_GET["lenLoc"];
+$blockSize 	= $_GET["blockSize"];
 
 if(    strlen($uid) < 1 
 	|| strlen($lenLoc) < 1
@@ -24,7 +26,7 @@ if(    strlen($uid) < 1
 //更新redis进度
 $r = RedisTool::con();
 $fr = new FileRedis($r);
-$fr->process($idSign,$perSvr,$lenSvr,"0","0");
+$fr->process($idSign,$perSvr,$lenSvr,"0",blockSize);
 
 header('Content-Length: ' . ob_get_length());
 ?>

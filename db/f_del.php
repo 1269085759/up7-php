@@ -12,6 +12,7 @@ header('Content-Type: text/html;charset=utf-8');
 */
 require('DbHelper.php');
 require('DBFile.php');
+require('biz.redis/RedisTool.php');
 
 $idSign = $_GET["idSign"];
 $uid = $_GET["uid"];
