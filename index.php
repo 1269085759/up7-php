@@ -36,7 +36,8 @@
 </head>
 <body>
     <p>up7多文件上传演示页面</p>
-	<p><a target="_blank" href="db/clear.php">清空数据库</a></p>
+	<p><a target="_blank" href="db/clear.php">清空数据库</a>，<a target="_blank" href="db/f_list.php?uid=0&callback=cbk">文件列表测试</a></p>
+    <p><a href="down3/index.htm" target="_blank">打开下载页面</a></p>
     <p>
         文件路径：<input id="filePath" type="text" size="50" value="D:\\360safe-inst.exe" />&nbsp;
         <input id="btnUpF" type="button" value="上传本地文件" />

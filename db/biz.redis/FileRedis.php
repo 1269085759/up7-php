@@ -1,5 +1,4 @@
 <?php
-require('RedisTool.php');
 
 class FileRedis
 {
