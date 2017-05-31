@@ -55,6 +55,7 @@ $fileSvr->pathLoc = PathTool::url_encode($fileSvr->pathLoc);
 $fileSvr->pathSvr = PathTool::url_encode($fileSvr->pathSvr);
 $json = json_encode($fileSvr);
 $json = PathTool::url_decode($json);//还原汉字
+$json = PathTool::url_encode($json);
 
 echo "({\"ret\":\"$json\"})";
 header('Content-Length: ' . ob_get_length());
