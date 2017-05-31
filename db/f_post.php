@@ -9,13 +9,15 @@ ob_start();
 		2014-04-09 增加文件块验证功能。
 		2017-05-29 完善逻辑
 */
-require('DbHelper.php');
-require('DBFile.php');
-require('xdb_files.php');
-require('FileBlockWriter.php');
-require('HttpHeader.php');
+require('biz.database/DbHelper.php');
+require('biz.database/DBFile.php');
+require('biz.model/xdb_files.php');
+require('biz.redis/RedisTool.php');
+require('biz.redis/FileRedis.php');
+require('biz/HttpHeader.php');
 require('biz/PathTool.php');
 require('biz/FilePart.php');
+require('biz/BlockPathBuilder.php');
 
 $head = new HttpHeader();
 $uid 			= $head->param("f-uid");

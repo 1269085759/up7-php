@@ -24,7 +24,7 @@ class FileRedis
 	{
 		$r = $this->con;
 		if($r->exists($f->idSign)) return;
-	
+			
 		$r->hSet($f->idSign, "fdTask", $f->folder==true?"true":"false");
 		$r->hSet($f->idSign, "rootSign", $f->rootSign);
 		$r->hSet($f->idSign, "pidSign", $f->pidSign);
@@ -44,7 +44,7 @@ class FileRedis
 	function read($idSign)
 	{
 		$r = $this->con;
-		if($r->exists($idSign)) return;
+		if( !$r->exists($idSign)) return null;
 		
 		$f = new xdb_files();
 		$f->idSign 		= $idSign;
