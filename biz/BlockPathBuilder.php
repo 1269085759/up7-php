@@ -45,7 +45,7 @@ class BlockPathBuilder
 	 */
 	function rootFD($child,$blockIndex,$fd)
 	{
-		$pos = strrpos($child->pathRel, "\\");
+		$pos = strrpos($child->pathRel, "/");
 		//在根目录中
 		if(is_bool($pos) || !$pos)
 		{

@@ -81,7 +81,6 @@ if (   (strlen($lenSvr)>0)
 		$childSvr->rootSign = $fd_idSign;
 		$childSvr->blockCount = $rangeCount;
 		$childSvr->blockSize = $rangeSize;
-		var_dump($childSvr);
 		//子文件块路径
 		$childSvr->blockPath = $bpb->rootFD($childSvr, $rangeIndex, $fd);
 		$partPath = PathTool::combin($childSvr->blockPath, "$rangeIndex.part");
