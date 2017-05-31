@@ -30,7 +30,7 @@ class PathGuidBuilder extends PathBuilder
 	}
 	
 	//d:\\wamp\\www\\up6\\upload\\
-	function genFolder($uid,&$fd/*FolderInf*/)
+	function genFolder($uid,$nameLoc)
 	{
 		date_default_timezone_set("PRC");//设置北京时区
 		$path = $this->getRoot();
@@ -38,7 +38,7 @@ class PathGuidBuilder extends PathBuilder
 		$path = PathTool::combin($path, date("m"));
 		$path = PathTool::combin($path, date("d"));
 		$path = PathTool::combin($path,$this->guid());
-		$path = PathTool::combin($path,$fd->nameLoc);
+		$path = PathTool::combin($path,$nameLoc);
 		
 		//在windows平台需要转换成多字节编码
 		$path = iconv("utf-8", "gb2312", $path);

@@ -39,6 +39,13 @@ class PathTool
 		return $txt;		
 	}
 	
+	static function url_encode($txt)
+	{
+		$txt = urlencode($txt);
+		$txt = str_replace("+", "%20", $txt);
+		return $txt;
+	}
+	
 	static function combin($p1,$p2)
 	{
 		$split = PathTool::endsWith($p1,"/");
