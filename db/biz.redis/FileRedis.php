@@ -61,7 +61,7 @@ class FileRedis
 		$f->perSvr 	 	= $r->hGet($idSign, "perSvr");
 		$f->blockCount 	= intval($r->hGet($idSign, "blockCount"));
 		$blockSize 		= $r->hGet($idSign, "blockSize");
-		if(null == blockSize) $blockSize="0byte";
+		if(null == $blockSize) $blockSize="0";
 		$f->blockSize 	= intval($blockSize);
 		$f->filesCount 	= intval($r->hGet($idSign, "filesCount"));
 		$f->folder		= strcasecmp($r->hGet($idSign,"fdTask"),"true")==0;
