@@ -30,6 +30,7 @@ class FileRedis
 		$r->hSet($f->idSign, "pidSign", $f->pidSign);
 		$r->hSet($f->idSign, "pathLoc", $f->pathLoc);
 		$r->hSet($f->idSign, "pathSvr", $f->pathSvr);
+		$r->hSet($f->idSign, "pathRel", $f->pathRel);
 		$r->hSet($f->idSign, "blockPath", $f->blockPath);
 		$r->hSet($f->idSign, "nameLoc", $f->nameLoc);
 		$r->hSet($f->idSign, "nameSvr", $f->nameSvr);
@@ -52,6 +53,7 @@ class FileRedis
 		$f->pidSign 	= $r->hGet($idSign, "pidSign");
 		$f->pathLoc 	= $r->hGet($idSign, "pathLoc");
 		$f->pathSvr 	= $r->hGet($idSign, "pathSvr");
+		$f->pathRel		= $r->hGet($idSign, "pathRel");
 		$f->blockPath  	= $r->hGet($idSign, "blockPath");
 		$f->nameLoc 	= $r->hGet($idSign, "nameLoc");
 		$f->nameSvr 	= $r->hGet($idSign, "nameSvr");
