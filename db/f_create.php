@@ -21,6 +21,7 @@ require('biz.model/FolderInf.php');
 require('biz/PathTool.php');
 require('biz.redis/RedisTool.php');
 require('biz.redis/tasks.php');
+require('biz.redis/FileRedis.php');
 require('biz/PathBuilder.php');
 require('biz/PathGuidBuilder.php');
 require('biz/BlockPathBuilder.php');
