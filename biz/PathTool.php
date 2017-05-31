@@ -78,10 +78,13 @@ class PathTool
 	
 	static function to_gbk($str)
 	{
+		/*
 		$encode = mb_detect_encoding($str, array('ASCII','GB2312','GBK','UTF-8'));
+		var_dump($encode);
 		if( $encode != "UTF-8" ) return $str;
+		*/
 		
-		return iconv($encode, "GB2312", $str);
+		return iconv("utf-8", "gbk", $str);
 	}
 	
 	function unicode_decode($str)

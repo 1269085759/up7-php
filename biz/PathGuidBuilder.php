@@ -41,11 +41,18 @@ class PathGuidBuilder extends PathBuilder
 		$path = PathTool::combin($path,$nameLoc);
 		
 		$path_gbk = PathTool::to_gbk($path);
-		
 		if( !is_dir($path_gbk)) mkdir($path_gbk,0777,true);
+		
 		return $path;
 	}
-	
+
+	/**
+	 * 返回文件路径，自动创建目录
+	 * /upload/年/月/日/guid/QQ2013.exe
+	 * @param $uid
+	 * @param $nameLoc
+	 * @return mixed
+	 */
 	function genFile($uid,$nameLoc)
 	{
 		date_default_timezone_set("PRC");//设置北京时区
@@ -54,12 +61,11 @@ class PathGuidBuilder extends PathBuilder
 		$path = PathTool::combin($path, date("m"));
 		$path = PathTool::combin($path, date("d"));
 		$path = PathTool::combin($path,$this->guid());
-		
+
 		//在windows平台需要转换成多字节编码
-		$path = iconv("utf-8", "gb2312", $path);
-		
-		if(!is_dir($path)) mkdir($path,0777,true);
-		$path = realpath($path);//规范化路径
+		$path_gbk = PathTool::to_gbk($path);		
+		if(!is_dir($path_gbk)) mkdir($path_gbk,0777,true);
+
 		$path = PathTool::combin($path,$nameLoc);
 		return $path;
 	}
