@@ -57,6 +57,6 @@ $json = json_encode($fileSvr);
 $json = PathTool::url_decode($json);//还原汉字
 $json = PathTool::url_encode($json);
 
-echo "({\"ret\":\"$json\"})";
+echo "$cbk({\"ret\":\"$json\"})";
 header('Content-Length: ' . ob_get_length());
 ?>
