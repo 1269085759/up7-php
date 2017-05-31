@@ -75,10 +75,10 @@ class FilesWriter
 		$cmd->bindValue(":f_pathLoc",$f->pathLoc,PDO::PARAM_STR);
 		$cmd->bindValue(":f_pathSvr",$f->pathSvr,PDO::PARAM_STR);
 		$cmd->bindValue(":f_pathRel",$f->pathRel,PDO::PARAM_STR);
-		$cmd->bindValue(":f_lenLoc",$f->lenLoc,PDO::PARAM_INT);
+		$cmd->bindValue(":f_lenLoc",$f->lenLoc,PDO::PARAM_STR);
 		$cmd->bindValue(":f_sizeLoc",$f->sizeLoc,PDO::PARAM_STR);
-		$cmd->bindValue(":f_lenSvr",$f->lenSvr,PDO::PARAM_INT);
-		$cmd->bindValue(":f_perSvr",$f->perSvr,PDO::PARAM_STR);
+		$cmd->bindValue(":f_lenSvr",$f->lenSvr,PDO::PARAM_STR);
+		$cmd->bindValue(":f_perSvr","100%",PDO::PARAM_STR);
 		$cmd->bindValue(":f_sign",$f->sign,PDO::PARAM_STR);
 		$cmd->bindValue(":f_complete",true,PDO::PARAM_BOOL);
 		$cmd->bindValue(":f_fdTask",$f->folder,PDO::PARAM_BOOL);
