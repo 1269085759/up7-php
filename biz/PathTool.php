@@ -71,18 +71,17 @@ class PathTool
 	static function to_utf8($str)
 	{
 		$encode = mb_detect_encoding($str, array('ASCII','GB2312','GBK','UTF-8'));
-		if( $encode == "UTF-8" ) return $str;
+		$encode = strtolower($encode);
+		if( $encode == "utf-8" ) return $str;
 		
 		return iconv($encode, "UTF-8", $str);
 	}
 	
 	static function to_gbk($str)
-	{
-		/*
-		$encode = mb_detect_encoding($str, array('ASCII','GB2312','GBK','UTF-8'));
-		var_dump($encode);
-		if( $encode != "UTF-8" ) return $str;
-		*/
+	{		
+		$encode = strtolower( mb_detect_encoding($str, array('ASCII','GB2312','GBK','UTF-8')) );
+		if( $encode != "utf-8" ) return $str;
+		
 		
 		return iconv("utf-8", "gbk", $str);
 	}

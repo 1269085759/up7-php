@@ -67,7 +67,6 @@ if (   (strlen($lenSvr)>0)
 	else
 	{
 		$fd = $cache->read($fd_idSign);//文件夹信息
-		
 		$childSvr = new xdb_files();
 		$childSvr->idSign = $idSign;
 		$childSvr->nameLoc = $nameLoc;
@@ -76,11 +75,13 @@ if (   (strlen($lenSvr)>0)
 		$childSvr->sizeLoc = $sizeLoc;
 		$childSvr->pathLoc = str_replace("\\", "/", $pathLoc);
 		$childSvr->pathSvr = str_replace($fd->pathLoc, $fd->pathSvr, $pathLoc);
+		$childSvr->pathRel = str_replace("$fd->pathLoc\\", "", $pathLoc);
 		$childSvr->pathSvr = str_replace("\\", "/", $childSvr->pathSvr);
-		$childSvr->pathRel = str_replace("$fd->pathLoc.\\", "", $pathLoc);
+		$childSvr->pathRel = str_replace("\\", "/", $childSvr->pathRel);
 		$childSvr->rootSign = $fd_idSign;
 		$childSvr->blockCount = $rangeCount;
 		$childSvr->blockSize = $rangeSize;
+		var_dump($childSvr);
 		//子文件块路径
 		$childSvr->blockPath = $bpb->rootFD($childSvr, $rangeIndex, $fd);
 		$partPath = PathTool::combin($childSvr->blockPath, "$rangeIndex.part");

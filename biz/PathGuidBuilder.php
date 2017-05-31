@@ -40,7 +40,7 @@ class PathGuidBuilder extends PathBuilder
 		$path = PathTool::combin($path,$this->guid());
 		$path = PathTool::combin($path,$nameLoc);
 		
-		$path_gbk = PathTool::to_gbk($path);
+		$path_gbk = iconv("utf-8","gbk",$path);
 		if( !is_dir($path_gbk)) mkdir($path_gbk,0777,true);
 		
 		return $path;

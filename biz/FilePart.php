@@ -4,6 +4,7 @@
  * @author zysoft qwl
  * 更新记录：
  *   2017-05-29 创建
+ *   2017-05-31 完善对中文路径的支持
  *
  */
 class FilePart
@@ -15,7 +16,7 @@ class FilePart
 	 */
 	function save($partPath,$pathTmp)
 	{
-		$path = PathTool::to_gbk($partPath);
+		$path = iconv("utf-8","gbk",$partPath);
 		
 		//创建层级目录
 		$fd = dirname($path);
