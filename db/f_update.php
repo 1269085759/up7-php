@@ -2,10 +2,8 @@
 ob_start();
 header('Content-Type: text/html;charset=utf-8');
 
-require('../DbHelper.php');
-require('../DBFile.php');
-require('../DBFolder.php');
 require('../biz.redis/RedisTool.php');
+require('../biz.redis/FileRedis.php');
 
 $uid 		= $_GET["uid"];
 $sign 		= $_GET["sign"];
