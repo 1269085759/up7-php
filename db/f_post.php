@@ -76,8 +76,8 @@ if (   (strlen($lenSvr)>0)
 		$childSvr->pathLoc = str_replace("\\", "/", $pathLoc);
 		$childSvr->pathSvr = str_replace($fd->pathLoc, $fd->pathSvr, $pathLoc);
 		$childSvr->pathRel = str_replace("$fd->pathLoc\\", "", $pathLoc);
-		$childSvr->pathSvr = str_replace("\\", "/", $childSvr->pathSvr);
-		$childSvr->pathRel = str_replace("\\", "/", $childSvr->pathRel);
+		$childSvr->pathSvr = str_replace("\\", "/", $childSvr->pathSvr);//将服务端路径转换为/格式,以支持linux环境
+// 		$childSvr->pathRel = str_replace("\\", "/", $childSvr->pathRel);//将相对路径转换为/格式
 		$childSvr->rootSign = $fd_idSign;
 		$childSvr->blockCount = $rangeCount;
 		$childSvr->blockSize = $rangeSize;
