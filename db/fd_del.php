@@ -9,10 +9,10 @@ ob_start();
 		2014-04-09 增加文件块验证功能。
 		2014-09-12 完成逻辑
 */
-require('DbHelper.php');
-require('DBFile.php');
-require('DBFolder.php');
-require('UploaderCfg.php');
+require('../DbHelper.php');
+require('../DBFile.php');
+require('../DBFolder.php');
+require('../UploaderCfg.php');
 
 $fid = $_GET["fid"];
 $uid = $_GET["uid"];

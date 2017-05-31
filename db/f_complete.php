@@ -7,12 +7,12 @@ header('Content-Type: text/html;charset=utf-8');
 	如果服务器不存在此文件，则添加一条记录，百分比为100%
 	如果服务器已存在相同文件，则将文件上传百分比更新为100%
 */
-require('biz.database/DbHelper.php');
-require('biz.database/DBFile.php');
-require('biz.redis/RedisTool.php');
-require('biz.redis/FileRedis.php');
-require('biz.redis/tasks.php');
-require('biz.model/xdb_files.php');
+require('../biz.database/DbHelper.php');
+require('../biz.database/DBFile.php');
+require('../biz.redis/RedisTool.php');
+require('../biz.redis/FileRedis.php');
+require('../biz.redis/tasks.php');
+require('../biz.model/xdb_files.php');
 
 $uid 		= $_GET["uid"];
 $idSign 	= $_GET["idSign"];

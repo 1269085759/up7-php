@@ -14,17 +14,17 @@ header('Content-type: text/html;charset=utf-8');
 		2014-08-12 完成逻辑。
 		2017-05-29 增加块路径生成逻辑
 */
-require('biz.database/DbHelper.php');
-require('biz.database/DBFile.php');
-require('biz.model/xdb_files.php');
-require('biz.model/FolderInf.php');
-require('biz/PathTool.php');
-require('biz.redis/RedisTool.php');
-require('biz.redis/tasks.php');
-require('biz.redis/FileRedis.php');
-require('biz/PathBuilder.php');
-require('biz/PathGuidBuilder.php');
-require('biz/BlockPathBuilder.php');
+require('../biz.database/DbHelper.php');
+require('../biz.database/DBFile.php');
+require('../biz.model/xdb_files.php');
+require('../biz.model/FolderInf.php');
+require('../biz/PathTool.php');
+require('../biz.redis/RedisTool.php');
+require('../biz.redis/tasks.php');
+require('../biz.redis/FileRedis.php');
+require('../biz/PathBuilder.php');
+require('../biz/PathGuidBuilder.php');
+require('../biz/BlockPathBuilder.php');
 
 $uid 			= $_GET["uid"];
 $lenLoc			= $_GET["lenLoc"];//10240
