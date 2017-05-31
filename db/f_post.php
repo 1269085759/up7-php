@@ -88,11 +88,11 @@ if (   (strlen($lenSvr)>0)
 		$part = new FilePart();
 		$part->save($partPath, $fpath);
 		//添加到缓存
-		if(!$svr->exists($idSign))
+		if( !$svr->exists($idSign) )
 		{
 			$cache->create($childSvr);
 			//添加到文件夹
-			$svr->lPush("$fd->idSign-files",$idSign);
+			$svr->lPush($fd->idSign."-files",$idSign);
 		}//更新文件夹进度
 		else if(strcmp($f_pos,"0")==0 )
 		{

@@ -37,7 +37,7 @@ if ( strlen($sign) > 0 )
 	//清除缓存
 	$svr = new tasks($r);
 	$svr->uid = $uid;
-	$svr->delFd($sign);
+	//$svr->delFd($sign);
 	$r->close();
 	$ret = 1;
 }

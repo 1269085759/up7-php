@@ -23,7 +23,7 @@ class FileRedis
 	function create($f)
 	{
 		$r = $this->con;
-		if($r->exists($f->idSign)) return;
+		//if($r->exists($f->idSign)) return;
 			
 		$r->hSet($f->idSign, "fdTask", $f->folder==true?"true":"false");
 		$r->hSet($f->idSign, "rootSign", $f->rootSign);

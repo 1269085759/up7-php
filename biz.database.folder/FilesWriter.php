@@ -106,7 +106,7 @@ class FilesWriter
 			$index += count($keys);
 			foreach($keys as $k)
 			{
-				$f = $svr->read($key);
+				$f = $svr->read($k);
 				$f->f_fdChild = true;
 				$this->save($cmd, $f);
 				
