@@ -34,11 +34,11 @@ class FileRedis
 		$r->hSet($f->idSign, "blockPath", $f->blockPath);
 		$r->hSet($f->idSign, "nameLoc", $f->nameLoc);
 		$r->hSet($f->idSign, "nameSvr", $f->nameSvr);
-		$r->hSet($f->idSign, "lenLoc", strval($f->lenLoc) );
-		$r->hSet($f->idSign, "lenSvr", "0" );
-		$r->hSet($f->idSign, "blockCount", strval($f->blockCount) );
+		$r->hSet($f->idSign, "lenLoc", $f->lenLoc );
+		$r->hSet($f->idSign, "lenSvr", $f->lenSvr );
+		$r->hSet($f->idSign, "blockCount", $f->blockCount );
 		$r->hSet($f->idSign, "sizeLoc",$f->sizeLoc);
-		$r->hSet($f->idSign, "filesCount", strval($f->filesCount) );
+		$r->hSet($f->idSign, "filesCount", $f->filesCount );
 		$r->hSet($f->idSign, "foldersCount", "0" );
 	}
 	

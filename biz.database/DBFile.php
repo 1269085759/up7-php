@@ -66,7 +66,7 @@ class DBFile
 		$cmd->bindValue(":f_lenSvr",$inf->lenLoc,PDO::PARAM_INT);
 		$cmd->bindParam(":f_sizeLoc",$inf->sizeLoc);
 		$cmd->bindValue(":f_blockCount",$inf->blockCount,PDO::PARAM_INT);
-		$cmd->bindValue(":f_blockSize",$inf->blockSize,PDO::PARAM_INT);
+		$cmd->bindValue(":f_blockSize",$inf->blockSize,PDO::PARAM_STR);
 		$cmd->bindParam(":f_blockPath",$inf->blockPath);
 		$cmd->execute();
 	}
