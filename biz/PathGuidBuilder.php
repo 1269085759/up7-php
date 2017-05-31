@@ -40,11 +40,10 @@ class PathGuidBuilder extends PathBuilder
 		$path = PathTool::combin($path,$this->guid());
 		$path = PathTool::combin($path,$nameLoc);
 		
-		//在windows平台需要转换成多字节编码
-		$path = iconv("utf-8", "gb2312", $path);
+		$path_gbk = PathTool::to_gbk($path);
 		
-		if( !is_dir($path)) mkdir($path,0777,true);
-		return realpath($path);//规范化路径
+		if( !is_dir($path_gbk)) mkdir($path_gbk,0777,true);
+		return $path;
 	}
 	
 	function genFile($uid,$nameLoc)

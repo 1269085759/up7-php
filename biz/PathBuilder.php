@@ -24,8 +24,5 @@ class PathBuilder
 		if(!is_dir($path) ) mkdir($path);//创建目录
 		return realpath($path);//与操作系统保持一致
 	}
-	
-	function genFolder($uid,&$fd){}
-	function genFile($uid,$nameLoc){}
 }
 ?>

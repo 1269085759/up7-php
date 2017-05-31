@@ -12,9 +12,11 @@ header('Content-Type: text/html;charset=utf-8');
 		2017-05-31 优化逻辑，取消POST整个文件夹数据，而是化整为零传小数据。
 */
 require('../biz/PathTool.php');
+require('../biz/PathBuilder.php');
 require('../biz/PathGuidBuilder.php');
 require('../biz.model/xdb_files.php');
 require('../biz.redis/RedisTool.php');
+require('../biz.redis/FileRedis.php');
 require('../biz.redis/tasks.php');
 
 $idSign  = $_GET["idSign"];
@@ -47,8 +49,13 @@ $svr->add($fileSvr);
 $con->close();
 
 //将数组转换为JSON
+$fileSvr->nameLoc = PathTool::url_encode($fileSvr->nameLoc);
+$fileSvr->nameSvr = PathTool::url_encode($fileSvr->nameSvr);
+$fileSvr->pathLoc = PathTool::url_encode($fileSvr->pathLoc);
+$fileSvr->pathSvr = PathTool::url_encode($fileSvr->pathSvr);
 $json = json_encode($fileSvr);
-$json = PathTool::url_encode($json);
+var_dump($json);
+$json = PathTool::url_decode($json);
 
 echo $json;
 header('Content-Length: ' . ob_get_length());
