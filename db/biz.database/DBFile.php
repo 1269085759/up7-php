@@ -33,6 +33,7 @@ class DBFile
 		$sb = $sb . ",f_complete";
 		$sb = $sb . ",f_blockCount";
 		$sb = $sb . ",f_blockSize";
+		$sb = $sb . ",f_blockPath";
 	
 		$sb = $sb . ") values (";
 	
@@ -49,6 +50,7 @@ class DBFile
 		$sb = $sb . ",1";//",@f_complete";
 		$sb = $sb . ",:f_blockCount";//",@f_blockCount";
 		$sb = $sb . ",:f_blockSize";//",@f_blockSize";
+		$sb = $sb . ",:f_blockPath";//",@f_blockSize";
 		$sb = $sb . ")";
 	
 		$db = &$this->db;
@@ -65,6 +67,7 @@ class DBFile
 		$cmd->bindParam(":f_sizeLoc",$inf->sizeLoc);
 		$cmd->bindValue(":f_blockCount",$inf->blockCount,PDO::PARAM_INT);
 		$cmd->bindValue(":f_blockSize",$inf->blockSize,PDO::PARAM_INT);
+		$cmd->bindParam(":f_blockPath",$inf->blockPath);
 		$cmd->execute();
 	}
 
