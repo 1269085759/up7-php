@@ -8,15 +8,9 @@ class FileRedis
 		$this->con = $r;
 	}
 	
-	function getCon()
-	{
-		if($this->con == null) $this->con = RedisTool::con();
-		return $this->con;
-	}
-	
 	function process($idSign,$perSvr,$lenSvr,$blockCount,$blockSize)
 	{
-		$r = $this->getCon();
+		$r = $this->con;
 		$r->hSet($idSign, "perSvr", $perSvr);
 		$r->hSet($idSign, "lenSvr", $lenSvr);
 		if( $blockCount != "0" )
@@ -28,7 +22,7 @@ class FileRedis
 	
 	function create($f)
 	{
-		$r = $this->getCon();
+		$r = $this->con;
 		if($r->exists($f->idSign)) return;
 	
 		$r->hSet($f->idSign, "fdTask", $f->folder==true?"true":"false");
@@ -49,8 +43,8 @@ class FileRedis
 	
 	function read($idSign)
 	{
-		$r = $this->getCon();
-		if($r->exists($f->idSign)) return;
+		$r = $this->con;
+		if($r->exists($idSign)) return;
 		
 		$f = new xdb_files();
 		$f->idSign 		= $idSign;

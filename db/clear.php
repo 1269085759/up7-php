@@ -1,10 +1,7 @@
 <?php
 
-require('DbHelper.php');
-require('inc.php');
-require('DBFile.php');
-require('FileInf.php');
-require('FolderInf.php');
+require('biz.database/DbHelper.php');
+require('biz.database/DBFile.php');
 require('biz.redis/tasks.php');
 require('biz.redis/RedisTool.php');
 

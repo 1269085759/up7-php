@@ -1,5 +1,4 @@
 <?php
-require('FileRedis.php');
 
 class tasks
 {
