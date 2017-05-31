@@ -11,9 +11,11 @@ ob_start();
 		2014-09-15 修复返回JSONP数据格式错误的问题。
 		2016-05-31 优化调用，DBFolder::Complete会自动更新文件表信息，所以在此页面不需要再单独调用DBFile::fd_complete
 */
-require('../DbHelper.php');
-require('../DBFile.php');
-require('../DBFolder.php');
+require('../biz.database/DbHelper.php');
+require('../biz.database.folder/FilesWriter.php');
+require('../biz.redis/RedisTool.php');
+require('../biz.redis/FileRedis.php');
+require('../biz.redis/tasks.php');
 
 $sign   = $_GET["idSign"];
 $uid	= $_GET["uid"];
@@ -24,17 +26,17 @@ $ret 	= 0;
 if ( strlen($sign) > 0 )
 {
 	$r = RedisTool::con();
-	$fd = new fd_redis($r);
-	$fd->read($sign);
-	
+	$cache = new FileRedis($r);
+	$fd = $cache->read($sign);
+		
 	//清除缓存
 	$svr = new tasks($r);
 	$svr->uid = $uid;
 	$svr->delFd($sign);
 	$r->close();
 	
-	$fd->mergeAll();//合并文件块
-	$fd->saveToDb();//保存到数据库
+	//将缓存数据写到数据库
+	$w = new FilesWriter($r, $fd);
 	$ret = 1;
 }
 echo "$cbk( $ret )";

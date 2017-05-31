@@ -12,7 +12,7 @@ class tasks
 	
 	function getKey()
 	{
-		return $this->uid . "-" . $this->keyName;
+		return $this->uid . "-" . $this->keyName;		
 	}
 	
 	function sadd($sign)
@@ -41,6 +41,13 @@ class tasks
 		$this->con->srem($this->getKey(), $sign);
 		//删除key
 		$this->con->del($sign);
+	}
+	
+	function delFd($idSign)
+	{
+		//清除文件缓存表
+		$this->con->del("$idSign-files");
+		$this->del($idSign);
 	}
 	
 	function clear()
