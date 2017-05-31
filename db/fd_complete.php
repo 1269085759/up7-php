@@ -16,6 +16,7 @@ require('../biz.database.folder/FilesWriter.php');
 require('../biz.redis/RedisTool.php');
 require('../biz.redis/FileRedis.php');
 require('../biz.redis/tasks.php');
+require('../biz.model/xdb_files.php');
 
 $sign   = $_GET["idSign"];
 $uid	= $_GET["uid"];
