@@ -65,26 +65,26 @@ class FilesWriter
 	
 	function save($cmd,$f)
 	{
-		$cmd->bindValue(":f_idSign",$f->idSign);
-		$cmd->bindValue(":f_pidSign",$f->pidSign);
-		$cmd->bindValue(":f_rootSign",$f->rootSign);
+		$cmd->bindValue(":f_idSign",$f->idSign,PDO::PARAM_STR);
+		$cmd->bindValue(":f_pidSign",$f->pidSign,PDO::PARAM_STR);
+		$cmd->bindValue(":f_rootSign",$f->rootSign,PDO::PARAM_STR);
 		$cmd->bindValue(":f_fdChild",$f->f_fdChild,PDO::PARAM_BOOL);
 		$cmd->bindValue(":f_uid",$f->uid,PDO::PARAM_INT);
-		$cmd->bindValue(":f_nameLoc",$f->nameLoc);
-		$cmd->bindValue(":f_nameSvr",$f->nameLoc);
-		$cmd->bindValue(":f_pathLoc",$f->pathLoc);
-		$cmd->bindValue(":f_pathSvr",$f->pathSvr);
-		$cmd->bindValue(":f_pathRel",$f->pathRel);
-		$cmd->bindValue(":f_lenLoc",$f->lenLoc);
-		$cmd->bindValue(":f_sizeLoc",$f->sizeLoc);
-		$cmd->bindValue(":f_lenSvr",$f->lenSvr);
-		$cmd->bindValue(":f_perSvr",$f->perSvr);
-		$cmd->bindValue(":f_sign",$f->sign);
-		$cmd->bindValue(":f_complete",true);
-		$cmd->bindValue(":f_fdTask",$f->folder);
-		$cmd->bindValue(":f_blockCount",$f->blockCount);
-		$cmd->bindValue(":f_blockSize",$f->blockSize);
-		$cmd->bindValue(":f_blockPath",$f->blockPath);
+		$cmd->bindValue(":f_nameLoc",$f->nameLoc,PDO::PARAM_STR);
+		$cmd->bindValue(":f_nameSvr",$f->nameLoc,PDO::PARAM_STR);
+		$cmd->bindValue(":f_pathLoc",$f->pathLoc,PDO::PARAM_STR);
+		$cmd->bindValue(":f_pathSvr",$f->pathSvr,PDO::PARAM_STR);
+		$cmd->bindValue(":f_pathRel",$f->pathRel,PDO::PARAM_STR);
+		$cmd->bindValue(":f_lenLoc",$f->lenLoc,PDO::PARAM_INT);
+		$cmd->bindValue(":f_sizeLoc",$f->sizeLoc,PDO::PARAM_STR);
+		$cmd->bindValue(":f_lenSvr",$f->lenSvr,PDO::PARAM_INT);
+		$cmd->bindValue(":f_perSvr",$f->perSvr,PDO::PARAM_STR);
+		$cmd->bindValue(":f_sign",$f->sign,PDO::PARAM_STR);
+		$cmd->bindValue(":f_complete",true,PDO::PARAM_BOOL);
+		$cmd->bindValue(":f_fdTask",$f->folder,PDO::PARAM_BOOL);
+		$cmd->bindValue(":f_blockCount",$f->blockCount,PDO::PARAM_INT);
+		$cmd->bindValue(":f_blockSize",$f->blockSize,PDO::PARAM_INT);
+		$cmd->bindValue(":f_blockPath",$f->blockPath,PDO::PARAM_STR);
 		$cmd->execute();
 	}
 	
