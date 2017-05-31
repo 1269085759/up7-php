@@ -91,6 +91,8 @@ if (   (strlen($lenSvr)>0)
 		if(!$svr->exists($idSign))
 		{
 			$cache->create($childSvr);
+			//添加到文件夹
+			$svr->lPush("$fd->idSign-files",$idSign);
 		}//更新文件夹进度
 		else if(strcmp($f_pos,"0")==0 )
 		{

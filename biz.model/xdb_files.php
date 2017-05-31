@@ -23,7 +23,7 @@ class xdb_files
 	/**
 	 * 表示当前项是否是一个文件夹项。
 	 */
-	var $folder;
+	var $folder=false;
 	/**
 	 * 与xdb_folders.fd_id对应
 	 */
@@ -31,7 +31,7 @@ class xdb_files
 	/// <summary>
 	/// 是否是文件夹中的子文件
 	/// </summary>
-	var $f_fdChild;
+	var $f_fdChild=false;
 	/**
 	 * 用户ID。与第三方系统整合使用。
 	 */

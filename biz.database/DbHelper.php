@@ -21,7 +21,7 @@ class DbHelper
         $this->m_host 	= "localhost";  //
 		$this->m_dbName = "up7";
 		$this->m_uname	= "root";
-		$this->m_upass	= "";
+		$this->m_upass	= "123456";
 		$this->m_dbStr = "mysql:host=" . $this->m_host . ";dbname=" . $this->m_dbName;		
 	}
 	

@@ -65,26 +65,26 @@ class FilesWriter
 	
 	function save($cmd,$f)
 	{
-		$cmd->bindParam(":f_idSign",$f->idSign);
-		$cmd->bindParam(":f_pidSign",$f->pidSign);
-		$cmd->bindParam(":f_rootSign",$f->rootSign);
-		$cmd->bindParam(":f_fdChild",$f->f_fdChild);
-		$cmd->bindValue(":f_uid",$f->uid,PDO::PARAM_INTN);
-		$cmd->bindParam(":f_nameLoc",$f->nameLoc);
-		$cmd->bindParam(":f_nameSvr",$f->nameLoc);
-		$cmd->bindParam(":f_pathLoc",$f->pathLoc);
-		$cmd->bindParam(":f_pathSvr",$f->pathSvr);
-		$cmd->bindParam(":f_pathRel",$f->pathRel);
-		$cmd->bindParam(":f_lenLoc",$f->lenLoc);
-		$cmd->bindParam(":f_sizeLoc",$f->sizeLoc);
-		$cmd->bindParam(":f_lenSvr",$f->lenSvr);
-		$cmd->bindParam(":f_perSvr",$f->perSvr);
+		$cmd->bindValue(":f_idSign",$f->idSign);
+		$cmd->bindValue(":f_pidSign",$f->pidSign);
+		$cmd->bindValue(":f_rootSign",$f->rootSign);
+		$cmd->bindValue(":f_fdChild",$f->f_fdChild,PDO::PARAM_BOOL);
+		$cmd->bindValue(":f_uid",$f->uid,PDO::PARAM_INT);
+		$cmd->bindValue(":f_nameLoc",$f->nameLoc);
+		$cmd->bindValue(":f_nameSvr",$f->nameLoc);
+		$cmd->bindValue(":f_pathLoc",$f->pathLoc);
+		$cmd->bindValue(":f_pathSvr",$f->pathSvr);
+		$cmd->bindValue(":f_pathRel",$f->pathRel);
+		$cmd->bindValue(":f_lenLoc",$f->lenLoc);
+		$cmd->bindValue(":f_sizeLoc",$f->sizeLoc);
+		$cmd->bindValue(":f_lenSvr",$f->lenSvr);
+		$cmd->bindValue(":f_perSvr",$f->perSvr);
 		$cmd->bindValue(":f_sign",$f->sign);
 		$cmd->bindValue(":f_complete",true);
 		$cmd->bindValue(":f_fdTask",$f->folder);
 		$cmd->bindValue(":f_blockCount",$f->blockCount);
 		$cmd->bindValue(":f_blockSize",$f->blockSize);
-		$cmd->bindParam(":f_blockPath",$f->blockPath);
+		$cmd->bindValue(":f_blockPath",$f->blockPath);
 		$cmd->execute();
 	}
 	

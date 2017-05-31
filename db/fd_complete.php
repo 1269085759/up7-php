@@ -28,16 +28,17 @@ if ( strlen($sign) > 0 )
 {
 	$r = RedisTool::con();
 	$cache = new FileRedis($r);
-	$fd = $cache->read($sign);
+	$fd = $cache->read($sign);	
+	
+	//将缓存数据写到数据库
+	$w = new FilesWriter($r, $fd);
+	$w->saveAll();
 		
 	//清除缓存
 	$svr = new tasks($r);
 	$svr->uid = $uid;
 	$svr->delFd($sign);
 	$r->close();
-	
-	//将缓存数据写到数据库
-	$w = new FilesWriter($r, $fd);
 	$ret = 1;
 }
 echo "$cbk( $ret )";
