@@ -4,7 +4,7 @@ class pager
 	function read($pageIndex,$id)
 	{
 		$pageSize = 100;
-		$pageStart = ((intval($pageIndex)-1)*$pageSize)+1;
+		$pageStart = ((intval($pageIndex)-1)*$pageSize);
 		$sql = "select f_nameLoc,f_pathLoc,f_pathSvr,f_pathRel,f_blockPath,f_blockSize,f_lenLoc,f_sizeLoc from up7_files where f_rootSign='$id' limit $pageStart, $pageSize";
 		//
 		$db = new DbHelper();

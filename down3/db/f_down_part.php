@@ -45,6 +45,8 @@ if (   (strlen($lenSvr)>0)
 	$svr->close();
 	
 	$partPath = PathTool::combin($blockPath, "$blockIndex.part");
+	//windows环境需要转成gbk编码
+	$partPath = iconv("utf-8","gbk",$partPath);
 	$downLen = intval($rangeSize) - intval($blockOffset);
 	header("Content-Length: $downLen");
 	header("Pragma: No-cache");
