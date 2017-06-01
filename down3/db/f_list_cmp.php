@@ -6,6 +6,7 @@ header('Content-Type: text/html;charset=utf-8');
 require('../../biz/PathTool.php');
 require('../../biz.database/DbHelper.php');
 require('../biz/CompleteReader.php');
+require('../biz.model/DnFileInf.php');
 
 $uid = $_GET["uid"];
 $cbk = $_GET["callback"];//jsonp

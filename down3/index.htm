@@ -51,12 +51,12 @@
                             //文件夹
                             if ( f.fdTask )
                             {
-                                var d = downer.add_folder(url, f, f.nameLoc);
+                                var d = downer.add_folder(f);
                                 if (d == null) return;//
                             }
                             else
                             {
-                                var d = downer.add_file(url, f.nameLoc);
+                                var d = downer.add_file(f);
                                 if (d == null) return;//
                                 d.ui.size.text(f.sizeSvr);
                                 d.ui.name.text(f.nameLoc);
@@ -80,11 +80,11 @@
     </script>
 </head>
 <body>
-    <p>此页为下载控件演示页面，与HttpUploader6配合使用。可以下载HttpUploader6数据库中的文件和文件夹</p>
+    <p>此页为下载控件演示页面，与up7配合使用。可以下载up7数据库中的文件和文件夹</p>
     <ul>
         <li><p><a target="_blank" href="../index.htm">打开上传页面</a></p></li>
         <li><p><a target="_blank" href="../db/clear.php">清空上传数据库</a></p></li>
-        <li><p><a target="_blank" href="db/clear.php">清空下载数据库</a></p></li>
+        <li><p><a target="_blank" href="db/clear.php">清空下载缓存(Redis)</a></p></li>
     </ul>    
     <table id="tbCmp" cellpadding="0" cellspacing="0" border="1" class="files-svr">
         <tr id="tbHead">

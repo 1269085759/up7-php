@@ -50,15 +50,15 @@ function DownloaderMgr()
 		, "FilePart"	: 10485760//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilePartTdr"	: 3//文件块线程数
         //file
-        , "UrlCreate"   : "http://localhost:81/up7/code/down3/db/f_create.php"
-        , "UrlDel"      : "http://localhost:8080/Uploader7MySQL/down3/db/f_del.jsp"
-        , "UrlList"     : "http://localhost:8080/Uploader7MySQL/down3/db/f_list.jsp"
-        , "UrlListCmp"  : "http://localhost:8080/Uploader7MySQL/down3/db/f_list_cmp.jsp"
-        , "UrlUpdate"   : "http://localhost:8080/Uploader7MySQL/down3/db/f_update.jsp"
-        , "UrlDown"     : "http://localhost:8080/Uploader7MySQL/down3/db/f_down_part.jsp"
+        , "UrlCreate"   : "http://localhost:811/up7/down3/db/f_create.php"
+        , "UrlDel"      : "http://localhost:811/up7/down3/db/f_del.php"
+        , "UrlList"     : "http://localhost:811/up7/down3/db/f_list.php"
+        , "UrlListCmp"  : "http://localhost:811/up7/down3/db/f_list_cmp.php"
+        , "UrlUpdate"   : "http://localhost:811/up7/down3/db/f_update.php"
+        , "UrlDown"     : "http://localhost:811/up7/down3/db/f_down_part.php"
 	    //folder
-        , "UrlFdCreate" : "http://localhost:8080/Uploader7MySQL/down3/db/fd_create.jsp"
-        , "UrlFdPage"   : "http://localhost:8080/Uploader7MySQL/down3/db/fd_page.jsp"
+        , "UrlFdCreate" : "http://localhost:811/up7/down3/db/fd_create.php"
+        , "UrlFdPage"   : "http://localhost:811/up7/down3/db/fd_page.php"
         //x86
 		, "ClsidPart"	: "57FA11EE-5E98-415C-933D-BCA188B86B5E"
 		, "CabPath"		: "http://www.ncmem.com/download/down3/down3.cab"
