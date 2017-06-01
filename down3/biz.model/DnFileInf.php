@@ -17,7 +17,7 @@ class DnFileInf
 	var $perLoc = "0%";
 	var $complete = false;
 	var $fdID = 0;//与up6_folder.fd_id对应
-	var $fdTask = false;
+	var $folder = false;
 	var $pidRoot = 0; 
 	var $files = null;
 	var $fileCount = 0;

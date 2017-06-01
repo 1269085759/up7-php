@@ -3,6 +3,7 @@ require('../../biz/PathTool.php');
 require('../../biz.redis/FileRedis.php');
 require('../../biz.redis/RedisTool.php');
 require('../biz.redis/tasks.php');
+require('../biz.model/DnFileInf.php');
 
 $uid 		= $_GET["uid"];
 $signSvr 	= $_GET["signSvr"];

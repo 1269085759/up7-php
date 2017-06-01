@@ -1,4 +1,9 @@
 <?php
+/**
+ * 下载任务管理器
+ * @author zysoft
+ *
+ */
 class tasks
 {	
 	var $uid;

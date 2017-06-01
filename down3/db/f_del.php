@@ -1,10 +1,8 @@
 <?php 
-require('../../db/DbHelper.php');
-require('../../db/PathTool.php');
-require('DnFile.php');
-require('../model/DnFileInf.php');
+require('../../biz/PathTool.php');
+require('../biz.redis/tasks.php');
 
-$fid = $_GET["idSvr"];
+$fid = $_GET["signSvr"];
 $uid = $_GET["uid"];
 $cbk = $_GET["callback"];//jsonp
 
@@ -13,8 +11,9 @@ if ( strlen($uid)<1 ||	empty($fid)	)
 	echo $cbk . "({\"value\":null})";
 	die();
 }
-$file = new DnFile();
-$file->Delete($fid, $uid);
-$file->delFiles($fid, $uid);
+$j = RedisTool::con();
+$svr = new tasks($uid, $j);
+$svr->del($fid);
+$j->close();
 echo $cbk . "({\"value\":1})";
 ?>
