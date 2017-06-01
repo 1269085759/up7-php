@@ -6,6 +6,7 @@ ob_start();
 		2017-06-01 创建
 */
 require('../../biz.redis/RedisTool.php');
+require('../../biz/PathTool.php');
 require('../biz.redis/FileRedis.php');
 require('../../biz/HttpHeader.php');
 

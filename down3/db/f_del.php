@@ -1,5 +1,6 @@
 <?php 
 require('../../biz/PathTool.php');
+require('../../biz.redis/RedisTool.php');
 require('../biz.redis/tasks.php');
 
 $fid = $_GET["signSvr"];
