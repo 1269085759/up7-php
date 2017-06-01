@@ -42,8 +42,8 @@ class CompleteReader
 			$f->pathLoc = PathTool::urlencode_path($f->pathLoc);
 			$f->pathSvr = PathTool::urlencode_path($f->pathSvr);
 			$f->blockPath = PathTool::urlencode_path($f->blockPath);
-			$f->pathSvr = str_replace("\\", "/", $f->pathSvr);
-			$f->blockPath = str_replace("\\", "/", $f->blockPath);
+			$f->pathSvr = str_replace("\\\\", "/", $f->pathSvr);
+			$f->blockPath = str_replace("\\\\", "/", $f->blockPath);
 			$files[] = $f;
 		}
 		$json = json_encode($files);
