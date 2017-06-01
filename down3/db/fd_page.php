@@ -2,6 +2,8 @@
 ob_start();
 header('Content-Type: text/html;charset=utf-8');
 require('../../biz.database/DbHelper.php');
+require('../../biz/PathTool.php');
+require('../biz.model/DnFileInf.php');
 require('../biz/pager.php');
 /*
  * 分页数据
