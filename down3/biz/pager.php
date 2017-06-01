@@ -27,11 +27,12 @@ class pager
 			$f->nameLoc = PathTool::url_encode($f->nameLoc);
 			$f->pathLoc = PathTool::urlencode_path($f->pathLoc);
 			$f->pathSvr = PathTool::urlencode_path($f->pathSvr);
-			$f->pathRel = PathTool::urlencode_path($f->pathSvr);
+			$f->pathRel = PathTool::urlencode_path($f->pathRel);
 			$f->blockPath = PathTool::urlencode_path($f->blockPath);
-			$f->pathSvr = str_replace("\\", "/", $f->pathSvr);
-			$f->pathRel = str_replace("\\", "/", $f->pathRel);
-			$f->blockPath = str_replace("\\", "/", $f->blockPath);
+			//将\\转换为/
+			$f->pathSvr = str_replace("%5C%5C", "%2F", $f->pathSvr);
+			$f->pathRel = str_replace("%5C%5C", "%2F", $f->pathRel);
+			$f->blockPath = str_replace("%5C%5C", "%2F", $f->blockPath);
 			$files[] = $f;
 		}
 		$json = json_encode($files);
