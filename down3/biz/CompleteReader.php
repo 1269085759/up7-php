@@ -33,8 +33,8 @@ class CompleteReader
 			$f->pathSvr 	= $row["f_pathSvr"];
 			$f->blockPath 	= $row["f_blockPath"];
 			$f->blockSize	= $row["f_blockSize"];
-			$f->sizeSvr 	= $row["f_sizeLoc"];
-			$f->folder		= strtolower( $row["f_fdTask"] ) == "true";
+			$f->sizeSvr 	= $row["f_sizeLoc"];			
+			$f->folder		= (bool)$row["f_fdTask"];
 			$f->signSvr 	= $row["f_idSign"];
 			$f->fileCount 	= intval($row["fd_files"]);
 

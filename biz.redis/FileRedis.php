@@ -37,6 +37,7 @@ class FileRedis
 		$r->hSet($f->idSign, "lenLoc", $f->lenLoc );
 		$r->hSet($f->idSign, "lenSvr", $f->lenSvr );
 		$r->hSet($f->idSign, "blockCount", $f->blockCount );
+		$r->hSet($f->idSign, "blockSize", $f->blockSize );
 		$r->hSet($f->idSign, "sizeLoc",$f->sizeLoc);
 		$r->hSet($f->idSign, "filesCount", $f->filesCount );
 		$r->hSet($f->idSign, "foldersCount", "0" );
