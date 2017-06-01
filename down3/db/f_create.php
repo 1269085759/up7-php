@@ -1,6 +1,8 @@
 <?php 
-require('../../biz.database/DbHelper.php');
 require('../../biz/PathTool.php');
+require('../../biz.redis/FileRedis.php');
+require('../../biz.redis/RedisTool.php');
+require('../biz.redis/tasks.php');
 
 $uid 		= $_GET["uid"];
 $signSvr 	= $_GET["signSvr"];
