@@ -1,25 +1,25 @@
 <?php
-require('../../db/DbHelper.php');
-require('../../db/PathTool.php');
-require('../model/DnFileInf.php');
-require('../biz/cmp_file.php');
-require('../biz/un_file.php');
-require('../biz/un_builder.php');
+/**
+ * 从缓存(redis)中加载未下载完毕的任务列表
+ */
+require('../../biz.database/DbHelper.php');
+require('../../biz/PathTool.php');
+require('../biz.redis/tasks.php');
 
 $uid = $_GET["uid"];
 $cbk = $_GET["callback"];//jsonp
 
 if ( strlen($uid)>0 )
 {
-	$fd = new un_builder();
-	$json = $fd->read($uid);
+	$j = RedisTool::con();
+	$svr = new tasks($uid, $j);
+	$json = $svr->toJson();
+	$j->close();	
 	
 	if( !empty($json) )
 	{
-		$json = urlencode($json);
-		$json = str_replace("+","%20",$json);//
-		$json = "$cbk({\"value\":\"$json\"})";
-		echo $json;
+		$json = PathTool::url_encode($json);
+		echo "$cbk({\"value\":\"$json\"})";
 		return;
 	}
 }

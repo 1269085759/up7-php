@@ -1,4 +1,7 @@
 <?php
+/**
+ * 下载列表加载页面，从up7_files中加载已上传完的文件
+ */
 header('Content-Type: text/html;charset=utf-8');
 require('../../biz/PathTool.php');
 require('../../biz.database/DbHelper.php');

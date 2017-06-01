@@ -71,7 +71,7 @@ class tasks
 			$f->nameLoc = PathTool::url_encode($f->nameLoc);
 			$f->pathLoc = PathTool::urlencode_path($f->pathLoc);
 			$f->pathSvr = PathTool::urlencode_path($f->pathSvr);
-			$f->pathSvr = str_replace("\\", "/", $f->pathSvr);
+			$f->pathSvr = str_replace("\\", "/", $f->pathSvr);//服务器必须使用/，因为文件可能保存在linux中
 			$f->pathRel = PathTool::urlencode_path($f->pathRel);
 			$files[] = $f;			
 		}
