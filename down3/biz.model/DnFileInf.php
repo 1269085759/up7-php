@@ -3,8 +3,11 @@ class DnFileInf
 {
 	var $idSvr = 0;
 	var $idSign = "";
-	var $signSvr="";
+	var $signSvr= "";
+	var $rootSign="";
+	var $pidSign="";
 	var $nameLoc = "";
+	var $nameSvr = "";
 	var $pathLoc = "";
 	var $pathSvr = "";
 	var $pathRel = "";
@@ -25,6 +28,7 @@ class DnFileInf
 	
 	function __construct()
 	{
+		$this->signSvr = PathTool::guid();
 	}
 }
 ?>

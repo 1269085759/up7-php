@@ -36,7 +36,7 @@ $inf->sizeSvr = $sizeSvr;
 
 //添加到缓存
 $j = RedisTool::con();
-$svr = new tasks($j);
+$svr = new tasks($uid,$j);
 $svr->add($inf);
 $j->close();
 
