@@ -65,22 +65,23 @@ class tasks
 		foreach($keys as $key)
 		{
 			$f = $cache->read($key);
-			$f->pathLoc = PathTool::urlencode_safe($f->pathLoc);//防止json_encode将中文转换成unicode
-			$f->pathSvr = PathTool::urlencode_safe($f->pathSvr);//防止json_encode将中文转换成unicode
-			$f->pathRel = PathTool::urlencode_safe($f->pathRel);//防止json_encode将中文转换成unicode
-			$f->nameLoc = PathTool::urlencode_safe($f->nameLoc);//防止json_encode将中文转换成unicode
-			$f->nameSvr = PathTool::urlencode_safe($f->nameSvr);//防止json_encode将中文转换成unicode
+			$f->pathLoc = PathTool::urlencode_path($f->pathLoc);//防止json_encode将中文转换成unicode
+			$f->pathSvr = PathTool::urlencode_path($f->pathSvr);//防止json_encode将中文转换成unicode
+			$f->pathRel = PathTool::urlencode_path($f->pathRel);//防止json_encode将中文转换成unicode
+			$f->nameLoc = PathTool::urlencode_path($f->nameLoc);//防止json_encode将中文转换成unicode
+			$f->nameSvr = PathTool::urlencode_path($f->nameSvr);//防止json_encode将中文转换成unicode
 			$files[] = $f;
 		}
+		return $files;
 	}
 	
 	function toJson()
 	{
 		$fs = $this->all();
-		$fs = urldecode($fs);//还原
 		if(is_null($fs)) return "";
-		
-		return json_encode($fs);				
+		$json = json_encode($fs);		
+		$json = PathTool::url_decode($json);//还原汉字
+		return $json;				
 	}	
 }
 ?>

@@ -293,7 +293,7 @@ function HttpUploaderMgr()
 		, "ResumerFile": function (fileSvr)//续传文件
         {
 			//文件夹任务
-		    if (fileSvr.f_folder)
+		    if (fileSvr.folder)
 			{
 		        _this.ResumeFolder(fileSvr);
 			}

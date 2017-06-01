@@ -22,9 +22,7 @@ if( strlen($uid) > 0)
 	$r->close();
 	if( !empty($json) )
 	{
-		//echo $json;
-		$json = urlencode($json);
-		$json = str_replace("+","%20",$json);
+		$json = PathTool::url_encode($json);
 		echo "$cbk({\"value\":\"$json\"})";
 		return;
 	}
