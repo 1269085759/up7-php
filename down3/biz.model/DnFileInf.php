@@ -13,11 +13,13 @@ class DnFileInf
 	var $pathRel = "";
 	var $blockPath = "";
 	var $blockSize = 0;
+	var $blockCount=0;
 	var $uid = 0;
 	var $fileUrl = "";
 	var $lenLoc = "0";
 	var $lenSvr = "0";
-	var $sizeSvr = "";
+	var $sizeLoc="0byte";
+	var $sizeSvr = "0byte";
 	var $perLoc = "0%";
 	var $complete = false;
 	var $fdID = 0;//与up6_folder.fd_id对应

@@ -2,6 +2,7 @@
 require('../../biz/PathTool.php');
 require('../../biz.redis/RedisTool.php');
 require('../biz.redis/tasks.php');
+require('../biz.redis/KeyMaker.php');
 
 $fid = $_GET["signSvr"];
 $uid = $_GET["uid"];
