@@ -7,6 +7,7 @@ class DnFileInf
 	var $nameLoc = "";
 	var $pathLoc = "";
 	var $pathSvr = "";
+	var $pathRel = "";
 	var $blockPath = "";
 	var $blockSize = 0;
 	var $uid = 0;
