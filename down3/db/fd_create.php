@@ -4,6 +4,8 @@ require('../../biz/PathTool.php');
 require('../../biz.redis/RedisTool.php');
 require('../biz.model/DnFileInf.php');
 require('../biz.redis/FileRedis.php');
+require('../biz.redis/tasks.php');
+require('../biz.redis/KeyMaker.php');
 /*
 	更新记录：
 		2015-05-13 创建
