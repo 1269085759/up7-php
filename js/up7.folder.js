@@ -50,6 +50,8 @@ function FolderUploader(fdLoc, mgr)
             alert(up6_err_solve.errFolderCreate);
         });
         this.ui.btn.post.show();
+        this.ui.btn.stop.hide();
+        this.ui.btn.del.show();
     };
     this.svr_update = function ()
     {
