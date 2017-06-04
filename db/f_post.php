@@ -58,17 +58,8 @@ if (   (strlen($lenSvr)>0)
 		$partPath = $bpb->part($idSign, $rangeIndex, $fileSvr->pathSvr);
 		
 		//保存文件块
-		try 
-		{
-			$part = new FilePart();
-			$part->save($partPath, $fpath);
-		}
-		catch(Exception $e)
-		{
-			header('HTTP/1.1 500 save file part error,$e');
-			header('Content-Length: ' . ob_get_length());
-			die();
-		}
+		$part = new FilePart();
+		$part->save($partPath, $fpath);
 		
 		//更新进度
 		if(strcmp($f_pos, "0") == 0) $cache->process($idSign, $perSvr, $lenSvr, $rangeCount);
