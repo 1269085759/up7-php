@@ -1,36 +1,25 @@
 <?php 
-require('../../db/DbHelper.php');
-require('../model/DnFileInf.php');
-require('DnFile.php');
+require('../../biz.redis/RedisTool.php');
+require('../biz.redis/FileRedis.php');
 
-$uid = $_GET["uid"];
-$cbk = $_GET["callback"];//jsonp
-
-$fid 	= $_GET["idSvr"];
 $uid 	= $_GET["uid"];
+$fid 	= $_GET["signSvr"];
 $lenLoc	= $_GET["lenLoc"];
+$sizeLoc= $_GET["sizeLoc"];
 $per	= $_GET["perLoc"];
 $cbk 	= $_GET["callback"];//jsonp
-//
-$file_id	= $_GET["file_id"];
-$file_lenLoc = $_GET["file_lenLoc"];
-$file_per	= $_GET["file_per"];
 
-if ( strlen($uid) < 1
-	||empty($fid)
-	||empty($cbk)
-	||empty($lenLoc) )
+if (   $uid == ""
+	|| $fid == ""
+	|| $cbk == ""
+	|| $lenLoc== "" )
 {
 	echo $cbk . "({\"value\":0})";
 	return;
 }
 
-$db = new DnFile();
-$db->updateProcess($fid,$uid,$lenLoc,$per);
-//更新子文件
-if (!empty($file_id) && !empty($file_lenLoc))
-{
-    $db->updateProcess($file_id, $uid, $file_lenLoc, $file_per);
-}
+$j = RedisTool::con();
+$fr = new FileRedis($j);
+$fr->process($fid, $per, $lenLoc, $sizeLoc);
 echo $cbk . "({\"value\":1})";
 ?>

@@ -5,9 +5,11 @@
 require('../../biz.database/DbHelper.php');
 require('../../biz/PathTool.php');
 require('../../biz.redis/RedisTool.php');
-require('../../biz.redis/FileRedis.php');
+require('../biz.redis/FileRedis.php');
 require('../biz.redis/tasks.php');
 require('../biz.redis/KeyMaker.php');
+require('../biz.model/DnFileInf.php');
+require('../../biz.model/xdb_files.php');
 
 $uid = $_GET["uid"];
 $cbk = $_GET["callback"];//jsonp
