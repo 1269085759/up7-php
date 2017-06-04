@@ -8,16 +8,13 @@ class FileRedis
 		$this->con = $r;
 	}
 	
-	function process($idSign,$perSvr,$lenSvr,$blockCount,$blockSize)
+	function process($idSign,$perSvr,$lenSvr,$blockCount)
 	{
 		$r = $this->con;
 		$r->hSet($idSign, "perSvr", $perSvr);
 		$r->hSet($idSign, "lenSvr", $lenSvr);
 		if( $blockCount != "0" )
 			$r->hSet($idSign, "blockCount", $blockCount);
-		
-		if( $blockSize != "0" )
-			$r->hSet($idSign, "blockSize", $blockSize);
 	}
 	
 	function create($f)

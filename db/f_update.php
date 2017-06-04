@@ -24,7 +24,7 @@ if(    strlen($uid) < 1
 //更新redis进度
 $r = RedisTool::con();
 $fr = new FileRedis($r);
-$fr->process($idSign,$perSvr,$lenSvr,"0",blockSize);
+$fr->process($idSign,$perSvr,$lenSvr,"0");
 
 header('Content-Length: ' . ob_get_length());
 ?>

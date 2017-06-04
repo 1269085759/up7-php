@@ -82,7 +82,7 @@ function FileUploader(fileLoc, mgr)
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = jQuery.extend({}, this.fields, { idSign: this.fileSvr.idSign,lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, { idSign: this.fileSvr.idSign,lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path,blockSize:this.Config.RangeSize, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
@@ -106,7 +106,7 @@ function FileUploader(fileLoc, mgr)
     //在停止和出错时调用
     this.svr_update = function ()
     {
-        var param = jQuery.extend({}, this.fields, {uid:this.fileSvr.uid,sign:this.fileSvr.sign,idSign:this.fileSvr.idSign,lenSvr:this.fileSvr.lenSvr, lenLoc: this.fileSvr.lenLoc,perSvr:this.fileSvr.perSvr, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, {uid:this.fileSvr.uid,sign:this.fileSvr.sign,idSign:this.fileSvr.idSign,lenSvr:this.fileSvr.lenSvr, lenLoc: this.fileSvr.lenLoc,perSvr:this.fileSvr.perSvr,blockSize:this.Config.RangeSize, time: new Date().getTime() });
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'

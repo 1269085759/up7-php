@@ -30,6 +30,7 @@ $uid 			= $_GET["uid"];
 $lenLoc			= $_GET["lenLoc"];//10240
 $sizeLoc		= $_GET["sizeLoc"];//10mb
 $sizeLoc		= str_replace("+", " ", $sizeLoc);
+$blockSize		= $_GET["blockSize"];
 $callback 		= $_GET["callback"];//jsonp
 $pathLoc		= $_GET["pathLoc"];
 $idSign			= $_GET["idSign"];
@@ -52,6 +53,7 @@ $fileSvr->pathLoc = $pathLoc;
 $fileSvr->nameSvr = $fileSvr->nameLoc;
 $fileSvr->lenLoc = $lenLoc;
 $fileSvr->sizeLoc = $sizeLoc;
+$fileSvr->blockSize = $blockSize;
 $fileSvr->deleted = false;
 $fileSvr->uid = intval($uid);
 

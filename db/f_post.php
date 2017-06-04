@@ -38,7 +38,17 @@ $fd_lenSvr		= $head->param("fd-lenSvr");
 $fd_perSvr		= $head->param("fd-perSvr");
 $pathLoc		= PathTool::url_decode($pathLoc);
 $nameLoc		= PathTool::url_decode($nameLoc);
-$fpath			= $_FILES['file']['tmp_name'];//
+$fpath			= null;
+try
+{
+	$fpath = $_FILES['file']['tmp_name'];//
+}
+catch(Exception $e)
+{
+	header('HTTP/1.1 500 recv file part error,$e');
+	header('Content-Length: ' . ob_get_length());
+	die();
+}
 
 //相关参数不能为空
 if (   (strlen($lenSvr)>0) 
@@ -58,11 +68,20 @@ if (   (strlen($lenSvr)>0)
 		$partPath = $bpb->part($idSign, $rangeIndex, $fileSvr->pathSvr);
 		
 		//保存文件块
-		$part = new FilePart();
-		$part->save($partPath, $fpath);
+		try 
+		{
+			$part = new FilePart();
+			$part->save($partPath, $fpath);
+		}
+		catch(Exception $e)
+		{
+			header('HTTP/1.1 500 save file part error,$e');
+			header('Content-Length: ' . ob_get_length());
+			die();
+		}
 		
 		//更新进度
-		if(strcmp($f_pos, "0") == 0) $cache->process($idSign, $perSvr, $lenSvr, $rangeCount, $rangeSize);
+		if(strcmp($f_pos, "0") == 0) $cache->process($idSign, $perSvr, $lenSvr, $rangeCount);
 	}//子文件块
 	else
 	{
@@ -95,7 +114,7 @@ if (   (strlen($lenSvr)>0)
 		}//更新文件夹进度
 		else if(strcmp($f_pos,"0")==0 )
 		{
-			$cache->process($fd_idSign, $fd_perSvr, $fd_lenSvr, "0", "0");			
+			$cache->process($fd_idSign, $fd_perSvr, $fd_lenSvr, "0");			
 		}
 		
 	}	
