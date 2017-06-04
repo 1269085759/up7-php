@@ -31,24 +31,14 @@ $sizeLoc		= $head->param("f-sizeLoc");
 $f_pos 			= $head->param("f-RangePos");
 $rangeIndex		= $head->param("f-rangeIndex");
 $rangeCount		= $head->param("f-rangeCount");
-$rangeSize		= $head->param("f-rangeSize");
+$rangeSize		= $head->param("f-rangeSize");//逻辑块大小信息，提供给下载使用
 $complete		= "false";
 $fd_idSign		= $head->param("fd-idSign");
 $fd_lenSvr		= $head->param("fd-lenSvr");
 $fd_perSvr		= $head->param("fd-perSvr");
 $pathLoc		= PathTool::url_decode($pathLoc);
 $nameLoc		= PathTool::url_decode($nameLoc);
-$fpath			= null;
-try
-{
-	$fpath = $_FILES['file']['tmp_name'];//
-}
-catch(Exception $e)
-{
-	header('HTTP/1.1 500 recv file part error,$e');
-	header('Content-Length: ' . ob_get_length());
-	die();
-}
+$fpath 			= $_FILES['file']['tmp_name'];//
 
 //相关参数不能为空
 if (   (strlen($lenSvr)>0) 
